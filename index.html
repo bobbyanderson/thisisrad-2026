@@ -126,6 +126,21 @@
     @media (max-width: 768px) {
       .hero-lower { grid-template-columns: 1fr; gap: var(--space-6); }
       .hero-cta { align-items: flex-start; }
+      .hero-cta-row { flex-wrap: wrap; }
+    }
+
+    @media (max-width: 560px) {
+      .hero-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-4);
+      }
+      .hero-meta-stats {
+        width: 100%;
+        flex-direction: column;
+        gap: var(--space-3) !important;
+      }
+      .hero-meta-stat { text-align: left; }
     }
 
     /* =============================================
@@ -398,8 +413,16 @@
     }
 
     @media (max-width: 768px) {
-      .work-panel { flex: 0 0 85vw; }
-      .work-panel--end { flex: 0 0 80vw; }
+      .work-panel {
+        flex: 0 0 85vw;
+        min-height: auto;
+        grid-template-rows: auto auto;
+      }
+      .work-panel--end { flex: 0 0 80vw; min-height: auto; padding: var(--space-6); }
+      .wp-img-wrap { aspect-ratio: 1 / 1; }
+      .wp-img,
+      .wp-img-placeholder { min-height: 0; height: 100%; }
+      .wp-info { padding: var(--space-4); flex-wrap: wrap; }
     }
 
     /* =============================================
@@ -672,7 +695,7 @@
           <span class="hero-scroll-line"></span>
           <span class="label">Scroll</span>
         </div>
-        <div style="display:flex;gap:var(--space-8)">
+        <div class="hero-meta-stats" style="display:flex;gap:var(--space-8)">
           <div class="hero-meta-stat">
             <div class="stat-num"><span class="counter" data-target="8">0</span>+</div>
             <div class="stat-label">Years Experience</div>
@@ -724,21 +747,21 @@
     <div class="how-grid">
       <div class="how-pillar reveal-up">
         <span class="pillar-num">01 — Understand</span>
-        <h3 class="pillar-title">Start with context,<br>not pixels.</h3>
+        <h3 class="pillar-title">Start with context,<br class="br-deco">not pixels.</h3>
         <p class="pillar-body">Understanding users, business goals and product context before touching any tool. Good design starts with the right questions.</p>
         <span class="pillar-deco-num" aria-hidden="true">1</span>
         <div class="pillar-line"></div>
       </div>
       <div class="how-pillar reveal-up">
         <span class="pillar-num">02 — Simplify</span>
-        <h3 class="pillar-title">Remove friction<br>before adding features.</h3>
+        <h3 class="pillar-title">Remove friction<br class="br-deco">before adding features.</h3>
         <p class="pillar-body">Reducing complexity and shaping ideas into workable product experiences. The best solution is usually the simplest one that actually solves the problem.</p>
         <span class="pillar-deco-num" aria-hidden="true">2</span>
         <div class="pillar-line"></div>
       </div>
       <div class="how-pillar reveal-up">
         <span class="pillar-num">03 — Build &amp; Iterate</span>
-        <h3 class="pillar-title">Ship, learn<br>and improve.</h3>
+        <h3 class="pillar-title">Ship, learn<br class="br-deco">and improve.</h3>
         <p class="pillar-body">Working collaboratively through testing, refinement and continuous improvement. Design evolves with the product and the people using it.</p>
         <span class="pillar-deco-num" aria-hidden="true">3</span>
         <div class="pillar-line"></div>
@@ -832,7 +855,7 @@
       <!-- End panel -->
       <div class="work-panel work-panel--end">
         <p class="label text-faint" style="margin-bottom:var(--space-4)">That's not all</p>
-        <h3 class="heading-2" style="margin-bottom:var(--space-6)">More work<br>in the archive</h3>
+        <h3 class="heading-2" style="margin-bottom:var(--space-6)">More work<br class="br-deco">in the archive</h3>
         <a href="work.html" class="btn btn-arrow">All case studies</a>
       </div>
 
@@ -872,7 +895,7 @@
     <div class="ai-inner">
       <div>
         <h2 class="ai-heading reveal-line">
-          <span class="inner">AI as a tool,<br><em>not a replacement</em><br>for thinking.</span>
+          <span class="inner">AI as a tool,<br class="br-deco"><em>not a replacement</em><br class="br-deco">for thinking.</span>
         </h2>
       </div>
       <div>

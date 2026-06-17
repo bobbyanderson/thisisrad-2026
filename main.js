@@ -44,7 +44,19 @@
   const menuBtn  = document.querySelector('.nav-menu-btn');
   const navLinks = document.querySelector('.nav-links');
   if (menuBtn && navLinks) {
-    menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+    menuBtn.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuBtn.classList.toggle('active', isOpen);
+      menuBtn.setAttribute('aria-expanded', isOpen);
+    });
+    // Close the menu (and reset the icon) when a link inside it is tapped
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuBtn.classList.remove('active');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
   }
 
   /* =============================================

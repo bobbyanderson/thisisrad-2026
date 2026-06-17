@@ -466,6 +466,8 @@ nav.scrolled::before {
   padding: 0.5rem;
   flex-direction: column;
   gap: 5px;
+  position: relative;
+  z-index: 101; /* sit above the full-screen .nav-links overlay */
 }
 
 .nav-menu-btn span {
@@ -474,6 +476,15 @@ nav.scrolled::before {
   height: 1px;
   background: var(--ink);
   transition: transform 0.3s ease, opacity 0.3s ease;
+  transform-origin: center;
+}
+
+/* Animate the two bars into a cross when the menu is open */
+.nav-menu-btn.active span:nth-child(1) {
+  transform: translateY(3px) rotate(45deg);
+}
+.nav-menu-btn.active span:nth-child(2) {
+  transform: translateY(-3px) rotate(-45deg);
 }
 
 @media (max-width: 768px) {
@@ -481,6 +492,8 @@ nav.scrolled::before {
   .nav-links {
     position: fixed;
     inset: 0;
+    left: 0;
+    transform: none; /* reset the desktop centering transform (left:50%/translateX(-50%)) */
     background: var(--bg);
     flex-direction: column;
     justify-content: center;
@@ -490,6 +503,8 @@ nav.scrolled::before {
     pointer-events: none;
     transition: opacity 0.4s ease;
     z-index: 99;
+    padding: 0 var(--space-4);
+    text-align: center;
   }
   .nav-links.open {
     opacity: 1;
@@ -653,6 +668,7 @@ footer {
 
 @media (max-width: 640px) {
   .footer-inner { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+  .footer-links { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
 }
 
 /* ---- Utility ---- */
@@ -675,4 +691,25 @@ footer {
   padding-top: calc(var(--space-24) + 4rem);
   padding-bottom: var(--space-12);
   border-bottom: 1px solid var(--rule);
+}
+
+/* ---- Decorative hard line-breaks ----
+   Some headings use a manual <br> purely for desktop typography.
+   Wrap those breaks in this class so mobile lets the text reflow
+   naturally instead of forcing an awkward/clipped extra line. */
+@media (max-width: 640px) {
+  br.br-deco { display: none; }
+}
+
+/* ---- Globe canvases ----
+   JS sizing sets explicit pixel width/height; if the parent shrinks
+   below that on narrow viewports, max-width:100% would squeeze the
+   width but not the height, distorting the circle into an oval.
+   Forcing a 1:1 aspect ratio keeps it round no matter what — it's
+   fine for it to clip at the screen edges as long as it stays centred. */
+.globe-hp-canvas-wrap canvas,
+.globe-canvas-wrap canvas {
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto !important;
 }
