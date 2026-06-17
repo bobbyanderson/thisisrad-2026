@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Designing for Startups & Scale-ups — Bobby Anderson</title>
+  <meta name="description" content="A showcase of design work for startups and early-stage companies — from native mobile apps to onboarding redesigns, design systems and rapid product thinking.">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('rad-theme') || 'dark')</script>
+  <style>
+    .cs-hero {
+      padding-top: calc(var(--space-24) + 4rem);
+      padding-bottom: var(--space-12);
+      border-bottom: 1px solid var(--rule);
+    }
+    .cs-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+    .cs-back {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s ease;
+    }
+    .cs-back:hover { color: var(--ink); }
+    .cs-title {
+      font-size: clamp(2.5rem, 6vw, var(--size-4xl));
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      margin-bottom: var(--space-4);
+    }
+    .cs-subtitle {
+      font-size: clamp(1rem, 2vw, var(--size-md));
+      font-weight: 300;
+      color: var(--ink-muted);
+      max-width: 58ch;
+    }
+    .cs-hero-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: var(--space-12);
+    }
+    .cs-stat {
+      padding: var(--space-6);
+      border-right: 1px solid var(--rule);
+    }
+    .cs-stat:last-child { border-right: none; }
+    .cs-stat-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+    .cs-stat-value {
+      font-size: var(--size-base);
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    /* Body */
+    .cs-body { padding: var(--space-16) 0; }
+    .cs-body-inner {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--space-16);
+      align-items: start;
+    }
+    .cs-nav {
+      position: sticky;
+      top: calc(var(--space-8) + 4rem);
+    }
+    .cs-nav-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-3);
+    }
+    .cs-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid var(--rule);
+    }
+    .cs-nav-list a {
+      display: block;
+      padding: 0.5rem var(--space-3);
+      font-size: var(--size-sm);
+      color: var(--ink-muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      margin-left: -1px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+      line-height: 1.4;
+    }
+    .cs-nav-list a:hover, .cs-nav-list a.active {
+      color: var(--ink);
+      border-left-color: var(--ink);
+    }
+    .cs-nav-divider {
+      height: 1px;
+      background: var(--rule);
+      margin: var(--space-2) 0 var(--space-2) var(--space-3);
+    }
+
+    /* Content */
+    .cs-content > * + * { margin-top: var(--space-10); }
+    .cs-section {
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--rule);
+    }
+    .cs-section:first-child { border-top: none; padding-top: 0; }
+    .cs-section-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-4);
+    }
+    .cs-section h2 {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: var(--space-4);
+      max-width: 65%;
+    }
+    .cs-section p {
+      font-size: var(--size-base);
+      line-height: 1.85;
+      color: var(--ink-muted);
+    }
+    .cs-section p + p { margin-top: var(--space-3); }
+
+    /* Project snapshot cards */
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: var(--space-8) 0;
+    }
+    .snapshot {
+      padding: var(--space-6);
+      border-right: 1px solid var(--rule);
+    }
+    .snapshot:last-child { border-right: none; }
+    .snapshot-type {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-3);
+    }
+    .snapshot-title {
+      font-size: var(--size-md);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.3;
+      margin-bottom: var(--space-3);
+    }
+    .snapshot-body {
+      font-size: var(--size-sm);
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+    .snapshot-outcome {
+      margin-top: var(--space-4);
+      font-size: var(--size-xs);
+      font-weight: 500;
+      color: var(--ink);
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--rule);
+      border-radius: 2rem;
+      display: inline-block;
+    }
+
+    /* Capability list */
+    .capability-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: var(--space-6) 0;
+    }
+    .capability-item {
+      padding: var(--space-5) var(--space-6);
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+    .capability-item:nth-child(even) { border-right: none; }
+    .capability-item:nth-last-child(-n+2) { border-bottom: none; }
+    .capability-item h4 {
+      font-size: var(--size-base);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-1);
+    }
+    .capability-item p {
+      font-size: var(--size-sm) !important;
+      color: var(--ink-muted);
+      line-height: 1.65 !important;
+      margin: 0 !important;
+    }
+
+    /* Pull quote */
+    .cs-pullquote {
+      border-left: 3px solid var(--ink);
+      padding: var(--space-4) var(--space-6);
+      margin: var(--space-8) 0;
+      background: var(--bg-alt);
+      border-radius: 0 4px 4px 0;
+    }
+    .cs-pullquote p {
+      font-size: clamp(1.1rem, 2vw, 1.4rem) !important;
+      font-weight: 300;
+      letter-spacing: -0.015em;
+      line-height: 1.5 !important;
+      color: var(--ink) !important;
+    }
+
+    /* Image */
+    .cs-image {
+      width: 100%;
+      border-radius: 4px;
+      background: var(--bg-alt);
+      border: 1px solid var(--rule);
+      overflow: hidden;
+      margin: var(--space-6) 0;
+    }
+    .cs-image img { width: 100%; display: block; }
+    .cs-image-caption {
+      padding: var(--space-2) var(--space-3);
+      border-top: 1px solid var(--rule);
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.05em;
+    }
+
+    /* Review cards */
+    .cs-reviews {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-3);
+      margin: var(--space-6) 0;
+    }
+    .cs-review {
+      padding: var(--space-4) var(--space-5);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      background: var(--white);
+    }
+    .cs-review-stars { font-size: 0.6rem; color: var(--ink-faint); letter-spacing: 0.1em; margin-bottom: var(--space-2); }
+    .cs-review-title { font-size: var(--size-sm); font-weight: 500; margin-bottom: var(--space-1); }
+    .cs-review-body { font-size: var(--size-sm); color: var(--ink-muted); line-height: 1.65; }
+
+    /* Outcomes */
+    .cs-outcomes {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-top: var(--space-4);
+    }
+    .cs-outcome-chip {
+      font-size: var(--size-sm);
+      border: 1px solid var(--rule);
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      color: var(--ink);
+      background: var(--white);
+    }
+
+    /* Project divider */
+    .project-divider {
+      border: none;
+      border-top: 2px solid var(--ink);
+      margin: var(--space-10) 0 var(--space-8);
+      opacity: 0.08;
+    }
+
+    /* Next */
+    .cs-next { border-top: 1px solid var(--rule); padding: var(--space-12) 0; }
+    .cs-next-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-6);
+    }
+    .cs-next-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+    .cs-next-title {
+      font-size: clamp(1.25rem, 2.5vw, 2rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+    }
+
+    @media (max-width: 1000px) {
+      .snapshot-grid { grid-template-columns: 1fr; }
+      .snapshot { border-right: none; border-bottom: 1px solid var(--rule); }
+      .snapshot:last-child { border-bottom: none; }
+    }
+    @media (max-width: 900px) {
+      .cs-body-inner { grid-template-columns: 1fr; }
+      .cs-nav { display: none; }
+      .cs-hero-grid { grid-template-columns: repeat(2, 1fr); }
+      .cs-stat:nth-child(2) { border-right: none; }
+      .cs-stat:nth-child(3) { border-top: 1px solid var(--rule); }
+      .capability-grid { grid-template-columns: 1fr; }
+      .capability-item { border-right: none !important; }
+      .capability-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+      .capability-item:last-child { border-bottom: none; }
+      .cs-reviews { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .cs-hero-grid { grid-template-columns: 1fr; }
+      .cs-stat { border-right: none !important; border-bottom: 1px solid var(--rule); }
+      .cs-stat:last-child { border-bottom: none; }
+      .cs-next-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="pt-wrap" aria-hidden="true"></div>
+<div id="cursor"></div>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="This is RAD">
+          <path d="M35.1289 36.9176H13.3203V15.1198L35.1289 36.9176ZM15.1201 35.1178H30.7822L15.1201 19.4635V35.1178ZM16.1045 12.3854C20.3126 8.17724 27.1815 8.19872 31.3896 12.4069C35.5977 16.6149 35.5976 23.4614 31.3896 27.6696L29.7539 29.3053C14.1424 13.6938 30.0813 29.6317 14.4697 14.0201L16.1045 12.3854Z" fill="#343A40"/>
+          <mask id="mask0_2161_111" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="17" width="19" height="19">
+            <path d="M14.1599 36V17.52L32.1599 36H14.1599Z" fill="#C4C4C4"/>
+          </mask>
+          <g mask="url(#mask0_2161_111)">
+            <path class="logo-dot" d="M26.0399 32.52C26.0399 33.1827 25.5026 33.72 24.8399 33.72C24.1772 33.72 23.6399 33.1827 23.6399 32.52C23.6399 31.8573 24.1772 31.32 24.8399 31.32C25.5026 31.32 26.0399 31.8573 26.0399 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 28.92C22.44 29.5828 21.9028 30.12 21.24 30.12C20.5773 30.12 20.04 29.5828 20.04 28.92C20.04 28.2573 20.5773 27.72 21.24 27.72C21.9028 27.72 22.44 28.2573 22.44 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 25.32C18.8399 25.9827 18.3027 26.52 17.6399 26.52C16.9772 26.52 16.4399 25.9827 16.4399 25.32C16.4399 24.6573 16.9772 24.12 17.6399 24.12C18.3027 24.12 18.8399 24.6573 18.8399 25.32Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 32.52C22.44 33.1827 21.9028 33.72 21.24 33.72C20.5773 33.72 20.04 33.1827 20.04 32.52C20.04 31.8573 20.5773 31.32 21.24 31.32C21.9028 31.32 22.44 31.8573 22.44 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 28.92C18.8399 29.5828 18.3027 30.12 17.6399 30.12C16.9772 30.12 16.4399 29.5828 16.4399 28.92C16.4399 28.2573 16.9772 27.72 17.6399 27.72C18.3027 27.72 18.8399 28.2573 18.8399 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 32.52C18.8399 33.1827 18.3027 33.72 17.6399 33.72C16.9772 33.72 16.4399 33.1827 16.4399 32.52C16.4399 31.8573 16.9772 31.32 17.6399 31.32C18.3027 31.32 18.8399 31.8573 18.8399 32.52Z" fill="#343A40"/>
+          </g>
+        </svg>
+      </a>
+      <ul class="nav-links">
+        <li><a href="work.html" class="active">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:var(--space-3)">
+        <button id="theme-toggle" aria-label="Switch to dark mode"><span class="toggle-icon">◐</span></button>
+        <a href="about.html#contact" class="nav-cta">Let's Talk</a>
+        <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="cs-hero">
+  <div class="container">
+    <div class="cs-hero-meta">
+      <a href="work.html" class="cs-back">← All Work</a>
+      <div style="display:flex;gap:var(--space-1);flex-wrap:wrap">
+        <span class="tag">Startups</span>
+        <span class="tag">Scale-ups</span>
+        <span class="tag">Product Design</span>
+        <span class="tag">Mobile</span>
+        <span class="tag">WordPress · Shopify</span>
+      </div>
+    </div>
+    <h1 class="cs-title reveal-line"><span class="inner">Designing for startups<br>&amp; scale-ups</span></h1>
+    <p class="cs-subtitle reveal-fade">A collection of work for early-stage and growing companies — where speed matters, resources are finite, and good design decisions compound over time.</p>
+
+    <div class="cs-hero-grid reveal-up">
+      <div class="cs-stat">
+        <span class="cs-stat-label">Types of work</span>
+        <span class="cs-stat-value">Mobile apps · Onboarding · Design systems · Web development</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-label">Sectors</span>
+        <span class="cs-stat-value">Fintech · SaaS · E-commerce · Consumer apps</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-label">Engagements</span>
+        <span class="cs-stat-value">Project-based · Embedded · Retainer</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-label">Highlights</span>
+        <span class="cs-stat-value">~£5m crowdfunding · +38% activation · Ahead-of-market features</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="cs-body">
+  <div class="container">
+    <div class="cs-body-inner">
+
+      <nav class="cs-nav" aria-label="Case study sections">
+        <span class="cs-nav-label">Contents</span>
+        <ul class="cs-nav-list">
+          <li><a href="#approach">How I work with startups</a></li>
+          <li><a href="#capabilities">What I bring</a></li>
+          <div class="cs-nav-divider"></div>
+          <li><a href="#money-dashboard">Money Dashboard</a></li>
+          <li><a href="#onboarding">SaaS Onboarding</a></li>
+          <li><a href="#design-system">Design System</a></li>
+          <div class="cs-nav-divider"></div>
+          <li><a href="#why">Why it works</a></li>
+        </ul>
+      </nav>
+
+      <div class="cs-content">
+
+        <!-- Approach -->
+        <div class="cs-section" id="approach">
+          <span class="cs-section-label">How I work with startups</span>
+          <h2>Startups need a different kind of designer.</h2>
+          <p>Enterprise design and startup design are not the same discipline. In large organisations, the challenge is usually navigating complexity — committees, compliance, legacy systems, competing stakeholders. In startups, the challenge is different: how do you make excellent decisions quickly, with incomplete information, and ship something that actually moves the needle?</p>
+          <p>I've worked with early-stage companies, funded startups and fast-scaling businesses across fintech, SaaS, e-commerce and consumer apps. The common thread isn't the sector — it's the mindset required. Fast, considered, pragmatic. Design that's good enough to ship and built well enough to grow on.</p>
+
+          <div class="cs-pullquote">
+            <p>"We didn't want to cut features just to deliver on time. We wanted to build on them."</p>
+          </div>
+        </div>
+
+        <!-- Capabilities -->
+        <div class="cs-section" id="capabilities">
+          <span class="cs-section-label">What I bring</span>
+          <h2>End-to-end capability across design and development.</h2>
+          <p>Most startups can't afford a full in-house team across every discipline. Working with me gives you access to a senior designer who can also develop — which means fewer handoffs, faster delivery, and a single person accountable for quality across the stack.</p>
+
+          <div class="capability-grid">
+            <div class="capability-item">
+              <h4>UX Research &amp; Strategy</h4>
+              <p>User interviews, journey mapping, problem framing. Understanding what to build before touching any tool.</p>
+            </div>
+            <div class="capability-item">
+              <h4>Product &amp; Interface Design</h4>
+              <p>Web and mobile UI across iOS, Android and responsive web. Figma-first, dev-ready, craft-obsessed.</p>
+            </div>
+            <div class="capability-item">
+              <h4>Onboarding &amp; Growth Flows</h4>
+              <p>Activation, retention, first-use experience. The moments that determine whether people stay or leave.</p>
+            </div>
+            <div class="capability-item">
+              <h4>Design Systems</h4>
+              <p>Token-first component libraries that scale with the product. Built for designers and engineers to use confidently.</p>
+            </div>
+            <div class="capability-item">
+              <h4>WordPress &amp; Shopify Development</h4>
+              <p>Custom theme development, CMS builds, e-commerce. Design that gets implemented without losing quality in translation.</p>
+            </div>
+            <div class="capability-item">
+              <h4>Prototyping &amp; Testing</h4>
+              <p>High-fidelity interactive prototypes for user testing and stakeholder sign-off. Ideas you can put in front of real people.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Money Dashboard -->
+        <div class="cs-section" id="money-dashboard">
+          <span class="cs-section-label">Case Study 01 — Money Dashboard</span>
+          <h2>Taking a fintech web product native — ahead of the entire market.</h2>
+          <p>Money Dashboard were Edinburgh's leading personal finance platform. Strong web product, loyal user base, genuine traction. After a successful funding round, they needed native iOS and Android apps — designed and ready in weeks, not months.</p>
+          <p>My role as Head of Design at xDesign was to lead the process: understanding what mattered to their users, making sharp decisions about what to carry over from the web experience versus what to rebuild for mobile, and delivering a complete design system on a timeline with no room for hesitation.</p>
+          <p>The easy answer would have been to shrink the web product down. We didn't take it. Tagged spending, savings goals, budget tracking — features that would become industry standard years later — were designed into the app from launch. We built toward where personal finance was heading, not toward what already existed.</p>
+
+          <div class="cs-image">
+            <img src="https://www.thisisrad.co/img/case-study-md-screens-ui.jpg" alt="Money Dashboard mobile UI"
+                 onerror="this.style.display='none'">
+            <div class="cs-image-caption">Core app screens — spending overview, budget tracking and savings goals built for native mobile</div>
+          </div>
+
+          <div class="cs-image">
+            <img src="https://www.thisisrad.co/img/case-study-md-onboarding.jpg" alt="Money Dashboard onboarding"
+                 onerror="this.style.display='none'">
+            <div class="cs-image-caption">Onboarding flow — designed for both new users and the existing web audience migrating to mobile</div>
+          </div>
+
+          <p>The App Store reviews after launch said more than any brief could. Money Dashboard went on to raise close to £5m in crowdfunding in the years that followed.</p>
+
+          <div class="cs-reviews">
+            <div class="cs-review">
+              <div class="cs-review-stars">★★★★★</div>
+              <div class="cs-review-title">Useful, intuitive, the best around</div>
+              <div class="cs-review-body">"By far the simplest to use, yet also the most in-depth and useful in terms of functionality."</div>
+            </div>
+            <div class="cs-review">
+              <div class="cs-review-stars">★★★★★</div>
+              <div class="cs-review-title">Amazing update, better service</div>
+              <div class="cs-review-body">"Very fast and functional — exceeds the website in some respects. A deserved 5 stars."</div>
+            </div>
+          </div>
+
+          <div class="cs-outcomes">
+            <span class="cs-outcome-chip">~£5m crowdfunding post-launch</span>
+            <span class="cs-outcome-chip">Features ahead of the market</span>
+            <span class="cs-outcome-chip">Strong App Store reception</span>
+          </div>
+        </div>
+
+        <hr class="project-divider">
+
+        <!-- Onboarding -->
+        <div class="cs-section" id="onboarding">
+          <span class="cs-section-label">Case Study 02 — SaaS Platform (NDA)</span>
+          <h2>Fixing the onboarding problem no one wanted to admit was there.</h2>
+          <p>A B2B SaaS platform with a healthy signup rate and a stalled activation metric. The team assumed it was a marketing problem. The data told a different story once we looked at it properly — users were arriving, exploring briefly and leaving before they'd seen any real value. The issue wasn't acquisition. It was the first ten minutes.</p>
+          <p>Three weeks of session analysis and qualitative interviews identified three distinct friction points — none of which were obvious from the dashboard. We rebuilt the onboarding flow as a progressive value reveal: get users to their first meaningful outcome within two minutes, not fifteen. Reduce the cognitive load of setup. Show value before asking for commitment.</p>
+          <p>The result was a 38% improvement in activation rate in the first month post-launch, and a significant drop in support tickets raised during the onboarding window.</p>
+
+          <div class="cs-outcomes">
+            <span class="cs-outcome-chip">+38% activation rate</span>
+            <span class="cs-outcome-chip">↓ Onboarding support tickets</span>
+            <span class="cs-outcome-chip">Faster time to first value</span>
+          </div>
+        </div>
+
+        <hr class="project-divider">
+
+        <!-- Design system -->
+        <div class="cs-section" id="design-system">
+          <span class="cs-section-label">Case Study 03 — Scale-up (NDA)</span>
+          <h2>A design system that gave 30 engineers a shared language.</h2>
+          <p>A fast-growing startup with three product squads shipping UI from memory and assumption. Twelve button variants. Four different spacing scales. No token system. Designers were recreating components from scratch every sprint. Engineers were doing the same and assuming the other team had a canonical source. Neither did.</p>
+          <p>The work started with an audit — cataloguing every UI pattern in production before proposing anything new. From there, a token-first architecture with semantic naming, built in Figma and documented for engineering in parallel rather than handed over at the end.</p>
+          <p>The result: a shared component library the whole team could use confidently, significantly faster handoff, and a consistent product UI that scaled with the company rather than against it.</p>
+
+          <div class="cs-outcomes">
+            <span class="cs-outcome-chip">Consistent UI across product</span>
+            <span class="cs-outcome-chip">Faster design → engineering handoff</span>
+            <span class="cs-outcome-chip">Token-first · Figma + code</span>
+          </div>
+        </div>
+
+        <!-- Why it works -->
+        <div class="cs-section" id="why">
+          <span class="cs-section-label">Why it works</span>
+          <h2>Startups do better with a senior generalist than a team of juniors.</h2>
+          <p>Early-stage companies often try to solve design by hiring cheap and wide. The result is a lot of output with unclear ownership and no consistent standard. A single senior designer who can research, design, prototype, test and implement — and who has done this across multiple products — produces better outcomes at lower overhead.</p>
+          <p>I'm not a team of one pretending to be an agency. I'm a senior practitioner who knows what they're good at, works well with founders and product teams, and cares about the quality of the outcome rather than the billable hours it takes to get there.</p>
+
+          <div style="margin-top:var(--space-6);display:flex;gap:var(--space-3);flex-wrap:wrap">
+            <a href="process.html" class="btn btn-ghost btn-arrow">See my process</a>
+            <a href="about.html#contact" class="btn btn-arrow">Start a conversation</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Next -->
+<div class="cs-next">
+  <div class="container">
+    <div class="cs-next-inner">
+      <div>
+        <span class="cs-next-label">Next project</span>
+        <h3 class="cs-next-title">Designing for financial services</h3>
+      </div>
+      <a href="finserv.html" class="btn btn-arrow">View project</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 This is RAD</span>
+      <ul class="footer-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="mailto:hello@thisisrad.co">Email</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="main.js"></script>
+<script>
+  const sections = document.querySelectorAll('.cs-section[id]');
+  const navLinks = document.querySelectorAll('.cs-nav-list a');
+  if (sections.length && navLinks.length) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector(`.cs-nav-list a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+    sections.forEach(s => obs.observe(s));
+  }
+</script>
+</body>
+</html>

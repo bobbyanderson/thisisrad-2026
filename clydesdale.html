@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B from Clydesdale Bank — Case Study</title>
+  <meta name="description" content="UX design case study — making a challenger bank more disruptive by making payments easier than a tweet.">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('rad-theme') || 'dark')</script>
+  <style>
+    /* ---- Case study hero ---- */
+    .cs-hero {
+      padding-top: calc(var(--space-24) + 4rem);
+      padding-bottom: var(--space-12);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .cs-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .cs-back {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s ease;
+    }
+
+    .cs-back:hover { color: var(--ink); }
+
+    .cs-hero-tags {
+      display: flex;
+      gap: var(--space-1);
+      flex-wrap: wrap;
+    }
+
+    .cs-title {
+      font-size: clamp(2.5rem, 6vw, var(--size-4xl));
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      margin-bottom: var(--space-4);
+    }
+
+    .cs-subtitle {
+      font-size: clamp(1rem, 2vw, var(--size-md));
+      font-weight: 300;
+      color: var(--ink-muted);
+      max-width: 55ch;
+    }
+
+    .cs-hero-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: var(--space-12);
+    }
+
+    .cs-stat {
+      padding: var(--space-6);
+      border-right: 1px solid var(--rule);
+    }
+
+    .cs-stat:last-child { border-right: none; }
+
+    .cs-stat-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+
+    .cs-stat-value {
+      font-size: var(--size-base);
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    /* ---- Cover image ---- */
+    .cs-cover {
+      width: 100%;
+      aspect-ratio: 16/7;
+      background: var(--bg-alt);
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cs-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cs-cover-placeholder {
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* ---- Body layout ---- */
+    .cs-body {
+      padding: var(--space-16) 0;
+    }
+
+    .cs-body-inner {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: var(--space-16);
+      align-items: start;
+    }
+
+    /* ---- Sticky nav ---- */
+    .cs-nav {
+      position: sticky;
+      top: calc(var(--space-8) + 4rem);
+    }
+
+    .cs-nav-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-3);
+    }
+
+    .cs-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-left: 1px solid var(--rule);
+    }
+
+    .cs-nav-list a {
+      display: block;
+      padding: 0.5rem var(--space-3);
+      font-size: var(--size-sm);
+      color: var(--ink-muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      margin-left: -1px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+      line-height: 1.4;
+    }
+
+    .cs-nav-list a:hover,
+    .cs-nav-list a.active {
+      color: var(--ink);
+      border-left-color: var(--ink);
+    }
+
+    /* ---- Content sections ---- */
+    .cs-content > * + * {
+      margin-top: var(--space-12);
+    }
+
+    .cs-section {
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--rule);
+    }
+
+    .cs-section:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .cs-section-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-4);
+    }
+
+    .cs-section h2 {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: var(--space-4);
+      max-width: 65%;
+    }
+
+    .cs-section p {
+      font-size: var(--size-base);
+      line-height: 1.85;
+      color: var(--ink-muted);
+    }
+
+    .cs-section p + p {
+      margin-top: var(--space-3);
+    }
+
+    /* ---- Pull quote ---- */
+    .cs-pullquote {
+      border-left: 3px solid var(--ink);
+      padding: var(--space-4) var(--space-6);
+      margin: var(--space-8) 0;
+      background: var(--bg-alt);
+      border-radius: 0 4px 4px 0;
+    }
+
+    .cs-pullquote p {
+      font-size: clamp(1.1rem, 2vw, 1.4rem) !important;
+      font-weight: 300;
+      letter-spacing: -0.015em;
+      line-height: 1.5 !important;
+      color: var(--ink) !important;
+    }
+
+    /* ---- Image ---- */
+    .cs-image {
+      width: 100%;
+      border-radius: 4px;
+      background: var(--bg-alt);
+      border: 1px solid var(--rule);
+      overflow: hidden;
+      margin: var(--space-8) 0;
+    }
+
+    .cs-image img {
+      width: 100%;
+      display: block;
+    }
+
+    .cs-image-placeholder {
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cs-image-caption {
+      padding: var(--space-2) var(--space-3);
+      border-top: 1px solid var(--rule);
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.05em;
+    }
+
+    /* ---- Outcome chips in content ---- */
+    .cs-outcomes {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-top: var(--space-4);
+    }
+
+    .cs-outcome-chip {
+      font-size: var(--size-sm);
+      font-weight: 400;
+      border: 1px solid var(--rule);
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      color: var(--ink);
+      background: var(--white);
+    }
+
+    /* ---- Next case study ---- */
+    .cs-next {
+      border-top: 1px solid var(--rule);
+      padding: var(--space-12) 0;
+    }
+
+    .cs-next-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-6);
+    }
+
+    .cs-next-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+
+    .cs-next-title {
+      font-size: clamp(1.25rem, 2.5vw, 2rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+    }
+
+    @media (max-width: 900px) {
+      .cs-body-inner { grid-template-columns: 1fr; }
+      .cs-nav { display: none; }
+      .cs-hero-grid { grid-template-columns: repeat(2, 1fr); }
+      .cs-stat:nth-child(2) { border-right: none; }
+      .cs-stat:nth-child(3) { border-top: 1px solid var(--rule); }
+    }
+
+    @media (max-width: 600px) {
+      .cs-hero-grid { grid-template-columns: 1fr; }
+      .cs-stat { border-right: none !important; border-bottom: 1px solid var(--rule); }
+      .cs-stat:last-child { border-bottom: none; }
+      .cs-next-inner { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="pt-wrap" aria-hidden="true"></div>
+<div id="cursor"></div>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="This is RAD">
+          <path d="M35.1289 36.9176H13.3203V15.1198L35.1289 36.9176ZM15.1201 35.1178H30.7822L15.1201 19.4635V35.1178ZM16.1045 12.3854C20.3126 8.17724 27.1815 8.19872 31.3896 12.4069C35.5977 16.6149 35.5976 23.4614 31.3896 27.6696L29.7539 29.3053C14.1424 13.6938 30.0813 29.6317 14.4697 14.0201L16.1045 12.3854Z" fill="#343A40"/>
+          <mask id="mask0_2161_111" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="17" width="19" height="19">
+            <path d="M14.1599 36V17.52L32.1599 36H14.1599Z" fill="#C4C4C4"/>
+          </mask>
+          <g mask="url(#mask0_2161_111)">
+            <path class="logo-dot" d="M26.0399 32.52C26.0399 33.1827 25.5026 33.72 24.8399 33.72C24.1772 33.72 23.6399 33.1827 23.6399 32.52C23.6399 31.8573 24.1772 31.32 24.8399 31.32C25.5026 31.32 26.0399 31.8573 26.0399 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 28.92C22.44 29.5828 21.9028 30.12 21.24 30.12C20.5773 30.12 20.04 29.5828 20.04 28.92C20.04 28.2573 20.5773 27.72 21.24 27.72C21.9028 27.72 22.44 28.2573 22.44 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 25.32C18.8399 25.9827 18.3027 26.52 17.6399 26.52C16.9772 26.52 16.4399 25.9827 16.4399 25.32C16.4399 24.6573 16.9772 24.12 17.6399 24.12C18.3027 24.12 18.8399 24.6573 18.8399 25.32Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 32.52C22.44 33.1827 21.9028 33.72 21.24 33.72C20.5773 33.72 20.04 33.1827 20.04 32.52C20.04 31.8573 20.5773 31.32 21.24 31.32C21.9028 31.32 22.44 31.8573 22.44 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 28.92C18.8399 29.5828 18.3027 30.12 17.6399 30.12C16.9772 30.12 16.4399 29.5828 16.4399 28.92C16.4399 28.2573 16.9772 27.72 17.6399 27.72C18.3027 27.72 18.8399 28.2573 18.8399 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 32.52C18.8399 33.1827 18.3027 33.72 17.6399 33.72C16.9772 33.72 16.4399 33.1827 16.4399 32.52C16.4399 31.8573 16.9772 31.32 17.6399 31.32C18.3027 31.32 18.8399 31.8573 18.8399 32.52Z" fill="#343A40"/>
+          </g>
+        </svg>
+      </a>
+      <ul class="nav-links">
+        <li><a href="work.html" class="active">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:var(--space-3)">
+        <button id="theme-toggle" aria-label="Switch to dark mode"><span class="toggle-icon">◐</span></button>
+        <a href="about.html#contact" class="nav-cta">Let's Talk</a>
+        <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="cs-hero">
+  <div class="container">
+    <div class="cs-hero-meta">
+      <a href="work.html" class="cs-back">← All Work</a>
+      <div class="cs-hero-tags">
+        <span class="tag">Fintech</span>
+        <span class="tag">UX · UI</span>
+        <span class="tag">Self-initiated</span>
+        <span class="tag">Challenger Banking</span>
+      </div>
+    </div>
+
+    <h1 class="cs-title reveal-line"><span class="inner">B from Clydesdale Bank</span></h1>
+    <p class="cs-subtitle reveal-fade">Making a challenger bank genuinely disruptive — by making payments as fast as sending a tweet.</p>
+
+    <div class="cs-hero-grid reveal-up">
+      <div class="cs-stat">
+        <span class="cs-stat-label">Client</span>
+        <span class="cs-stat-value">Clydesdale &amp; Yorkshire Bank</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-label">Type</span>
+        <span class="cs-stat-value">Self-initiated concept</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-label">Discipline</span>
+        <span class="cs-stat-value">UX Research · UI Design · Prototyping</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-label">Outcome</span>
+        <span class="cs-stat-value">Presented to senior stakeholders · Became innovation partner</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cover image -->
+<div class="cs-cover">
+  <img src="https://www.thisisrad.co/img/case-study-cyb.jpg" alt="B from Clydesdale Bank — Quick Pay feature" onerror="this.parentElement.innerHTML='<span class=\'cs-cover-placeholder\'>Project imagery</span>'">
+</div>
+
+<!-- Body -->
+<div class="cs-body">
+  <div class="container">
+    <div class="cs-body-inner">
+
+      <!-- Sticky side nav -->
+      <nav class="cs-nav" aria-label="Case study sections">
+        <span class="cs-nav-label">Contents</span>
+        <ul class="cs-nav-list">
+          <li><a href="#intro">Introduction</a></li>
+          <li><a href="#problem">The Problem</a></li>
+          <li><a href="#role">Our Role</a></li>
+          <li><a href="#design">Design</a></li>
+          <li><a href="#lessons">Lessons Learned</a></li>
+          <li><a href="#future">Future Scope</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+        </ul>
+      </nav>
+
+      <!-- Content -->
+      <div class="cs-content">
+
+        <!-- TLDR -->
+        <div class="cs-pullquote">
+          <p>Disrupting the disruptor — redesigning how people send payments in a challenger banking app, from a multi-step process to something as natural as posting a social media update.</p>
+        </div>
+
+        <!-- Intro -->
+        <div class="cs-section" id="intro">
+          <span class="cs-section-label">01 — Introduction</span>
+          <h2>Disruption has to mean something.</h2>
+          <p>When looking to disrupt an industry, a new product shouldn't have to rely on fancy branding or marketing to get people's attention — they can help, but that's not disruption. Real change comes from making users' lives genuinely easier. It's why products like Monzo or Uber earned the traction they did.</p>
+          <p>When working on B, Clydesdale Bank's challenger banking app, we felt there wasn't enough outside-the-box thinking — and too much replicating what already existed in legacy banking. So we took it upon ourselves to give B the RAD treatment, designing a feature that could let you pay someone in the time it takes to post a status update.</p>
+        </div>
+
+        <!-- Problem -->
+        <div class="cs-section" id="problem">
+          <span class="cs-section-label">02 — The Problem</span>
+          <h2>A challenger app with the same flows as the banks it was challenging.</h2>
+          <p>B was launched as Clydesdale Bank's answer to the growing fintech disruption — a mobile-first banking app that looked different. But for us, it wasn't as disruptive as it could be. Many of its core user flows were identical to what you'd find in legacy banking applications.</p>
+          <p>Our research showed that people mainly use their mobile banking app for two things: to check their balance and to pay people. So why was one of those things orders of magnitude slower than the other? And why, in a new product explicitly designed to challenge the status quo, were we copying the same laborious journeys seen in traditional apps?</p>
+
+          <div class="cs-pullquote">
+            <p>"We needed a new approach to paying contacts — one that feels as accessible and natural as sending a tweet."</p>
+          </div>
+        </div>
+
+        <!-- Role -->
+        <div class="cs-section" id="role">
+          <span class="cs-section-label">03 — Our Role</span>
+          <h2>Self-initiated, end to end.</h2>
+          <p>As this was a self-initiated project, the concept was researched, visualised, prototyped and presented entirely by the RAD team. No brief, no client sign-off at each stage — just a genuine belief that this was a better way and the initiative to show it.</p>
+          <p>This case study is an example of seeing the bigger picture, making the most of available technology and delivering what users actually want. We pride ourselves on taking a different approach and coming up with ideas that add real value — not just executional ones.</p>
+          <div class="cs-outcomes">
+            <span class="cs-outcome-chip">UX Research</span>
+            <span class="cs-outcome-chip">Concept Design</span>
+            <span class="cs-outcome-chip">UI Design</span>
+            <span class="cs-outcome-chip">Prototyping</span>
+            <span class="cs-outcome-chip">Stakeholder Presentation</span>
+          </div>
+        </div>
+
+        <!-- Design -->
+        <div class="cs-section" id="design">
+          <span class="cs-section-label">04 — Design</span>
+          <h2>On-brand, but genuinely new.</h2>
+          <p>One thing we were deliberate about: staying within B's existing styleguide. We didn't want to introduce a visual language that felt alien to the product. The point was to show what could be possible within the existing system — not to reimagine the brand. This made the concept far more actionable for the team.</p>
+          <p>On the app's homepage, we implemented a row of avatars pulled from the user's contact list. Tapping a contact immediately triggers a quick payment flow to that individual — no navigation, no searching, no multi-step form.</p>
+          <p>We used a design pattern common in social media applications like Instagram: a horizontally scrollable row of contacts, ordered by most recently paid or most recently added. Familiar interaction, entirely new context.</p>
+
+          <div class="cs-image">
+            <img src="https://www.thisisrad.co/img/case-study-cyb-screens.jpg" alt="B Quick Pay feature screens" onerror="this.style.display='none'">
+            <div class="cs-image-placeholder" style="display:none;aspect-ratio:16/9"><span style="font-size:var(--size-xs);color:var(--ink-faint);letter-spacing:0.12em;text-transform:uppercase">Quick Pay screens</span></div>
+            <div class="cs-image-caption">The Quick Pay feature — contact avatars on the home screen trigger an immediate payment modal</div>
+          </div>
+
+          <div class="cs-image">
+            <img src="https://www.thisisrad.co/img/case-study-b-quickpay.jpg" alt="B Quick Pay detail" onerror="this.style.display='none'">
+            <div class="cs-image-caption">Payment modal — fast, focused, minimal steps</div>
+          </div>
+        </div>
+
+        <!-- Lessons -->
+        <div class="cs-section" id="lessons">
+          <span class="cs-section-label">05 — Lessons Learned</span>
+          <h2>Ideas have value even when they don't ship.</h2>
+          <p>The Quick Pay feature wasn't implemented — the demands on the development team and the existing product roadmap made it impractical at the time. But that's not the whole story.</p>
+          <p>Pitching ideas like this to senior stakeholders gave us invaluable insight into how decisions get made inside large organisations — what lands, what doesn't, and why. The feedback was strongly positive, and as a result we became a trusted voice when it came to innovating on what had already been built.</p>
+          <p>We've always found value in presenting ideas that show what's possible — approaching seemingly standard interactions, putting a new twist on them with a user-centred lens, and having the conviction to make the case.</p>
+        </div>
+
+        <!-- Future scope -->
+        <div class="cs-section" id="future">
+          <span class="cs-section-label">06 — Future Scope</span>
+          <h2>Good ideas are worth building on.</h2>
+          <p>When presenting Quick Pay to stakeholders, we were explicit that what we'd designed was an MVP — a strong starting point with clear room to grow. One obvious iteration was account selection: the initial concept assumed payments came from the user's default account, but giving users control over the source account within the payment modal would be a meaningful improvement with relatively low engineering overhead.</p>
+
+          <div class="cs-image">
+            <img src="https://www.thisisrad.co/img/case-study-cyb-screens-ui-lrg.jpg" alt="B Quick Pay future scope screens" onerror="this.style.display='none'">
+            <div class="cs-image-caption">Iterated designs showing account selection within the Quick Pay modal</div>
+          </div>
+        </div>
+
+        <!-- Conclusion -->
+        <div class="cs-section" id="conclusion">
+          <span class="cs-section-label">07 — Conclusion</span>
+          <h2>Small changes, big impact.</h2>
+          <p>As with most projects, there's always room for improvement — and it's unlikely anyone gets it perfectly right on the first attempt. What this work demonstrated is that meaningful disruption doesn't require rebuilding a product from the ground up. It requires looking honestly at where users are frustrated, applying creative thinking to that specific friction, and having the courage to present something genuinely different.</p>
+          <p>At the time, no other fintech application had implemented a payment flow like this. That's the kind of opportunity that exists in almost every product — it just takes the willingness to look for it.</p>
+
+          <div class="cs-outcomes" style="margin-top:var(--space-6)">
+            <span class="cs-outcome-chip">Pitched to senior stakeholders</span>
+            <span class="cs-outcome-chip">Became innovation partner</span>
+            <span class="cs-outcome-chip">First of its kind in fintech at the time</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Next case study -->
+<div class="cs-next">
+  <div class="container">
+    <div class="cs-next-inner">
+      <div>
+        <span class="cs-next-label">Next project</span>
+        <h3 class="cs-next-title">Simplifying a complex payments dashboard</h3>
+      </div>
+      <a href="work.html" class="btn btn-arrow">View project</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 This is RAD</span>
+      <ul class="footer-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="mailto:hello@thisisrad.co">Email</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="main.js"></script>
+
+<script>
+  // Highlight active section in side nav
+  const sections = document.querySelectorAll('.cs-section[id]');
+  const navLinks = document.querySelectorAll('.cs-nav-list a');
+
+  if (sections.length && navLinks.length) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector(`.cs-nav-list a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+
+    sections.forEach(s => obs.observe(s));
+  }
+</script>
+
+</body>
+</html>

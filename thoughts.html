@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thoughts — Bobby Anderson</title>
+  <meta name="description" content="Perspectives on product design, UX and building digital products properly.">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('rad-theme') || 'dark')</script>
+  <style>
+    /* ---- Thoughts layout ---- */
+    .thoughts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: var(--space-6);
+    }
+
+    .thought-article {
+      padding: var(--space-8);
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: background 0.2s ease;
+    }
+
+    .thought-article:hover {
+      background: var(--bg-alt);
+    }
+
+    .thought-article:nth-child(even) {
+      border-right: none;
+    }
+
+    .thought-article:nth-last-child(-n+2) {
+      border-bottom: none;
+    }
+
+    .thought-article-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-4);
+    }
+
+    .thought-category {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .thought-date {
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.05em;
+    }
+
+    .thought-article-title {
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.3;
+      margin-bottom: var(--space-3);
+    }
+
+    .thought-article-excerpt {
+      font-size: var(--size-sm);
+      line-height: 1.75;
+      color: var(--ink-muted);
+    }
+
+    .thought-read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      margin-top: var(--space-4);
+      transition: color 0.2s ease;
+    }
+
+    .thought-article:hover .thought-read-more {
+      color: var(--ink);
+    }
+
+    /* ---- Featured thought ---- */
+    .featured-thought {
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: var(--space-8);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .featured-thought-body {
+      padding: var(--space-12) var(--space-8);
+    }
+
+    .featured-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: var(--space-4);
+      display: block;
+    }
+
+    .featured-title {
+      font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: var(--space-4);
+    }
+
+    .featured-excerpt {
+      font-size: var(--size-base);
+      line-height: 1.8;
+      color: var(--ink-muted);
+    }
+
+    .featured-thought-visual {
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-8);
+      border-left: 1px solid var(--rule);
+    }
+
+    .featured-quote {
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
+      color: rgba(244,242,239,0.7);
+      font-style: italic;
+      text-align: center;
+    }
+
+    /* ---- Topics filter ---- */
+    .topics-bar {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-8);
+    }
+
+    @media (max-width: 768px) {
+      .thoughts-grid { grid-template-columns: 1fr; }
+      .thought-article:nth-child(even) { border-right: 1px solid var(--rule); }
+      .thought-article:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+      .thought-article:last-child { border-bottom: none; }
+      .featured-thought { grid-template-columns: 1fr; }
+      .featured-thought-visual { border-left: none; border-top: 1px solid var(--rule); min-height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="pt-wrap" aria-hidden="true"></div>
+<div id="cursor"></div>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="This is RAD">
+          <path d="M35.1289 36.9176H13.3203V15.1198L35.1289 36.9176ZM15.1201 35.1178H30.7822L15.1201 19.4635V35.1178ZM16.1045 12.3854C20.3126 8.17724 27.1815 8.19872 31.3896 12.4069C35.5977 16.6149 35.5976 23.4614 31.3896 27.6696L29.7539 29.3053C14.1424 13.6938 30.0813 29.6317 14.4697 14.0201L16.1045 12.3854Z" fill="#343A40"/>
+          <mask id="mask0_2161_111" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="17" width="19" height="19">
+            <path d="M14.1599 36V17.52L32.1599 36H14.1599Z" fill="#C4C4C4"/>
+          </mask>
+          <g mask="url(#mask0_2161_111)">
+            <path class="logo-dot" d="M26.0399 32.52C26.0399 33.1827 25.5026 33.72 24.8399 33.72C24.1772 33.72 23.6399 33.1827 23.6399 32.52C23.6399 31.8573 24.1772 31.32 24.8399 31.32C25.5026 31.32 26.0399 31.8573 26.0399 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 28.92C22.44 29.5828 21.9028 30.12 21.24 30.12C20.5773 30.12 20.04 29.5828 20.04 28.92C20.04 28.2573 20.5773 27.72 21.24 27.72C21.9028 27.72 22.44 28.2573 22.44 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 25.32C18.8399 25.9827 18.3027 26.52 17.6399 26.52C16.9772 26.52 16.4399 25.9827 16.4399 25.32C16.4399 24.6573 16.9772 24.12 17.6399 24.12C18.3027 24.12 18.8399 24.6573 18.8399 25.32Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 32.52C22.44 33.1827 21.9028 33.72 21.24 33.72C20.5773 33.72 20.04 33.1827 20.04 32.52C20.04 31.8573 20.5773 31.32 21.24 31.32C21.9028 31.32 22.44 31.8573 22.44 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 28.92C18.8399 29.5828 18.3027 30.12 17.6399 30.12C16.9772 30.12 16.4399 29.5828 16.4399 28.92C16.4399 28.2573 16.9772 27.72 17.6399 27.72C18.3027 27.72 18.8399 28.2573 18.8399 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 32.52C18.8399 33.1827 18.3027 33.72 17.6399 33.72C16.9772 33.72 16.4399 33.1827 16.4399 32.52C16.4399 31.8573 16.9772 31.32 17.6399 31.32C18.3027 31.32 18.8399 31.8573 18.8399 32.52Z" fill="#343A40"/>
+          </g>
+        </svg>
+      </a>
+      <ul class="nav-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:var(--space-3)">
+        <button id="theme-toggle" aria-label="Switch to dark mode"><span class="toggle-icon">◐</span></button>
+        <a href="about.html#contact" class="nav-cta">Let's Talk</a>
+        <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <p class="label reveal-fade" style="margin-bottom:var(--space-4)">Thoughts</p>
+    <h1 class="display-2">
+      <span class="reveal-line"><span class="inner">On products, design</span></span>
+      <span class="reveal-line"><span class="inner"><em style="font-style:italic;font-weight:300">and building things properly.</em></span></span>
+    </h1>
+    <p class="body-lg text-muted reveal-fade" style="max-width:50ch;margin-top:var(--space-6)">Not a newsletter. Not a content strategy. Just the things I find myself thinking about and writing down.</p>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+
+    <!-- Topics -->
+    <div class="topics-bar reveal-fade">
+      <button class="filter-btn active" style="font-size:var(--size-xs);font-weight:500;letter-spacing:0.12em;text-transform:uppercase;border:1px solid var(--rule);background:var(--ink);color:var(--bg);padding:0.4rem 0.9rem;border-radius:2rem;cursor:pointer">All</button>
+      <button class="filter-btn" style="font-size:var(--size-xs);font-weight:500;letter-spacing:0.12em;text-transform:uppercase;border:1px solid var(--rule);background:none;color:var(--ink-muted);padding:0.4rem 0.9rem;border-radius:2rem;cursor:pointer;transition:all 0.2s">Product Thinking</button>
+      <button class="filter-btn" style="font-size:var(--size-xs);font-weight:500;letter-spacing:0.12em;text-transform:uppercase;border:1px solid var(--rule);background:none;color:var(--ink-muted);padding:0.4rem 0.9rem;border-radius:2rem;cursor:pointer;transition:all 0.2s">Design Process</button>
+      <button class="filter-btn" style="font-size:var(--size-xs);font-weight:500;letter-spacing:0.12em;text-transform:uppercase;border:1px solid var(--rule);background:none;color:var(--ink-muted);padding:0.4rem 0.9rem;border-radius:2rem;cursor:pointer;transition:all 0.2s">Craft & Standards</button>
+      <button class="filter-btn" style="font-size:var(--size-xs);font-weight:500;letter-spacing:0.12em;text-transform:uppercase;border:1px solid var(--rule);background:none;color:var(--ink-muted);padding:0.4rem 0.9rem;border-radius:2rem;cursor:pointer;transition:all 0.2s">Industry</button>
+    </div>
+
+    <!-- Featured -->
+    <div class="featured-thought reveal-up" id="simplicity">
+      <div class="featured-thought-body">
+        <span class="featured-label">Featured · Product Thinking</span>
+        <h2 class="featured-title">Simplicity is a product decision, not a design preference.</h2>
+        <p class="featured-excerpt">When teams treat simplicity as an aesthetic preference — something a designer wants because they like clean things — they miss the point entirely. Simplicity is a product decision. It has business implications, user implications and organisational implications. Choosing to remove something from a product means someone in power was convinced it shouldn't be there. That's a hard conversation. It's also one of the most valuable ones a designer can initiate.</p>
+        <p class="featured-excerpt" style="margin-top:var(--space-3)">The products that feel genuinely simple aren't simple by accident. Someone fought for every removal.</p>
+        <a href="#" class="btn" style="margin-top:var(--space-6)">Read in full</a>
+      </div>
+      <div class="featured-thought-visual">
+        <p class="featured-quote">"The products that feel genuinely simple aren't simple by accident. Someone fought for every removal."</p>
+      </div>
+    </div>
+
+    <!-- Grid of thoughts -->
+    <div class="thoughts-grid reveal-up">
+
+      <a href="#" class="thought-article" id="process">
+        <div class="thought-article-top">
+          <span class="thought-category">Design Process</span>
+          <span class="thought-date">May 2026</span>
+        </div>
+        <h3 class="thought-article-title">The best designers are translators, not just makers.</h3>
+        <p class="thought-article-excerpt">The gap between what a business wants and what a user needs is almost always where the interesting design work lives. Learning to navigate that gap — honestly, without pretending it doesn't exist — is what separates good designers from great ones.</p>
+        <span class="thought-read-more">Read more →</span>
+      </a>
+
+      <a href="#" class="thought-article" id="quality">
+        <div class="thought-article-top">
+          <span class="thought-category">Craft & Standards</span>
+          <span class="thought-date">April 2026</span>
+        </div>
+        <h3 class="thought-article-title">Why good enough usually isn't — and when it is.</h3>
+        <p class="thought-article-excerpt">There's a meaningful difference between shipping fast and shipping carelessly. Knowing which is which takes experience, context and the confidence to have the conversation. "Good enough" as a principle is fine. "Good enough" as a habit is how products die slowly.</p>
+        <span class="thought-read-more">Read more →</span>
+      </a>
+
+      <a href="#" class="thought-article">
+        <div class="thought-article-top">
+          <span class="thought-category">Industry</span>
+          <span class="thought-date">March 2026</span>
+        </div>
+        <h3 class="thought-article-title">On AI tools and the question designers keep avoiding.</h3>
+        <p class="thought-article-excerpt">Most of the discourse around AI and design misses the actual question. It's not "will AI replace designers?" It's "what does a designer look like when their output speed is no longer a constraint?" That's a more interesting and more uncomfortable thing to sit with.</p>
+        <span class="thought-read-more">Read more →</span>
+      </a>
+
+      <a href="#" class="thought-article">
+        <div class="thought-article-top">
+          <span class="thought-category">Product Thinking</span>
+          <span class="thought-date">March 2026</span>
+        </div>
+        <h3 class="thought-article-title">The onboarding problem most SaaS companies ignore.</h3>
+        <p class="thought-article-excerpt">Activation is one of the most important metrics in SaaS. It's also one of the most misunderstood. Most teams treat it as a UX problem. Some treat it as a marketing problem. The ones who fix it treat it as a product problem — and start much earlier in the journey.</p>
+        <span class="thought-read-more">Read more →</span>
+      </a>
+
+      <a href="#" class="thought-article">
+        <div class="thought-article-top">
+          <span class="thought-category">Craft & Standards</span>
+          <span class="thought-date">Feb 2026</span>
+        </div>
+        <h3 class="thought-article-title">Why your design system isn't working.</h3>
+        <p class="thought-article-excerpt">Most design system failures aren't technical failures. They're adoption failures. The system exists — the components are built, the documentation is written — and nobody uses it consistently. Understanding why is more useful than rebuilding it.</p>
+        <span class="thought-read-more">Read more →</span>
+      </a>
+
+      <a href="#" class="thought-article">
+        <div class="thought-article-top">
+          <span class="thought-category">Design Process</span>
+          <span class="thought-date">Jan 2026</span>
+        </div>
+        <h3 class="thought-article-title">Research doesn't have to take three weeks.</h3>
+        <p class="thought-article-excerpt">The idea that meaningful user research requires a formal study, a research team and several weeks is one of the most damaging myths in product design. Five interviews will tell you more than most teams discover in months of assumption-based iteration.</p>
+        <span class="thought-read-more">Read more →</span>
+      </a>
+
+    </div>
+
+    <!-- Subscribe / follow -->
+    <div style="padding:var(--space-8);border:1px solid var(--rule);border-radius:4px;display:flex;align-items:center;justify-content:space-between;gap:var(--space-6);flex-wrap:wrap" class="reveal-fade">
+      <div>
+        <p class="label" style="margin-bottom:var(--space-2)">Follow along</p>
+        <p class="body-sm text-muted" style="max-width:40ch">These thoughts also get shared on LinkedIn. If you're interested in product design, UX and building things properly — it's worth a follow.</p>
+      </div>
+      <a href="https://linkedin.com" target="_blank" class="btn btn-ghost btn-arrow">LinkedIn</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 This is RAD</span>
+      <ul class="footer-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="mailto:hello@thisisrad.co">Email</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="main.js"></script>
+
+<script>
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.style.background = 'none';
+        b.style.color = 'var(--ink-muted)';
+        b.style.borderColor = 'var(--rule)';
+      });
+      btn.style.background = 'var(--ink)';
+      btn.style.color = 'var(--bg)';
+      btn.style.borderColor = 'var(--ink)';
+    });
+  });
+</script>
+
+</body>
+</html>

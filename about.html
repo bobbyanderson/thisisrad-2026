@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Bobby Anderson</title>
+  <meta name="description" content="Bobby Anderson — Founder of This is RAD. Senior product designer with 20+ years experience working across fintech, SaaS, and consumer products.">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('rad-theme') || 'dark')</script>
+  <style>
+    /* ---- About layout ---- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+      align-items: start;
+    }
+
+    .about-portrait {
+      position: sticky;
+      top: calc(var(--space-12) + 5rem);
+    }
+
+    .portrait-frame {
+      aspect-ratio: 3/4;
+      background: var(--bg-alt);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .portrait-placeholder {
+      text-align: center;
+    }
+
+    .portrait-placeholder p {
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .portrait-caption {
+      margin-top: var(--space-3);
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+    }
+
+    .about-content > * + * {
+      margin-top: var(--space-8);
+    }
+
+    .about-block-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-3);
+    }
+
+    .about-block h3 {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: var(--space-4);
+    }
+
+    .about-block p {
+      font-size: var(--size-base);
+      line-height: 1.8;
+      color: var(--ink-muted);
+    }
+
+    .about-block p + p {
+      margin-top: var(--space-3);
+    }
+
+    /* ---- Experience ---- */
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--rule);
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-4);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--rule);
+      align-items: start;
+    }
+
+    .exp-role {
+      font-size: var(--size-base);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    .exp-company {
+      font-size: var(--size-sm);
+      color: var(--ink-muted);
+      margin-top: 0.2rem;
+    }
+
+    .exp-year {
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+      padding-top: 0.25rem;
+      text-align: right;
+    }
+
+    /* ---- Values ---- */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+
+    .value-item {
+      padding: var(--space-6);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+    }
+
+    .value-item h4 {
+      font-size: var(--size-base);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-2);
+    }
+
+    .value-item p {
+      font-size: var(--size-sm);
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+
+    /* ---- Companies ---- */
+    .companies-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .company-chip {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      border: 1px solid var(--rule);
+      padding: 0.4rem 0.85rem;
+      border-radius: 2rem;
+      color: var(--ink-muted);
+    }
+
+    /* ---- Contact ---- */
+    .contact-section {
+      background: var(--bg-alt);
+      border-top: 1px solid var(--rule);
+      padding: var(--space-24) 0;
+    }
+
+    .contact-inner {
+      max-width: 680px;
+    }
+
+    .contact-heading {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: var(--space-6);
+    }
+
+    .contact-body {
+      font-size: var(--size-md);
+      color: var(--ink-muted);
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: var(--space-8);
+    }
+
+    .contact-link {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 0.2rem;
+      transition: border-color 0.2s ease;
+      display: inline-block;
+    }
+
+    .contact-link:hover {
+      border-color: var(--ink);
+    }
+
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .about-portrait { position: static; }
+      .values-grid { grid-template-columns: 1fr; }
+      .partners-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="pt-wrap" aria-hidden="true"></div>
+<div id="cursor"></div>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="This is RAD">
+          <path d="M35.1289 36.9176H13.3203V15.1198L35.1289 36.9176ZM15.1201 35.1178H30.7822L15.1201 19.4635V35.1178ZM16.1045 12.3854C20.3126 8.17724 27.1815 8.19872 31.3896 12.4069C35.5977 16.6149 35.5976 23.4614 31.3896 27.6696L29.7539 29.3053C14.1424 13.6938 30.0813 29.6317 14.4697 14.0201L16.1045 12.3854Z" fill="#343A40"/>
+          <mask id="mask0_2161_111" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="17" width="19" height="19">
+            <path d="M14.1599 36V17.52L32.1599 36H14.1599Z" fill="#C4C4C4"/>
+          </mask>
+          <g mask="url(#mask0_2161_111)">
+            <path class="logo-dot" d="M26.0399 32.52C26.0399 33.1827 25.5026 33.72 24.8399 33.72C24.1772 33.72 23.6399 33.1827 23.6399 32.52C23.6399 31.8573 24.1772 31.32 24.8399 31.32C25.5026 31.32 26.0399 31.8573 26.0399 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 28.92C22.44 29.5828 21.9028 30.12 21.24 30.12C20.5773 30.12 20.04 29.5828 20.04 28.92C20.04 28.2573 20.5773 27.72 21.24 27.72C21.9028 27.72 22.44 28.2573 22.44 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 25.32C18.8399 25.9827 18.3027 26.52 17.6399 26.52C16.9772 26.52 16.4399 25.9827 16.4399 25.32C16.4399 24.6573 16.9772 24.12 17.6399 24.12C18.3027 24.12 18.8399 24.6573 18.8399 25.32Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 32.52C22.44 33.1827 21.9028 33.72 21.24 33.72C20.5773 33.72 20.04 33.1827 20.04 32.52C20.04 31.8573 20.5773 31.32 21.24 31.32C21.9028 31.32 22.44 31.8573 22.44 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 28.92C18.8399 29.5828 18.3027 30.12 17.6399 30.12C16.9772 30.12 16.4399 29.5828 16.4399 28.92C16.4399 28.2573 16.9772 27.72 17.6399 27.72C18.3027 27.72 18.8399 28.2573 18.8399 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 32.52C18.8399 33.1827 18.3027 33.72 17.6399 33.72C16.9772 33.72 16.4399 33.1827 16.4399 32.52C16.4399 31.8573 16.9772 31.32 17.6399 31.32C18.3027 31.32 18.8399 31.8573 18.8399 32.52Z" fill="#343A40"/>
+          </g>
+        </svg>
+      </a>
+      <ul class="nav-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:var(--space-3)">
+        <button id="theme-toggle" aria-label="Switch to dark mode"><span class="toggle-icon">◐</span></button>
+        <a href="#contact" class="nav-cta">Let's Talk</a>
+        <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Page hero -->
+<div class="page-hero">
+  <div class="container">
+    <p class="label reveal-fade" style="margin-bottom:var(--space-4)">About</p>
+    <h1 class="display-2">
+      <span class="reveal-line"><span class="inner">Designer, product thinker,</span></span>
+      <span class="reveal-line"><span class="inner"><em style="font-style:italic;font-weight:300">problem solver.</em></span></span>
+    </h1>
+    <p class="reveal-fade" style="margin-top:var(--space-6);font-size:var(--size-md);color:var(--ink-muted);max-width:52ch;line-height:1.7">Based in Stirling, Scotland. Founder of This is RAD. 20+ years making digital products that work for real people.</p>
+  </div>
+</div>
+
+<!-- Main about content -->
+<section>
+  <div class="container">
+    <div class="about-grid">
+
+      <!-- Portrait -->
+      <div class="about-portrait reveal-fade">
+        <div class="portrait-frame">
+          <div class="portrait-placeholder">
+            <p>Portrait<br>coming soon</p>
+          </div>
+        </div>
+        <p class="portrait-caption">Bobby Anderson · Product Designer</p>
+      </div>
+
+      <!-- Content -->
+      <div class="about-content">
+
+        <div class="about-block reveal-fade">
+          <span class="about-block-label">Who I am</span>
+          <h3>I make complex digital products feel simple.</h3>
+          <p>I'm Bobby Anderson — a senior product designer and founder of This is RAD, with over 20 years of experience working across fintech, banking, SaaS, health tech and consumer products. My work sits at the intersection of UX, UI and product strategy — where the real design decisions happen.</p>
+          <p>I'm not just interested in how things look. I'm interested in how they work, why they exist, and whether they're actually solving the right problem. I founded Robert Anderson Design Ltd in 2015, and have been operating independently ever since — working with everyone from early-stage startups to global financial institutions.</p>
+        </div>
+
+        <hr class="rule">
+
+        <div class="about-block reveal-fade">
+          <span class="about-block-label">My approach</span>
+          <h3>Process over preference.</h3>
+          <p>I believe good design is built on rigorous thinking, honest conversations and a genuine curiosity about the people using the product. I push back when something doesn't make sense. I ask the questions that others avoid. And I care deeply about getting things right.</p>
+          <p>That said — I ship. I don't disappear into research loops. I work iteratively, keep stakeholders close, and move with purpose.</p>
+        </div>
+
+        <hr class="rule">
+
+        <div class="about-block reveal-fade">
+          <span class="about-block-label">What I value</span>
+          <div class="values-grid mt-4">
+            <div class="value-item reveal-up">
+              <h4>Clarity over cleverness</h4>
+              <p>A design that requires explanation has already failed. Simplicity is earned, not assumed.</p>
+            </div>
+            <div class="value-item reveal-up">
+              <h4>Opinions with humility</h4>
+              <p>I have strong views — but I hold them loosely. Good ideas can come from anywhere.</p>
+            </div>
+            <div class="value-item reveal-up">
+              <h4>Craft in the details</h4>
+              <p>The small things matter. Spacing, hierarchy, motion — these signal standards across the product.</p>
+            </div>
+            <div class="value-item reveal-up">
+              <h4>Speed without shortcuts</h4>
+              <p>Moving fast is important. So is doing it without leaving invisible debt for others to unpick later.</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="rule">
+
+        <div class="about-block reveal-fade">
+          <span class="about-block-label">Who I enjoy working with</span>
+          <h3>Ambitious teams with high standards.</h3>
+          <p>I do my best work with founders and product teams who care deeply about what they're building — who treat design as a strategic function, not a finishing step. Companies that are genuinely trying to build something that makes a dent.</p>
+          <p>If you've got a vague brief and an open mind, I'm probably the right person. If you need someone who'll execute a fully-formed spec without question, I'm probably not.</p>
+        </div>
+
+        <hr class="rule">
+
+        <div class="about-block reveal-fade">
+          <span class="about-block-label">Experience</span>
+          <div class="exp-list mt-4">
+            <div class="exp-item">
+              <div>
+                <p class="exp-role">Founder &amp; Creative Director</p>
+                <p class="exp-company">This is RAD / Robert Anderson Design Ltd</p>
+              </div>
+              <span class="exp-year">2015 — Now</span>
+            </div>
+            <div class="exp-item">
+              <div>
+                <p class="exp-role">Senior UX Designer — Contract</p>
+                <p class="exp-company">RBS / NatWest — online credit card application redesign</p>
+              </div>
+              <span class="exp-year">Project</span>
+            </div>
+            <div class="exp-item">
+              <div>
+                <p class="exp-role">Product Designer — Contract</p>
+                <p class="exp-company">Clydesdale Bank / CYBG — B digital banking app</p>
+              </div>
+              <span class="exp-year">Project</span>
+            </div>
+            <div class="exp-item">
+              <div>
+                <p class="exp-role">Senior Product Designer — Freelance</p>
+                <p class="exp-company">Multiple clients: Prudential, Cigna, Money Dashboard, Suntory Global, Morgan Stanley</p>
+              </div>
+              <span class="exp-year">Ongoing</span>
+            </div>
+          </div>
+        </div>
+
+        <hr class="rule">
+
+        <div class="about-block reveal-fade">
+          <span class="about-block-label">Some brands I've worked with</span>
+          <div class="companies-row mt-4">
+            <span class="company-chip">NatWest</span>
+            <span class="company-chip">RBS</span>
+            <span class="company-chip">Clydesdale Bank</span>
+            <span class="company-chip">Prudential</span>
+            <span class="company-chip">Cigna</span>
+            <span class="company-chip">Morgan Stanley</span>
+            <span class="company-chip">Money Dashboard</span>
+            <span class="company-chip">Suntory Global</span>
+            <span class="company-chip">Native Instruments</span>
+          </div>
+        </div>
+
+        <hr class="rule">
+
+        <div class="about-block reveal-fade">
+          <span class="about-block-label">As seen in</span>
+          <div class="companies-row mt-4">
+            <span class="company-chip">BBC News</span>
+            <span class="company-chip">The Guardian</span>
+            <span class="company-chip">The Times</span>
+            <span class="company-chip">TechCrunch</span>
+            <span class="company-chip">ITV</span>
+            <span class="company-chip">Sky News</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Partners & Clients -->
+<section style="border-top:1px solid var(--rule);padding-top:var(--space-16);padding-bottom:var(--space-16)">
+  <div class="container">
+
+    <div class="section-intro reveal-fade">
+      <span class="section-num label">Partners &amp; Clients</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-12);align-items:start" class="partners-grid">
+
+      <!-- Agency Partners -->
+      <div class="reveal-fade">
+        <p class="label" style="margin-bottom:var(--space-4)">Agency Partners</p>
+        <p style="font-size:var(--size-sm);line-height:1.75;color:var(--ink-muted);max-width:42ch;margin-bottom:var(--space-6)">Design studios and agencies that bring me in as a senior design partner — working alongside their teams on client projects where deep product thinking and delivery experience matters.</p>
+        <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--rule);border-radius:4px;overflow:hidden">
+          <div style="padding:var(--space-4) var(--space-5);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:var(--size-base);font-weight:400;letter-spacing:-0.01em">Add agency name</span>
+            <span class="label">Ongoing</span>
+          </div>
+          <div style="padding:var(--space-4) var(--space-5);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:var(--size-base);font-weight:400;letter-spacing:-0.01em">Add agency name</span>
+            <span class="label">Ongoing</span>
+          </div>
+          <div style="padding:var(--space-4) var(--space-5);display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:var(--size-base);font-weight:400;letter-spacing:-0.01em">Add agency name</span>
+            <span class="label">Ongoing</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direct Clients -->
+      <div class="reveal-fade">
+        <p class="label" style="margin-bottom:var(--space-4)">Direct Partners</p>
+        <p style="font-size:var(--size-sm);line-height:1.75;color:var(--ink-muted);max-width:42ch;margin-bottom:var(--space-6)">Companies I work with directly on a retained basis — providing embedded design and development (WordPress &amp; Shopify) as a long-term extension of their team.</p>
+        <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--rule);border-radius:4px;overflow:hidden">
+          <div style="padding:var(--space-4) var(--space-5);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:var(--size-base);font-weight:400;letter-spacing:-0.01em">Add client name</span>
+            <span class="label">Retainer</span>
+          </div>
+          <div style="padding:var(--space-4) var(--space-5);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:var(--size-base);font-weight:400;letter-spacing:-0.01em">Add client name</span>
+            <span class="label">Retainer</span>
+          </div>
+          <div style="padding:var(--space-4) var(--space-5);display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:var(--size-base);font-weight:400;letter-spacing:-0.01em">Add client name</span>
+            <span class="label">Retainer</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- What this means -->
+    <div style="margin-top:var(--space-10);padding:var(--space-8);background:var(--bg-alt);border:1px solid var(--rule);border-radius:4px;display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8)" class="reveal-fade">
+      <div>
+        <p class="label" style="margin-bottom:var(--space-3)">What retainer work means in practice</p>
+        <p style="font-size:var(--size-sm);line-height:1.75;color:var(--ink-muted)">Retained clients get a senior designer embedded in their team — not project-by-project thinking, but genuine continuity. I know the product, the brand standards, the stakeholders and the codebase. That context compounds over time and produces better outcomes than a fresh engagement every few months.</p>
+      </div>
+      <div>
+        <p class="label" style="margin-bottom:var(--space-3)">What agencies get from a design partner</p>
+        <p style="font-size:var(--size-sm);line-height:1.75;color:var(--ink-muted)">When agencies bring me in, they get someone who operates at a senior level without needing to be managed. I can take a brief directly from a client, navigate stakeholder relationships, and deliver to a standard that reflects well on the agency. Trusted enough to be in the room, capable enough to lead the work.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Contact -->
+<div class="contact-section" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <p class="label reveal-fade" style="margin-bottom:var(--space-4)">Get in touch</p>
+      <h2 class="contact-heading">
+        <span class="reveal-line"><span class="inner">Let's work</span></span>
+        <span class="reveal-line"><span class="inner">together.</span></span>
+      </h2>
+      <p class="contact-body reveal-fade">
+        If you're building a product and want a thoughtful design partner who understands both user experience and product thinking, feel free to reach out. I'm open to new projects, conversations and collaborations.
+      </p>
+      <a href="mailto:hello@thisisrad.co" class="contact-link reveal-fade">hello@thisisrad.co</a>
+      <div style="margin-top:var(--space-6);display:flex;gap:var(--space-3)" class="reveal-fade">
+        <a href="https://www.linkedin.com/in/b0bbyanders0n/" target="_blank" class="btn btn-ghost btn-arrow">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 This is RAD</span>
+      <ul class="footer-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="mailto:hello@thisisrad.co">Email</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>

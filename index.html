@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bobby Anderson — Product Designer</title>
+  <meta name="description" content="Digital product design for ambitious teams building thoughtful products.">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('rad-theme') || 'dark')</script>
+  <style>
+
+    /* =============================================
+       HERO
+    ============================================= */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-top: 7rem;
+      padding-bottom: var(--space-12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Hero horizontal rules */
+    .hero-grid-h {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-grid-line-h {
+      position: absolute;
+      left: 0; right: 0;
+      height: 1px;
+      background: var(--rule);
+      opacity: 0.4;
+      transform: scaleX(0);
+      transform-origin: left center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: var(--space-6);
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    .hero-headline {
+      margin-bottom: var(--space-8);
+    }
+    .hero-line { overflow: hidden; display: block; line-height: 1; }
+    .hero-line .inner { display: block; transform: translateY(110%); padding-bottom: 0.12em; }
+    .hero-line.italic-line .inner { font-style: italic; font-weight: 300; color: var(--accent); }
+
+    .hero-lower {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+      align-items: flex-end;
+      margin-top: var(--space-8);
+    }
+    .hero-sub {
+      font-size: var(--size-md);
+      line-height: 1.65;
+      font-weight: 300;
+      color: var(--ink-muted);
+      max-width: 38ch;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .hero-sub strong { color: var(--ink); font-weight: 400; }
+
+    .hero-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: var(--space-3);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .hero-cta-row { display: flex; gap: var(--space-2); }
+
+    .hero-meta {
+      margin-top: var(--space-12);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+    }
+    .hero-scroll-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+    }
+    .hero-scroll-line { width: 32px; height: 1px; background: var(--ink-faint); }
+    .hero-meta-stat { text-align: right; }
+    .hero-meta-stat .stat-num {
+      font-size: var(--size-xl);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .hero-meta-stat .stat-label {
+      font-size: var(--size-xs);
+      color: var(--ink-muted);
+      letter-spacing: 0.08em;
+      margin-top: 0.25rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero-lower { grid-template-columns: 1fr; gap: var(--space-6); }
+      .hero-cta { align-items: flex-start; }
+    }
+
+    /* =============================================
+       MARQUEE TICKER STRIP
+    ============================================= */
+    .marquee-strip {
+      overflow: hidden;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: var(--space-3) 0;
+      background: var(--bg);
+    }
+    .marquee-row {
+      display: flex;
+      white-space: nowrap;
+      margin: 0.15rem 0;
+    }
+    .marquee-inner {
+      display: flex;
+      flex-shrink: 0;
+      min-width: 100%;
+      will-change: transform;
+      animation: marquee-left 36s linear infinite;
+    }
+    .marquee-inner--rev {
+      animation: marquee-right 44s linear infinite;
+    }
+    @keyframes marquee-left {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes marquee-right {
+      0%   { transform: translateX(-50%); }
+      100% { transform: translateX(0); }
+    }
+    .marquee-item {
+      font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      padding: 0.2rem var(--space-5);
+      flex-shrink: 0;
+    }
+    .marquee-sep {
+      color: var(--rule);
+      padding: 0.2rem var(--space-2);
+      flex-shrink: 0;
+      font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+    }
+    .marquee-row--large .marquee-item {
+      font-size: clamp(0.85rem, 1.6vw, 1.1rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      text-transform: none;
+      color: var(--ink-muted);
+    }
+    .marquee-row--large .marquee-sep {
+      font-size: clamp(0.85rem, 1.6vw, 1.1rem);
+    }
+    .marquee-strip:hover .marquee-inner { animation-play-state: paused; }
+
+    /* =============================================
+       STATS — editorial large numbers
+    ============================================= */
+    .stats-section {
+      padding: var(--space-16) 0;
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+    .stat-block {
+      padding: var(--space-8) var(--space-8) var(--space-8) 0;
+      border-right: 1px solid var(--rule);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-block:last-child { border-right: none; padding-right: 0; padding-left: var(--space-8); }
+    .stat-block:nth-child(2) { padding-left: var(--space-8); }
+    .stat-big {
+      font-size: clamp(5rem, 10vw, 9rem);
+      font-weight: 300;
+      letter-spacing: -0.05em;
+      line-height: 0.9;
+      display: block;
+      color: var(--ink);
+    }
+    .stat-suffix {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: -0.04em;
+      color: var(--ink-faint);
+    }
+    .stat-desc {
+      margin-top: var(--space-4);
+      font-size: var(--size-sm);
+      color: var(--ink-muted);
+      line-height: 1.6;
+      max-width: 22ch;
+    }
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .stat-block { border-right: none; border-bottom: 1px solid var(--rule); padding: var(--space-6) 0 !important; }
+      .stat-block:last-child { border-bottom: none; }
+    }
+
+    /* =============================================
+       HOW I WORK
+    ============================================= */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+    }
+    .how-pillar {
+      padding: var(--space-8) var(--space-6);
+      border-right: 1px solid var(--rule);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s ease;
+    }
+    .how-pillar:hover { background: var(--bg-alt); }
+    .how-pillar:last-child { border-right: none; }
+    .pillar-num { font-size: var(--size-xs); font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--space-6); display: block; }
+    .pillar-title { font-size: clamp(1.5rem, 2.5vw, 2.25rem); font-weight: 300; letter-spacing: -0.025em; margin-bottom: var(--space-3); }
+    .pillar-body { font-size: var(--size-sm); line-height: 1.75; color: var(--ink-muted); }
+    .pillar-deco-num {
+      position: absolute;
+      bottom: -0.1em;
+      right: 0.1em;
+      font-size: 8rem;
+      font-weight: 700;
+      letter-spacing: -0.06em;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--rule);
+      opacity: 0.5;
+      pointer-events: none;
+      line-height: 1;
+    }
+    .pillar-line {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left center;
+    }
+    @media (max-width: 768px) {
+      .how-grid { grid-template-columns: 1fr; }
+      .how-pillar { border-right: none; border-bottom: 1px solid var(--rule); }
+      .how-pillar:last-child { border-bottom: none; }
+    }
+
+    /* =============================================
+       HORIZONTAL WORK SCROLL
+    ============================================= */
+    .work-h-scroll {
+      position: relative;
+      overflow: hidden;
+    }
+    .work-h-track {
+      display: flex;
+      align-items: stretch;
+      will-change: transform;
+    }
+    .work-panel {
+      flex: 0 0 calc(75vw);
+      max-width: 900px;
+      min-height: 70vh;
+      border-right: 1px solid var(--rule);
+      display: grid;
+      grid-template-rows: 1fr auto;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+    .work-panel:first-child { border-left: 1px solid var(--rule); }
+    .wp-img-wrap {
+      overflow: hidden;
+      position: relative;
+    }
+    .wp-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      min-height: 360px;
+    }
+    .wp-img-placeholder {
+      width: 100%;
+      min-height: 380px;
+      background: var(--bg-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wp-info {
+      padding: var(--space-6) var(--space-6) var(--space-8);
+      border-top: 1px solid var(--rule);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: var(--space-4);
+      background: var(--bg);
+    }
+    .wp-title {
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .wp-tags { display: flex; gap: var(--space-1); flex-wrap: wrap; margin-bottom: var(--space-2); }
+    .wp-arrow {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--rule);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--size-base);
+      flex-shrink: 0;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+    .work-panel:hover .wp-arrow { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+
+    /* End panel */
+    .work-panel--end {
+      flex: 0 0 420px;
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-8);
+      gap: var(--space-4);
+      text-align: center;
+    }
+
+    /* Scroll progress bar */
+    .work-scroll-hint {
+      padding: var(--space-4) 0;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+    .scroll-track {
+      flex: 1;
+      height: 1px;
+      background: var(--rule);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-thumb {
+      position: absolute;
+      top: 0; left: 0;
+      width: 33.3%;
+      height: 100%;
+      background: var(--ink);
+      transform-origin: left center;
+    }
+
+    @media (max-width: 768px) {
+      .work-panel { flex: 0 0 85vw; }
+      .work-panel--end { flex: 0 0 80vw; }
+    }
+
+    /* =============================================
+       AI SECTION
+    ============================================= */
+    .ai-section {
+      background: #0C0C0A;
+      color: #F4F2EF;
+      padding: var(--space-16) 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .ai-deco {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.04);
+      pointer-events: none;
+    }
+    .ai-deco-2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 900px;
+      height: 900px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.03);
+      pointer-events: none;
+    }
+    .ai-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .ai-heading {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: #F4F2EF;
+    }
+    .ai-heading .inner em { font-style: italic; color: rgba(244,242,239,0.4); }
+    .ai-body { font-size: var(--size-md); line-height: 1.7; font-weight: 300; color: rgba(244,242,239,0.6); }
+    .ai-list { margin-top: var(--space-6); list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+    .ai-list li { font-size: var(--size-sm); color: rgba(244,242,239,0.45); padding-left: var(--space-4); position: relative; line-height: 1.6; }
+    .ai-list li::before { content: '—'; position: absolute; left: 0; color: rgba(244,242,239,0.2); }
+    @media (max-width: 768px) { .ai-inner { grid-template-columns: 1fr; gap: var(--space-8); } }
+
+    /* =============================================
+       THOUGHTS TEASER
+    ============================================= */
+    .thought-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+    }
+    .thought-card {
+      padding: var(--space-6);
+      border-right: 1px solid var(--rule);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s ease;
+    }
+    .thought-card:last-child { border-right: none; }
+    .thought-card:hover { background: var(--bg-alt); }
+    .thought-tag { font-size: var(--size-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--space-3); display: block; }
+    .thought-title { font-size: var(--size-md); font-weight: 400; line-height: 1.4; letter-spacing: -0.01em; margin-bottom: var(--space-2); }
+    .thought-excerpt { font-size: var(--size-sm); color: var(--ink-muted); line-height: 1.65; }
+    @media (max-width: 768px) {
+      .thought-row { grid-template-columns: 1fr; }
+      .thought-card { border-right: none; border-bottom: 1px solid var(--rule); }
+      .thought-card:last-child { border-bottom: none; }
+    }
+
+    /* =============================================
+       CTA BAND
+    ============================================= */
+    .cta-band {
+      padding: var(--space-24) 0;
+      border-top: 1px solid var(--rule);
+      overflow: hidden;
+      position: relative;
+    }
+    .cta-band-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-8);
+      align-items: end;
+    }
+    .cta-heading {
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      max-width: 18ch;
+    }
+    .cta-heading .inner em { font-style: italic; color: var(--accent); }
+    @media (max-width: 768px) { .cta-band-inner { grid-template-columns: 1fr; } }
+
+    /* Reel */
+    .reel-section { padding: 120px; background: var(--ink); position: relative; }
+    .reel-inner { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: var(--space-3); position: relative; border-radius: 40px; overflow: hidden; }
+    .reel-inner video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    @media (max-width: 768px) {
+      .reel-section { padding: 40px 20px; }
+      .reel-inner { border-radius: 20px; }
+    }
+    .reel-placeholder-label { font-size: var(--size-xs); font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(244,242,239,0.35); position: relative; z-index: 1; }
+    .reel-placeholder-icon { width: 56px; height: 56px; border: 1px solid rgba(244,242,239,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+    .reel-placeholder-icon::after { content: ''; display: block; width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 14px solid rgba(244,242,239,0.4); margin-left: 3px; }
+
+    /* ---- Work section: pin starts below nav ---- */
+    .work-section-pin {
+      position: relative;
+    }
+    .work-section-header {
+      background: var(--bg);
+      border-bottom: 1px solid var(--rule);
+      padding: var(--space-2) 0;
+      display: flex;
+      align-items: center;
+    }
+    .work-header-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      width: 100%;
+      gap: var(--space-4);
+    }
+    .work-header-left { display: flex; align-items: center; gap: var(--space-4); justify-self: start; }
+    .work-header-center { display: flex; align-items: center; gap: var(--space-4); justify-self: center; }
+    .work-header-right { justify-self: end; }
+
+    /* =============================================
+       GLOBE — HOMEPAGE (bold, full-bleed)
+    ============================================= */
+    .globe-hp {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+      background: var(--bg-alt);
+    }
+    .globe-hp-inner {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      min-height: 640px;
+      align-items: center;
+    }
+    .globe-hp-text {
+      padding: var(--space-16) var(--space-8) var(--space-16) 0;
+      border-right: 1px solid var(--rule);
+    }
+    .globe-hp-headline {
+      font-size: clamp(2rem, 4.5vw, 4.5rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin-bottom: var(--space-6);
+    }
+    .globe-hp-sub {
+      font-size: var(--size-md);
+      font-weight: 300;
+      color: var(--ink-muted);
+      line-height: 1.65;
+      max-width: 34ch;
+    }
+    .globe-hp-canvas-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-6);
+    }
+    .globe-hp-canvas-wrap canvas { display: block; max-width: 100%; }
+    @media (max-width: 900px) {
+      .globe-hp-inner { grid-template-columns: 1fr; min-height: auto; }
+      .globe-hp-text { padding: var(--space-8) 0; border-right: none; border-bottom: 1px solid var(--rule); }
+    }
+
+  </style>
+</head>
+<body>
+
+
+<!-- Page loader -->
+<div id="page-loader">
+  <img class="loader-mark" src="logo.svg" alt="This is RAD">
+</div>
+
+<!-- Page transition overlay -->
+<div id="pt-wrap" aria-hidden="true"></div>
+
+<!-- Cursor -->
+<div id="cursor"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="This is RAD">
+          <path d="M35.1289 36.9176H13.3203V15.1198L35.1289 36.9176ZM15.1201 35.1178H30.7822L15.1201 19.4635V35.1178ZM16.1045 12.3854C20.3126 8.17724 27.1815 8.19872 31.3896 12.4069C35.5977 16.6149 35.5976 23.4614 31.3896 27.6696L29.7539 29.3053C14.1424 13.6938 30.0813 29.6317 14.4697 14.0201L16.1045 12.3854Z" fill="#343A40"/>
+          <mask id="mask0_2161_111" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="17" width="19" height="19">
+            <path d="M14.1599 36V17.52L32.1599 36H14.1599Z" fill="#C4C4C4"/>
+          </mask>
+          <g mask="url(#mask0_2161_111)">
+            <path class="logo-dot" d="M26.0399 32.52C26.0399 33.1827 25.5026 33.72 24.8399 33.72C24.1772 33.72 23.6399 33.1827 23.6399 32.52C23.6399 31.8573 24.1772 31.32 24.8399 31.32C25.5026 31.32 26.0399 31.8573 26.0399 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 28.92C22.44 29.5828 21.9028 30.12 21.24 30.12C20.5773 30.12 20.04 29.5828 20.04 28.92C20.04 28.2573 20.5773 27.72 21.24 27.72C21.9028 27.72 22.44 28.2573 22.44 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 25.32C18.8399 25.9827 18.3027 26.52 17.6399 26.52C16.9772 26.52 16.4399 25.9827 16.4399 25.32C16.4399 24.6573 16.9772 24.12 17.6399 24.12C18.3027 24.12 18.8399 24.6573 18.8399 25.32Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 32.52C22.44 33.1827 21.9028 33.72 21.24 33.72C20.5773 33.72 20.04 33.1827 20.04 32.52C20.04 31.8573 20.5773 31.32 21.24 31.32C21.9028 31.32 22.44 31.8573 22.44 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 28.92C18.8399 29.5828 18.3027 30.12 17.6399 30.12C16.9772 30.12 16.4399 29.5828 16.4399 28.92C16.4399 28.2573 16.9772 27.72 17.6399 27.72C18.3027 27.72 18.8399 28.2573 18.8399 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 32.52C18.8399 33.1827 18.3027 33.72 17.6399 33.72C16.9772 33.72 16.4399 33.1827 16.4399 32.52C16.4399 31.8573 16.9772 31.32 17.6399 31.32C18.3027 31.32 18.8399 31.8573 18.8399 32.52Z" fill="#343A40"/>
+          </g>
+        </svg>
+      </a>
+      <ul class="nav-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:var(--space-3)">
+        <button id="theme-toggle" aria-label="Switch to dark mode"><span class="toggle-icon">◐</span></button>
+        <a href="about.html#contact" class="nav-cta">Let's Talk</a>
+        <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- =============================================
+     HERO
+============================================= -->
+<section class="hero">
+
+  <div class="container">
+    <div class="hero-content">
+
+      <p class="hero-eyebrow label">Product Design · UX · UI</p>
+
+      <h1 class="hero-headline display-1">
+        <span class="hero-line"><span class="inner">Digital product design</span></span>
+        <span class="hero-line"><span class="inner">for ambitious teams</span></span>
+        <span class="hero-line italic-line"><span class="inner">building thoughtful</span></span>
+        <span class="hero-line"><span class="inner">products.</span></span>
+      </h1>
+
+      <div class="hero-lower">
+        <p class="hero-sub">
+          I'm <strong>Bobby Anderson</strong>, a senior product designer helping startups and businesses create better digital experiences through UX, UI and product thinking.
+        </p>
+        <div class="hero-cta">
+          <div class="hero-cta-row">
+            <a href="work.html" class="btn btn-arrow">View Work</a>
+            <a href="about.html#contact" class="btn btn-ghost">Let's Talk</a>
+          </div>
+          <p class="body-sm text-muted" style="text-align:right">Based in the UK · Available for new projects</p>
+        </div>
+      </div>
+
+      <div class="hero-meta">
+        <div class="hero-scroll-hint">
+          <span class="hero-scroll-line"></span>
+          <span class="label">Scroll</span>
+        </div>
+        <div style="display:flex;gap:var(--space-8)">
+          <div class="hero-meta-stat">
+            <div class="stat-num"><span class="counter" data-target="8">0</span>+</div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <div class="hero-meta-stat">
+            <div class="stat-num"><span class="counter" data-target="40">0</span>+</div>
+            <div class="stat-label">Products Shipped</div>
+          </div>
+          <div class="hero-meta-stat">
+            <div class="stat-num"><span class="counter" data-target="30">0</span>+</div>
+            <div class="stat-label">Clients Served</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- =============================================
+     REEL
+============================================= -->
+<div class="reel-section">
+  <div class="reel-inner">
+    <!--
+      Drop your reel here. Replace this comment with:
+      <video src="your-reel.mp4" autoplay muted loop playsinline></video>
+    -->
+    <div class="reel-placeholder-icon"></div>
+    <p class="reel-placeholder-label">Your reel goes here</p>
+  </div>
+</div>
+
+<!-- =============================================
+     HOW I WORK
+============================================= -->
+<section>
+  <div class="container">
+    <div class="section-intro reveal-fade">
+      <span class="section-num label">01</span>
+      <h2 class="heading-2">How I work</h2>
+    </div>
+
+    <p class="body-lg text-muted reveal-fade" style="max-width:52ch;margin-bottom:var(--space-12)">
+      Not a service list. An approach. The way I think about problems shapes everything that follows.
+    </p>
+
+    <div class="how-grid">
+      <div class="how-pillar reveal-up">
+        <span class="pillar-num">01 — Understand</span>
+        <h3 class="pillar-title">Start with context,<br>not pixels.</h3>
+        <p class="pillar-body">Understanding users, business goals and product context before touching any tool. Good design starts with the right questions.</p>
+        <span class="pillar-deco-num" aria-hidden="true">1</span>
+        <div class="pillar-line"></div>
+      </div>
+      <div class="how-pillar reveal-up">
+        <span class="pillar-num">02 — Simplify</span>
+        <h3 class="pillar-title">Remove friction<br>before adding features.</h3>
+        <p class="pillar-body">Reducing complexity and shaping ideas into workable product experiences. The best solution is usually the simplest one that actually solves the problem.</p>
+        <span class="pillar-deco-num" aria-hidden="true">2</span>
+        <div class="pillar-line"></div>
+      </div>
+      <div class="how-pillar reveal-up">
+        <span class="pillar-num">03 — Build &amp; Iterate</span>
+        <h3 class="pillar-title">Ship, learn<br>and improve.</h3>
+        <p class="pillar-body">Working collaboratively through testing, refinement and continuous improvement. Design evolves with the product and the people using it.</p>
+        <span class="pillar-deco-num" aria-hidden="true">3</span>
+        <div class="pillar-line"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:var(--space-8);text-align:right" class="reveal-fade">
+      <a href="process.html" class="btn btn-ghost btn-arrow">Full process</a>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     SELECTED WORK — horizontal scroll
+============================================= -->
+<section style="padding:0">
+  <!-- Header + panels pin together as one unit while panels scroll -->
+  <div class="work-section-pin">
+  <div class="work-section-header">
+    <div class="container">
+      <div class="work-header-row">
+        <div class="work-header-left">
+          <span class="section-num label">02</span>
+          <h2 class="heading-2" style="font-size:var(--size-base);letter-spacing:-0.01em;font-weight:400">Selected work</h2>
+        </div>
+        <div class="work-header-center">
+          <span class="label text-faint" style="font-size:0.65rem">← Scroll →</span>
+          <div class="scroll-track" style="width:120px"><div class="scroll-thumb" id="work-progress"></div></div>
+        </div>
+        <div class="work-header-right">
+          <a href="work.html" class="btn btn-ghost" style="padding:0.4rem 1rem;font-size:var(--size-xs)">All work</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Horizontal panels -->
+  <div class="work-h-scroll">
+    <div class="work-h-track">
+
+      <a href="finserv.html" class="work-panel card-hover">
+        <div class="wp-img-wrap clip-reveal">
+          <img src="https://www.thisisrad.co/img/case-study-rbs.jpg" class="wp-img" alt="Financial services" onerror="this.parentElement.classList.add('wp-img-placeholder');this.remove()">
+        </div>
+        <div class="wp-info">
+          <div>
+            <div class="wp-tags">
+              <span class="tag">Financial Services</span>
+              <span class="tag">UX Research</span>
+            </div>
+            <h3 class="wp-title">Designing for financial services</h3>
+          </div>
+          <div class="wp-arrow">↗</div>
+        </div>
+      </a>
+
+      <a href="fintech.html" class="work-panel card-hover">
+        <div class="wp-img-wrap clip-reveal">
+          <img src="https://www.thisisrad.co/img/case-study-md.jpg" class="wp-img" alt="Startups & scale-ups" onerror="this.parentElement.classList.add('wp-img-placeholder');this.remove()">
+        </div>
+        <div class="wp-info">
+          <div>
+            <div class="wp-tags">
+              <span class="tag">Startups</span>
+              <span class="tag">Mobile · Systems</span>
+            </div>
+            <h3 class="wp-title">Startups &amp; scale-ups</h3>
+          </div>
+          <div class="wp-arrow">↗</div>
+        </div>
+      </a>
+
+      <a href="work.html" class="work-panel card-hover">
+        <div class="wp-img-wrap">
+          <div class="wp-img-placeholder" style="min-height:380px;background:var(--bg-alt);display:flex;align-items:center;justify-content:center">
+            <span class="label text-faint">Coming soon</span>
+          </div>
+        </div>
+        <div class="wp-info">
+          <div>
+            <div class="wp-tags">
+              <span class="tag">Design Systems</span>
+              <span class="tag">Enterprise</span>
+            </div>
+            <h3 class="wp-title">Native Instruments &amp; Forrit</h3>
+          </div>
+          <div class="wp-arrow">↗</div>
+        </div>
+      </a>
+
+      <!-- End panel -->
+      <div class="work-panel work-panel--end">
+        <p class="label text-faint" style="margin-bottom:var(--space-4)">That's not all</p>
+        <h3 class="heading-2" style="margin-bottom:var(--space-6)">More work<br>in the archive</h3>
+        <a href="work.html" class="btn btn-arrow">All case studies</a>
+      </div>
+
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- =============================================
+     GLOBE — bold homepage version
+============================================= -->
+<div class="globe-hp">
+  <div class="container">
+    <div class="globe-hp-inner">
+
+      <div class="globe-hp-text reveal-fade">
+        <p class="label" style="margin-bottom:var(--space-4)">Remote-first · Worldwide</p>
+        <h2 class="globe-hp-headline">Solving problems for companies across the globe.</h2>
+        <p class="globe-hp-sub">Location has never been a constraint. From Scotland to New York, Berlin to Sydney — good thinking travels.</p>
+      </div>
+
+      <div class="globe-hp-canvas-wrap">
+        <canvas id="globe-canvas-hp"></canvas>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     AI SECTION
+============================================= -->
+<div class="ai-section">
+  <div class="ai-deco"></div>
+  <div class="ai-deco-2"></div>
+  <div class="container">
+    <div class="ai-inner">
+      <div>
+        <h2 class="ai-heading reveal-line">
+          <span class="inner">AI as a tool,<br><em>not a replacement</em><br>for thinking.</span>
+        </h2>
+      </div>
+      <div>
+        <p class="ai-body reveal-fade">I use modern AI tools to accelerate workflows, explore ideas faster and reduce repetitive work — while keeping product thinking, collaboration and experience at the centre of the process.</p>
+        <ul class="ai-list reveal-up">
+          <li>Faster research synthesis and competitive analysis</li>
+          <li>Rapid concept exploration without losing craft</li>
+          <li>Smarter documentation and design handoff</li>
+          <li>Better, more informed conversations with stakeholders</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     CTA
+============================================= -->
+<div class="cta-band">
+  <div class="container">
+    <div class="cta-band-inner">
+      <h2 class="cta-heading">
+        <span class="reveal-line"><span class="inner">Building something</span></span>
+        <span class="reveal-line"><span class="inner">worth getting <em>right?</em></span></span>
+      </h2>
+      <div class="reveal-fade" style="padding-bottom:0.5rem">
+        <p class="body-sm text-muted" style="max-width:28ch;margin-bottom:var(--space-4)">I partner with startups and businesses to bring clarity to complex ideas, combining UX, UI and product thinking to create digital products that are useful, intuitive and built to last.</p>
+        <a href="about.html#contact" class="btn btn-arrow">Get in touch</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 This is RAD</span>
+      <ul class="footer-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="mailto:hello@thisisrad.co">Email</a></li>
+        <li><a href="https://linkedin.com" target="_blank">LinkedIn ↗</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script src="main.js"></script>
+
+<script>
+/* ---- Homepage globe ---- */
+(async function () {
+  const canvas = document.getElementById('globe-canvas-hp');
+  if (!canvas) return;
+
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const ctx = canvas.getContext('2d');
+  let size, cx, cy, radius;
+  let rotLon = 0;
+
+  const CITIES = [
+    { name: 'Scotland',      lat: 55.95,  lon: -3.19,  home: true },
+    { name: 'London',        lat: 51.51,  lon: -0.13  },
+    { name: 'New York',      lat: 40.71,  lon: -74.01 },
+    { name: 'Shanghai',      lat: 31.23,  lon: 121.47 },
+    { name: 'San Francisco', lat: 37.77,  lon: -122.42},
+    { name: 'Berlin',        lat: 52.52,  lon: 13.41  },
+    { name: 'Sydney',        lat: -33.87, lon: 151.21 },
+    { name: 'Melbourne',     lat: -37.81, lon: 144.96 },
+    { name: 'Tokyo',         lat: 35.68,  lon: 139.69 },
+  ];
+
+  function resize() {
+    const wrap = canvas.parentElement;
+    size = Math.min(wrap.offsetWidth - 32, 600);
+    canvas.width  = size * dpr;
+    canvas.height = size * dpr;
+    canvas.style.width  = size + 'px';
+    canvas.style.height = size + 'px';
+    ctx.scale(dpr, dpr);
+    cx = size / 2; cy = size / 2;
+    radius = size * 0.44;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let land = null, graticuleFeature = null;
+  try {
+    const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json').then(r => r.json());
+    land = topojson.feature(world, world.objects.land);
+    graticuleFeature = d3.geoGraticule()();
+  } catch(e) {}
+
+  const TILT = 10 * Math.PI / 180;
+  function visibility(lat, lon) {
+    const phi = lat * Math.PI / 180;
+    const lam = (lon + rotLon) * Math.PI / 180;
+    return Math.sin(phi) * Math.sin(TILT) + Math.cos(phi) * Math.cos(TILT) * Math.cos(lam);
+  }
+  function smoothFade(vis) {
+    const t = Math.max(0, Math.min(1, vis * 2.2));
+    return t * t * (3 - 2 * t);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, size, size);
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const ink  = dark ? '240,237,232' : '12,12,10';
+
+    const proj = d3.geoOrthographic().scale(radius).translate([cx, cy]).rotate([rotLon, -10]);
+    const geoPath = d3.geoPath().projection(proj).context(ctx);
+
+    const og = ctx.createRadialGradient(cx - radius * 0.3, cy - radius * 0.3, 0, cx, cy, radius);
+    og.addColorStop(0, dark ? '#1e1e1b' : '#f5f3f0');
+    og.addColorStop(1, dark ? '#0e0e0c' : '#e8e5e0');
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fillStyle = og; ctx.fill();
+
+    if (graticuleFeature) {
+      ctx.beginPath(); geoPath(graticuleFeature);
+      ctx.strokeStyle = dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
+      ctx.lineWidth = 0.5; ctx.stroke();
+    }
+    if (land) {
+      ctx.beginPath(); geoPath(land);
+      ctx.fillStyle = dark ? 'rgba(240,237,232,0.15)' : 'rgba(12,12,10,0.11)'; ctx.fill();
+      ctx.strokeStyle = dark ? 'rgba(240,237,232,0.28)' : 'rgba(12,12,10,0.2)';
+      ctx.lineWidth = 0.75; ctx.stroke();
+    }
+
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = dark ? '#2a2926' : '#d8d5cf'; ctx.lineWidth = 1.5; ctx.stroke();
+
+    const now = Date.now();
+    const home = CITIES[0];
+    const hFade = smoothFade(visibility(home.lat, home.lon));
+    if (hFade > 0.02) {
+      const hp = proj([home.lon, home.lat]);
+      if (hp) {
+        CITIES.slice(1).forEach(city => {
+          const cFade = smoothFade(visibility(city.lat, city.lon));
+          if (cFade > 0.05) {
+            const cp = proj([city.lon, city.lat]);
+            if (cp) {
+              const alpha = Math.min(hFade, cFade) * 0.28;
+              const dist = Math.hypot(cp[0] - hp[0], cp[1] - hp[1]);
+              ctx.beginPath(); ctx.moveTo(hp[0], hp[1]);
+              ctx.quadraticCurveTo((hp[0]+cp[0])/2, (hp[1]+cp[1])/2 - dist*0.2, cp[0], cp[1]);
+              ctx.strokeStyle = `rgba(${ink},${alpha})`; ctx.lineWidth = 1; ctx.stroke();
+            }
+          }
+        });
+      }
+    }
+
+    CITIES.forEach(city => {
+      const fade = smoothFade(visibility(city.lat, city.lon));
+      if (fade < 0.01) return;
+      const pos = proj([city.lon, city.lat]);
+      if (!pos) return;
+      const [px, py] = pos;
+      if (city.home && fade > 0.3) {
+        const pulse = (Math.sin(now / 700) + 1) / 2;
+        ctx.beginPath(); ctx.arc(px, py, 6 + 6 * pulse, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${ink},${fade * 0.14})`; ctx.lineWidth = 1.5; ctx.stroke();
+      }
+      const r = city.home ? 5 : 4;
+      ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${ink},${fade})`; ctx.fill();
+      if (fade > 0.4) {
+        ctx.font = `500 11px Inter, system-ui, sans-serif`;
+        ctx.fillStyle = `rgba(${ink},${fade * 0.85})`;
+        ctx.fillText(city.name, px + r + 8, py + 1);
+      }
+    });
+  }
+
+  function tick() { rotLon += 0.14; draw(); requestAnimationFrame(tick); }
+  new MutationObserver(() => draw()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  tick();
+})();
+</script>
+
+<script>
+/* ---- AI section decorative circle pulse ---- */
+(function() {
+  const circles = document.querySelectorAll('.ai-deco, .ai-deco-2');
+  circles.forEach((c, i) => {
+    gsap.to(c, {
+      scale: 1.04 + i * 0.02,
+      opacity: 0.6,
+      duration: 3 + i,
+      ease: 'sine.inOut',
+      yoyo: true,
+      repeat: -1,
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work — Bobby Anderson</title>
+  <meta name="description" content="Selected product design case studies — UX, UI, design systems and product thinking.">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('rad-theme') || 'dark')</script>
+  <style>
+    /* ---- Gallery ---- */
+    .gallery-section {
+      padding: 0;
+      overflow: hidden;
+      border-bottom: 1px solid var(--rule);
+    }
+    .gallery-header {
+      position: sticky;
+      top: 64px; /* sits just below fixed nav */
+      z-index: 10;
+      background: var(--bg);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .gallery-wrap {
+      overflow: hidden;
+    }
+    .gallery-track {
+      display: flex;
+      will-change: transform;
+    }
+    .gallery-item {
+      flex: 0 0 auto;
+      width: clamp(300px, 40vw, 580px);
+      aspect-ratio: 4/3;
+      border-right: 1px solid var(--rule);
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gallery-item:first-child { border-left: 1px solid var(--rule); }
+    .gallery-item img,
+    .gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .gallery-item:hover img,
+    .gallery-item:hover video { transform: scale(1.04); }
+    .gallery-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      width: 100%;
+      height: 100%;
+    }
+    .gallery-placeholder-num {
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 300;
+      letter-spacing: -0.05em;
+      color: var(--rule);
+      line-height: 1;
+    }
+    .gallery-placeholder-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-4);
+    }
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+    .gallery-item-caption {
+      font-size: var(--size-xs);
+      color: white;
+      letter-spacing: 0.08em;
+    }
+
+    /* ---- Case study card ---- */
+    .case-study {
+      margin-bottom: var(--space-8);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .case-study-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 360px;
+    }
+
+    .case-study-cover {
+      background: var(--bg-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--rule);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .case-cover-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+    }
+
+    .case-cover-label {
+      font-size: var(--size-xs);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .case-study-meta {
+      padding: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .case-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-1);
+      margin-bottom: var(--space-4);
+    }
+
+    .case-title {
+      font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: var(--space-3);
+    }
+
+    .case-summary {
+      font-size: var(--size-sm);
+      line-height: 1.75;
+      color: var(--ink-muted);
+    }
+
+    .case-study-body {
+      padding: var(--space-8);
+      border-top: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-8);
+    }
+
+    .case-section-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+
+    .case-section-content {
+      font-size: var(--size-sm);
+      line-height: 1.75;
+      color: var(--ink-muted);
+    }
+
+    .case-study-footer {
+      padding: var(--space-4) var(--space-8);
+      border-top: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-alt);
+    }
+
+    .outcome-chips {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .outcome-chip {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      border: 1px solid var(--rule);
+      padding: 0.3rem 0.75rem;
+      border-radius: 2rem;
+      color: var(--ink);
+      background: var(--white);
+    }
+
+    .coming-soon-badge {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      border: 1px dashed var(--rule);
+      padding: 0.35rem 0.8rem;
+      border-radius: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .case-study-header { grid-template-columns: 1fr; }
+      .case-study-cover { border-right: none; border-bottom: 1px solid var(--rule); min-height: 220px; }
+      .case-study-body { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .case-study-body { grid-template-columns: 1fr; }
+      .case-study-meta { padding: var(--space-6); }
+      .case-study-body { padding: var(--space-6); }
+      .case-study-footer { padding: var(--space-4) var(--space-6); flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+    }
+
+    /* ---- Clickable case study card ---- */
+    .case-study {
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+    .case-study:hover { border-color: var(--ink-muted); }
+    .case-study .case-study-cover img { transition: transform 0.6s ease; }
+    .case-study:hover .case-study-cover img { transform: scale(1.04); }
+  </style>
+</head>
+<body>
+
+<div id="pt-wrap" aria-hidden="true"></div>
+<div id="cursor"></div>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="This is RAD">
+          <path d="M35.1289 36.9176H13.3203V15.1198L35.1289 36.9176ZM15.1201 35.1178H30.7822L15.1201 19.4635V35.1178ZM16.1045 12.3854C20.3126 8.17724 27.1815 8.19872 31.3896 12.4069C35.5977 16.6149 35.5976 23.4614 31.3896 27.6696L29.7539 29.3053C14.1424 13.6938 30.0813 29.6317 14.4697 14.0201L16.1045 12.3854Z" fill="#343A40"/>
+          <mask id="mask0_2161_111" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="17" width="19" height="19">
+            <path d="M14.1599 36V17.52L32.1599 36H14.1599Z" fill="#C4C4C4"/>
+          </mask>
+          <g mask="url(#mask0_2161_111)">
+            <path class="logo-dot" d="M26.0399 32.52C26.0399 33.1827 25.5026 33.72 24.8399 33.72C24.1772 33.72 23.6399 33.1827 23.6399 32.52C23.6399 31.8573 24.1772 31.32 24.8399 31.32C25.5026 31.32 26.0399 31.8573 26.0399 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 28.92C22.44 29.5828 21.9028 30.12 21.24 30.12C20.5773 30.12 20.04 29.5828 20.04 28.92C20.04 28.2573 20.5773 27.72 21.24 27.72C21.9028 27.72 22.44 28.2573 22.44 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 25.32C18.8399 25.9827 18.3027 26.52 17.6399 26.52C16.9772 26.52 16.4399 25.9827 16.4399 25.32C16.4399 24.6573 16.9772 24.12 17.6399 24.12C18.3027 24.12 18.8399 24.6573 18.8399 25.32Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 32.52C22.44 33.1827 21.9028 33.72 21.24 33.72C20.5773 33.72 20.04 33.1827 20.04 32.52C20.04 31.8573 20.5773 31.32 21.24 31.32C21.9028 31.32 22.44 31.8573 22.44 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 28.92C18.8399 29.5828 18.3027 30.12 17.6399 30.12C16.9772 30.12 16.4399 29.5828 16.4399 28.92C16.4399 28.2573 16.9772 27.72 17.6399 27.72C18.3027 27.72 18.8399 28.2573 18.8399 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 32.52C18.8399 33.1827 18.3027 33.72 17.6399 33.72C16.9772 33.72 16.4399 33.1827 16.4399 32.52C16.4399 31.8573 16.9772 31.32 17.6399 31.32C18.3027 31.32 18.8399 31.8573 18.8399 32.52Z" fill="#343A40"/>
+          </g>
+        </svg>
+      </a>
+      <ul class="nav-links">
+        <li><a href="work.html" class="active">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:var(--space-3)">
+        <button id="theme-toggle" aria-label="Switch to dark mode"><span class="toggle-icon">◐</span></button>
+        <a href="about.html#contact" class="nav-cta">Let's Talk</a>
+        <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <p class="label reveal-fade" style="margin-bottom:var(--space-4)">Selected Work</p>
+    <h1 class="display-2">
+      <span class="reveal-line"><span class="inner">Products built with</span></span>
+      <span class="reveal-line"><span class="inner"><em style="font-style:italic;font-weight:300">purpose and craft.</em></span></span>
+    </h1>
+    <p class="body-lg text-muted reveal-fade" style="max-width:50ch;margin-top:var(--space-6)">Case studies that show not just what was made, but why decisions were made and what changed as a result.</p>
+  </div>
+</div>
+
+<!-- =============================================
+     PROJECT VISUALS — horizontal scroll gallery
+============================================= -->
+<div class="gallery-section">
+  <div class="container">
+    <div class="gallery-header">
+      <span class="label text-faint">Recent work — scroll to explore</span>
+      <span class="label text-faint" id="gallery-counter">01 / 06</span>
+    </div>
+  </div>
+
+  <div class="gallery-wrap" id="gallery-wrap">
+    <div class="gallery-track" id="gallery-track">
+
+      <!-- Slot 1
+           To use a video: remove the gallery-placeholder div and add:
+           <video autoplay muted loop playsinline src="project-01.mp4"></video>
+           To use an image: <img src="project-01.jpg" alt="Project name">
+      -->
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-num">01</span>
+          <span class="gallery-placeholder-label">Add project visual</span>
+        </div>
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Project title</span></div>
+      </div>
+
+      <!-- Slot 2 -->
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-num">02</span>
+          <span class="gallery-placeholder-label">Add project visual</span>
+        </div>
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Project title</span></div>
+      </div>
+
+      <!-- Slot 3 -->
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-num">03</span>
+          <span class="gallery-placeholder-label">Add project visual</span>
+        </div>
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Project title</span></div>
+      </div>
+
+      <!-- Slot 4 -->
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-num">04</span>
+          <span class="gallery-placeholder-label">Add project visual</span>
+        </div>
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Project title</span></div>
+      </div>
+
+      <!-- Slot 5 -->
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-num">05</span>
+          <span class="gallery-placeholder-label">Add project visual</span>
+        </div>
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Project title</span></div>
+      </div>
+
+      <!-- Slot 6 -->
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-num">06</span>
+          <span class="gallery-placeholder-label">Add project visual</span>
+        </div>
+        <div class="gallery-item-overlay"><span class="gallery-item-caption">Project title</span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     CASE STUDIES
+============================================= -->
+<section>
+  <div class="container">
+
+    <!-- Case Study 01 — Financial Services -->
+    <div class="case-study reveal-up" id="finserv" data-preview="https://www.thisisrad.co/img/case-study-rbs.jpg">
+      <div class="case-study-header">
+        <div class="case-study-cover" style="padding:0">
+          <img src="https://www.thisisrad.co/img/case-study-rbs.jpg"
+               alt="NatWest RBS financial services design"
+               style="width:100%;height:100%;object-fit:cover"
+               onerror="this.parentElement.style.background='var(--bg-alt)';this.remove()">
+        </div>
+        <div class="case-study-meta">
+          <div>
+            <div class="case-tags">
+              <span class="tag">Financial Services</span>
+              <span class="tag">UX Research</span>
+              <span class="tag">Stakeholder Management</span>
+            </div>
+            <h2 class="case-title">Designing for financial services</h2>
+            <p class="case-summary">Two projects across NatWest, RBS and Clydesdale Bank — one focused on eliminating friction from high-stakes application forms, the other on reimagining what a payment could feel like.</p>
+          </div>
+          <p style="font-size:var(--size-xs);color:var(--ink-faint);letter-spacing:0.08em;margin-top:var(--space-6)">NatWest · RBS · Clydesdale Bank</p>
+        </div>
+      </div>
+      <div class="case-study-body">
+        <div>
+          <span class="case-section-label">The Problem</span>
+          <p class="case-section-content">Legacy flows built around business logic rather than user understanding. Drop-off happening for reasons analytics couldn't explain — until we put real people in front of the journeys.</p>
+        </div>
+        <div>
+          <span class="case-section-label">The Approach</span>
+          <p class="case-section-content">Research first, always. Modular journey design, progressive disclosure and empathetic content strategy for RBS. Self-initiated Quick Pay concept for Clydesdale — a payment as fast as a tweet.</p>
+        </div>
+        <div>
+          <span class="case-section-label">The Outcome</span>
+          <p class="case-section-content">+12% uplift in credit card applications. +10% rise in approvals. Became an innovation partner for Clydesdale. First Quick Pay concept of its kind in fintech.</p>
+        </div>
+        <div>
+          <span class="case-section-label">My Role</span>
+          <p class="case-section-content">Lead UX, user research, journey design, prototyping, stakeholder management, concept design.</p>
+        </div>
+      </div>
+      <div class="case-study-footer">
+        <div class="outcome-chips">
+          <span class="outcome-chip">+12% applications</span>
+          <span class="outcome-chip">+10% approvals</span>
+          <span class="outcome-chip">Innovation partner</span>
+        </div>
+        <a href="finserv.html" class="btn btn-ghost btn-arrow" style="font-size:var(--size-xs);padding:0.5rem 1rem">Full case study</a>
+      </div>
+    </div>
+
+    <!-- Case Study 03 — Startups & Scale-ups -->
+    <div class="case-study reveal-up" id="startups" data-preview="https://www.thisisrad.co/img/case-study-md.jpg">
+      <div class="case-study-header">
+        <div class="case-study-cover" style="padding:0">
+          <img src="https://www.thisisrad.co/img/case-study-md.jpg"
+               alt="Startup design work"
+               style="width:100%;height:100%;object-fit:cover"
+               onerror="this.parentElement.style.background='var(--bg-alt)';this.remove()">
+        </div>
+        <div class="case-study-meta">
+          <div>
+            <div class="case-tags">
+              <span class="tag">Startups</span>
+              <span class="tag">Scale-ups</span>
+              <span class="tag">Mobile · Web · Systems</span>
+            </div>
+            <h2 class="case-title">Designing for startups &amp; scale-ups</h2>
+            <p class="case-summary">Mobile apps, onboarding redesigns, design systems, WordPress and Shopify builds — a collection of work for early-stage and growing companies where speed, quality and judgment all matter.</p>
+          </div>
+          <p style="font-size:var(--size-xs);color:var(--ink-faint);letter-spacing:0.08em;margin-top:var(--space-6)">Fintech · SaaS · E-commerce · Consumer</p>
+        </div>
+      </div>
+      <div class="case-study-body">
+        <div>
+          <span class="case-section-label">What's included</span>
+          <p class="case-section-content">Money Dashboard native app (£5m post-launch crowdfunding), SaaS onboarding redesign (+38% activation), design system for a 30-engineer scale-up, and more.</p>
+        </div>
+        <div>
+          <span class="case-section-label">The Approach</span>
+          <p class="case-section-content">Fast, considered, pragmatic. Design good enough to ship today and built well enough to grow on. Research first, constraints respected, quality non-negotiable.</p>
+        </div>
+        <div>
+          <span class="case-section-label">Disciplines</span>
+          <p class="case-section-content">UX research, product design, mobile UI, onboarding flows, design systems, WordPress and Shopify development.</p>
+        </div>
+        <div>
+          <span class="case-section-label">Engagement types</span>
+          <p class="case-section-content">Project-based, embedded sprint work and long-term retainer — depending on what the company needs.</p>
+        </div>
+      </div>
+      <div class="case-study-footer">
+        <div class="outcome-chips">
+          <span class="outcome-chip">~£5m crowdfunding</span>
+          <span class="outcome-chip">+38% activation</span>
+          <span class="outcome-chip">Ahead-of-market features</span>
+        </div>
+        <a href="fintech.html" class="btn btn-ghost btn-arrow" style="font-size:var(--size-xs);padding:0.5rem 1rem">See the work</a>
+      </div>
+    </div>
+
+    <!-- More coming -->
+    <div style="padding:var(--space-12);text-align:center;border:1px dashed var(--rule);border-radius:4px" class="reveal-fade">
+      <p class="label" style="margin-bottom:var(--space-3)">More case studies</p>
+      <p class="body-sm text-muted" style="max-width:38ch;margin:0 auto var(--space-4)">Additional projects are being documented. These include work in health tech, e-commerce and consumer apps.</p>
+      <a href="about.html#contact" class="btn btn-ghost">Ask about specific work</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 This is RAD</span>
+      <ul class="footer-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="mailto:hello@thisisrad.co">Email</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="main.js"></script>
+
+<script>
+  // Horizontal gallery scroll + per-item fade-in
+  (function () {
+    const wrap    = document.getElementById('gallery-wrap');
+    const track   = document.getElementById('gallery-track');
+    const counter = document.getElementById('gallery-counter');
+    if (!wrap || !track) return;
+
+    const items   = track.querySelectorAll('.gallery-item');
+    const total   = items.length;
+    const revealed = new Set();
+
+    // Start all items hidden and nudged down
+    gsap.set(items, { opacity: 0, y: 20 });
+
+    // Reveal items whose left edge has entered the viewport
+    function revealVisible(currentX, stagger) {
+      const vw = wrap.offsetWidth;
+      let batch = 0;
+      items.forEach((item, i) => {
+        if (revealed.has(i)) return;
+        if (item.offsetLeft + currentX < vw + 40) {
+          revealed.add(i);
+          gsap.to(item, {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            ease: 'power3.out',
+            delay: stagger ? batch * 0.1 : 0
+          });
+          batch++;
+        }
+      });
+    }
+
+    const getDistance = () => track.scrollWidth - wrap.offsetWidth;
+
+    const topOffset = () => {
+      const nav    = document.querySelector('nav');
+      const header = document.querySelector('.gallery-header');
+      return (nav ? nav.offsetHeight : 64) + (header ? header.offsetHeight : 48);
+    };
+
+    gsap.to(track, {
+      x: () => -getDistance(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: wrap,
+        pin: true,
+        anticipatePin: 1,
+        scrub: 1,
+        start: () => 'top ' + topOffset() + 'px',
+        end: () => '+=' + getDistance(),
+        invalidateOnRefresh: true,
+        onEnter: () => {
+          // Reveal whatever fits on screen at load with a gentle stagger
+          revealVisible(0, true);
+        },
+        onUpdate: self => {
+          if (counter) {
+            const idx = Math.min(Math.round(self.progress * (total - 1)) + 1, total);
+            counter.textContent = String(idx).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+          }
+          // Reveal items as they scroll into view (no extra stagger — feels immediate)
+          revealVisible(gsap.getProperty(track, 'x'), false);
+        }
+      }
+    });
+  })();
+</script>
+
+<script>
+(async function () {
+  const canvas = document.getElementById('globe-canvas-dummy');
+  if (!canvas) return;
+
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const ctx = canvas.getContext('2d');
+  let size, cx, cy, radius;
+  let rotLon = 0;
+
+  const CITIES = [
+    { name: 'Scotland',      sub: 'Forrit · Nile · Chunk · Scottish FA · BBC', lat: 55.95,  lon: -3.19,  home: true },
+    { name: 'London',        sub: 'NatWest · RBS · M&G',              lat: 51.51,  lon: -0.13  },
+    { name: 'New York',      sub: 'Morgan Stanley · Five Borough Apps',lat: 40.71,  lon: -74.01 },
+    { name: 'Shanghai',      sub: 'Cigna Global Health',              lat: 31.23,  lon: 121.47 },
+    { name: 'San Francisco', sub: 'Carhoots',                         lat: 37.77,  lon: -122.42},
+    { name: 'Berlin',        sub: 'Native Instruments',               lat: 52.52,  lon: 13.41  },
+    { name: 'Sydney',        sub: 'Sanduba',                          lat: -33.87, lon: 151.21 },
+    { name: 'Melbourne',     sub: 'National Australia Bank',          lat: -37.81, lon: 144.96 },
+  ];
+
+  function resize() {
+    const wrap = canvas.parentElement;
+    size = Math.min(wrap.offsetWidth, 480);
+    canvas.width  = size * dpr;
+    canvas.height = size * dpr;
+    canvas.style.width  = size + 'px';
+    canvas.style.height = size + 'px';
+    ctx.scale(dpr, dpr);
+    cx = size / 2; cy = size / 2;
+    radius = size * 0.4;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Load world topology for continent outlines
+  let land = null, graticuleFeature = null;
+  try {
+    const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json').then(r => r.json());
+    land = topojson.feature(world, world.objects.land);
+    graticuleFeature = d3.geoGraticule()();
+  } catch(e) { /* falls back to graticule-only */ }
+
+  // Visibility — accounts for D3's rotate([rotLon, -10]) convention:
+  // rotate([lambda]) centers view at longitude -lambda, so center = (-rotLon, 10°)
+  const TILT = 10 * Math.PI / 180;
+  function visibility(lat, lon) {
+    const phi = lat * Math.PI / 180;
+    const lam = (lon + rotLon) * Math.PI / 180; // + because D3 centers at -rotLon
+    // dot product of point with the view center direction
+    return Math.sin(phi) * Math.sin(TILT) + Math.cos(phi) * Math.cos(TILT) * Math.cos(lam);
+  }
+
+  // Smoothstep — eases dots in/out over the full visible arc
+  function smoothFade(vis) {
+    const t = Math.max(0, Math.min(1, vis * 2.2)); // ramp up over ~27° from horizon
+    return t * t * (3 - 2 * t); // smoothstep curve
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, size, size);
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const ink  = dark ? '240,237,232' : '12,12,10';
+
+    const proj = d3.geoOrthographic()
+      .scale(radius)
+      .translate([cx, cy])
+      .rotate([rotLon, -10]); // slight northward tilt
+
+    const geoPath = d3.geoPath().projection(proj).context(ctx);
+
+    // Ocean sphere
+    const og = ctx.createRadialGradient(cx - radius * 0.3, cy - radius * 0.3, 0, cx, cy, radius);
+    og.addColorStop(0, dark ? '#1e1e1b' : '#f5f3f0');
+    og.addColorStop(1, dark ? '#0e0e0c' : '#e8e5e0');
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fillStyle = og;
+    ctx.fill();
+
+    // Graticule
+    if (graticuleFeature) {
+      ctx.beginPath();
+      geoPath(graticuleFeature);
+      ctx.strokeStyle = dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    // Land masses
+    if (land) {
+      ctx.beginPath();
+      geoPath(land);
+      ctx.fillStyle = dark ? 'rgba(240,237,232,0.13)' : 'rgba(12,12,10,0.1)';
+      ctx.fill();
+      ctx.strokeStyle = dark ? 'rgba(240,237,232,0.22)' : 'rgba(12,12,10,0.16)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    // Globe edge
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = dark ? '#2a2926' : '#d8d5cf';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Connection arcs from Scotland (home base)
+    const now = Date.now();
+    const home = CITIES[0];
+    const hRaw = visibility(home.lat, home.lon);
+    const hFade = smoothFade(hRaw);
+    if (hFade > 0.02) {
+      const hp = proj([home.lon, home.lat]);
+      if (hp) {
+        CITIES.slice(1).forEach(city => {
+          const cRaw = visibility(city.lat, city.lon);
+          const cFade = smoothFade(cRaw);
+          if (cFade > 0.05) {
+            const cp = proj([city.lon, city.lat]);
+            if (cp) {
+              const alpha = Math.min(hFade, cFade) * 0.22;
+              const dist = Math.hypot(cp[0] - hp[0], cp[1] - hp[1]);
+              ctx.beginPath();
+              ctx.moveTo(hp[0], hp[1]);
+              ctx.quadraticCurveTo((hp[0]+cp[0])/2, (hp[1]+cp[1])/2 - dist*0.2, cp[0], cp[1]);
+              ctx.strokeStyle = `rgba(${ink},${alpha})`;
+              ctx.lineWidth = 0.75;
+              ctx.stroke();
+            }
+          }
+        });
+      }
+    }
+
+    // City dots & labels — fade smoothly at horizon
+    CITIES.forEach(city => {
+      const fade = smoothFade(visibility(city.lat, city.lon));
+      if (fade < 0.01) return;
+      const pos = proj([city.lon, city.lat]);
+      if (!pos) return;
+      const [px, py] = pos;
+
+      if (city.home && fade > 0.3) {
+        const pulse = (Math.sin(now / 700) + 1) / 2;
+        ctx.beginPath();
+        ctx.arc(px, py, 5 + 5 * pulse, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${ink},${fade * 0.14})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      const r = city.home ? 4 : 3;
+      ctx.beginPath();
+      ctx.arc(px, py, r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${ink},${fade})`;
+      ctx.fill();
+
+      if (fade > 0.35) {
+        ctx.font = `500 10px Inter, system-ui, sans-serif`;
+        ctx.fillStyle = `rgba(${ink},${fade * 0.9})`;
+        ctx.fillText(city.name, px + r + 7, py + 1);
+        ctx.font = `300 9px Inter, system-ui, sans-serif`;
+        ctx.fillStyle = `rgba(${ink},${fade * 0.38})`;
+        ctx.fillText(city.sub, px + r + 7, py + 13);
+      }
+    });
+  }
+
+  function tick() {
+    rotLon += 0.18;
+    draw();
+    requestAnimationFrame(tick);
+  }
+
+  new MutationObserver(() => draw()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  tick();
+})();
+</script>
+</body>
+</html>
