@@ -144,7 +144,7 @@
       this.chars = '!<>-_\\/[]{}—=+*^?#';
       this.update = this.update.bind(this);
     }
-    setText(newText) {
+    setText(newText, speed = 1) {
       const old = this.el.innerText;
       const len = Math.max(old.length, newText.length);
       const promise = new Promise(res => (this.resolve = res));
@@ -152,9 +152,9 @@
       for (let i = 0; i < len; i++) {
         const from  = old[i] || '';
         const to    = newText[i] || '';
-        // Left-to-right stagger + randomness, slower overall
-        const start = Math.floor(i * 2.8 + Math.random() * 16);
-        const end   = start + Math.floor(Math.random() * 32) + 22;
+        // Left-to-right stagger + randomness, slower overall. `speed` < 1 = quicker.
+        const start = Math.floor(i * 2.8 * speed + Math.random() * 16 * speed);
+        const end   = start + Math.floor(Math.random() * 32 * speed) + 22 * speed;
         this.queue.push({ from, to, start, end });
       }
       cancelAnimationFrame(this.frameReq);
@@ -354,30 +354,24 @@
   }
 
   /* =============================================
-     SCRAMBLE TITLES — all h3s sitewide (except .phase-title,
-     which scrambles on scroll-into-view instead — see below)
+     SCRAMBLE TITLES — all h3s sitewide, scrambles once on
+     scroll-into-view (quicker than the .phase-title variant below)
   ============================================= */
   function initScrambleTitles() {
-    if (!window.matchMedia('(hover: hover)').matches) return;
-
     document.querySelectorAll('h3:not(.phase-title)').forEach(el => {
       if (!el.textContent.trim()) return;
 
       const originalHTML = el.innerHTML;
       const plainText    = el.innerText.replace(/\s*\n\s*/g, ' ').trim();
       const fx           = new TextScramble(el);
-      let   scrambling   = false;
 
-      // Trigger on the nearest card ancestor, falling back to the h3 itself
-      const trigger = el.closest('.work-card, .card, .card-hover, [class*="card"], .how-pillar') || el;
-
-      trigger.addEventListener('mouseenter', () => {
-        if (scrambling) return;
-        scrambling = true;
-        fx.setText(plainText).then(() => {
-          el.innerHTML = originalHTML;
-          scrambling = false;
-        });
+      ScrollTrigger.create({
+        trigger: el,
+        start: 'top 88%',
+        once: true,
+        onEnter: () => {
+          fx.setText(plainText, 0.7).then(() => { el.innerHTML = originalHTML; });
+        }
       });
     });
   }
