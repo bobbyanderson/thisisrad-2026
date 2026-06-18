@@ -58,10 +58,10 @@
 
     .hero-headline {
       margin-bottom: var(--space-8);
+      opacity: 0;
+      transform: translateY(20px);
     }
-    .hero-line { overflow: hidden; display: block; line-height: 1; }
-    .hero-line .inner { display: block; transform: translateY(110%); padding-bottom: 0.12em; }
-    .hero-line.italic-line .inner { font-style: italic; font-weight: 300; color: var(--accent); }
+    .hero-headline .highlight { font-style: italic; font-weight: 300; color: var(--accent); }
 
     .hero-lower {
       display: grid;
@@ -295,8 +295,9 @@
     }
     @media (max-width: 768px) {
       .how-grid { grid-template-columns: 1fr; }
-      .how-pillar { border-right: none; border-bottom: 1px solid var(--rule); }
+      .how-pillar { padding: var(--space-4); border-right: none; border-bottom: 1px solid var(--rule); }
       .how-pillar:last-child { border-bottom: none; }
+      .pillar-num { margin-bottom: var(--space-4); }
     }
 
     /* =============================================
@@ -583,6 +584,7 @@
     .globe-hp-text {
       padding: var(--space-16) var(--space-8) var(--space-16) 0;
       border-right: 1px solid var(--rule);
+      min-width: 0;
     }
     .globe-hp-headline {
       font-size: clamp(2rem, 4.5vw, 4.5rem);
@@ -603,11 +605,17 @@
       align-items: center;
       justify-content: center;
       padding: var(--space-6);
+      min-width: 0;
     }
     .globe-hp-canvas-wrap canvas { display: block; max-width: 100%; }
     @media (max-width: 900px) {
       .globe-hp-inner { grid-template-columns: 1fr; min-height: auto; }
       .globe-hp-text { padding: var(--space-8) 0; border-right: none; border-bottom: 1px solid var(--rule); }
+      /* Globe is intentionally oversized on mobile for legibility — let it
+         bleed past the container and clip at the viewport edge, but stay
+         centred and capped so it doesn't run away on larger phones/tablets. */
+      .globe-hp-canvas-wrap { overflow: visible; }
+      .globe-hp-canvas-wrap canvas { max-width: none; flex-shrink: 0; }
     }
 
   </style>
@@ -671,15 +679,13 @@
       <p class="hero-eyebrow label">Product Design · UX · UI</p>
 
       <h1 class="hero-headline display-1">
-        <span class="hero-line"><span class="inner">Digital product design</span></span>
-        <span class="hero-line"><span class="inner">for ambitious teams</span></span>
-        <span class="hero-line italic-line"><span class="inner">building thoughtful</span></span>
-        <span class="hero-line"><span class="inner">products.</span></span>
+        Turning complex ideas into <span class="highlight">better digital products.</span>
+
       </h1>
 
       <div class="hero-lower">
         <p class="hero-sub">
-          I'm <strong>Bobby Anderson</strong>, a senior product designer helping startups and businesses create better digital experiences through UX, UI and product thinking.
+          I'm <strong>Bobby Anderson</strong>, a senior product designer helping startups and technology companies turn ideas into intuitive digital experiences through UX, UI and product thinking.
         </p>
         <div class="hero-cta">
           <div class="hero-cta-row">
@@ -697,16 +703,16 @@
         </div>
         <div class="hero-meta-stats" style="display:flex;gap:var(--space-8)">
           <div class="hero-meta-stat">
-            <div class="stat-num"><span class="counter" data-target="8">0</span>+</div>
-            <div class="stat-label">Years Experience</div>
+            <div class="stat-num"><span class="counter" data-target="20">0</span>+</div>
+            <div class="stat-label">Years experience</div>
           </div>
           <div class="hero-meta-stat">
-            <div class="stat-num"><span class="counter" data-target="40">0</span>+</div>
-            <div class="stat-label">Products Shipped</div>
+            <div class="stat-num">£<span class="counter" data-target="15">0</span>m+</div>
+            <div class="stat-label">Funding raised through design</div>
           </div>
           <div class="hero-meta-stat">
-            <div class="stat-num"><span class="counter" data-target="30">0</span>+</div>
-            <div class="stat-label">Clients Served</div>
+            <div class="stat-num"><span class="counter" data-target="1">0</span>m+</div>
+            <div class="stat-label">Daily users reached</div>
           </div>
         </div>
       </div>
@@ -747,21 +753,21 @@
     <div class="how-grid">
       <div class="how-pillar reveal-up">
         <span class="pillar-num">01 — Understand</span>
-        <h3 class="pillar-title">Start with context,<br class="br-deco">not pixels.</h3>
+        <h3 class="pillar-title">Start with context, not pixels.</h3>
         <p class="pillar-body">Understanding users, business goals and product context before touching any tool. Good design starts with the right questions.</p>
         <span class="pillar-deco-num" aria-hidden="true">1</span>
         <div class="pillar-line"></div>
       </div>
       <div class="how-pillar reveal-up">
         <span class="pillar-num">02 — Simplify</span>
-        <h3 class="pillar-title">Remove friction<br class="br-deco">before adding features.</h3>
+        <h3 class="pillar-title">Remove friction before adding features.</h3>
         <p class="pillar-body">Reducing complexity and shaping ideas into workable product experiences. The best solution is usually the simplest one that actually solves the problem.</p>
         <span class="pillar-deco-num" aria-hidden="true">2</span>
         <div class="pillar-line"></div>
       </div>
       <div class="how-pillar reveal-up">
         <span class="pillar-num">03 — Build &amp; Iterate</span>
-        <h3 class="pillar-title">Ship, learn<br class="br-deco">and improve.</h3>
+        <h3 class="pillar-title">Ship, learn and improve.</h3>
         <p class="pillar-body">Working collaboratively through testing, refinement and continuous improvement. Design evolves with the product and the people using it.</p>
         <span class="pillar-deco-num" aria-hidden="true">3</span>
         <div class="pillar-line"></div>
@@ -977,14 +983,21 @@
 
   function resize() {
     const wrap = canvas.parentElement;
-    size = Math.min(wrap.offsetWidth - 32, 600);
+    const isDesktop = window.innerWidth > 900;
+
+    // Mobile: globe is intentionally oversized for legibility, matching
+    // the process page's globe (capped so it doesn't run away on tablets).
+    size = isDesktop
+      ? Math.min(wrap.offsetWidth - 32, 600)
+      : Math.min(Math.min(wrap.offsetWidth, 480) * 2.5, 600);
+
     canvas.width  = size * dpr;
     canvas.height = size * dpr;
     canvas.style.width  = size + 'px';
     canvas.style.height = size + 'px';
     ctx.scale(dpr, dpr);
     cx = size / 2; cy = size / 2;
-    radius = size * 0.44;
+    radius = size * (isDesktop ? 0.44 : 0.4);
   }
   resize();
   window.addEventListener('resize', resize);

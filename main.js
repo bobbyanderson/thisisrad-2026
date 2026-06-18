@@ -201,9 +201,9 @@
       opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: delay + 0.3
     });
 
-    // Headline lines
-    hero.querySelectorAll('.hero-line .inner').forEach((line, i) => {
-      gsap.to(line, { y: 0, duration: 1.1, ease: 'power4.out', delay: delay + 0.4 + i * 0.08 });
+    // Headline
+    gsap.to('.hero-headline', {
+      opacity: 1, y: 0, duration: 1.1, ease: 'power4.out', delay: delay + 0.4
     });
 
     // Scramble tagline if present

@@ -183,6 +183,7 @@
       border-top: 1px solid var(--rule);
       border-bottom: 1px solid var(--rule);
       overflow: hidden;
+      position: relative;
     }
     .globe-inner {
       display: grid;
@@ -193,14 +194,29 @@
     .globe-text {
       padding: var(--space-16) var(--space-12) var(--space-16) 0;
       border-right: 1px solid var(--rule);
+      min-width: 0;
     }
     .globe-canvas-wrap {
       display: flex;
       align-items: center;
       justify-content: center;
       padding: var(--space-8);
+      min-width: 0;
     }
     .globe-canvas-wrap canvas { display: block; max-width: 100%; }
+    /* Desktop: globe is sized off the left column's height and bleeds
+       off the right edge of the viewport, leaving ~2/3 visible. */
+    @media (min-width: 769px) {
+      .globe-canvas-wrap {
+        position: absolute;
+        top: 50%;
+        right: calc(var(--g-size, 480px) * -1 / 3);
+        width: var(--g-size, 480px);
+        height: var(--g-size, 480px);
+        padding: 0;
+        transform: translateY(-50%);
+      }
+    }
     .globe-city-list {
       margin-top: var(--space-8);
       display: flex;
@@ -233,6 +249,15 @@
     @media (max-width: 768px) {
       .globe-inner { grid-template-columns: 1fr; }
       .globe-text { padding: var(--space-8) 0; border-right: none; border-bottom: 1px solid var(--rule); }
+      /* Globe is intentionally oversized on mobile for legibility — let it
+         bleed past the container and clip at the viewport edge, but stay
+         centred and capped so it doesn't run away on larger phones/tablets. */
+      .globe-canvas-wrap { overflow: visible; }
+      .globe-canvas-wrap canvas { max-width: none; flex-shrink: 0; }
+      /* City rows: location on its own line, clients as a wrapping list below. */
+      .globe-city { flex-wrap: wrap; gap: 2px var(--space-3); padding: var(--space-3) 0; }
+      .globe-city-name { min-width: 0; }
+      .globe-city-client { flex-basis: 100%; padding-left: 30px; }
     }
   </style>
 </head>
@@ -616,7 +641,16 @@
 
   function resize() {
     const wrap = canvas.parentElement;
-    size = Math.min(wrap.offsetWidth, 480);
+    const textEl = wrap.parentElement.querySelector('.globe-text');
+    const isDesktop = window.innerWidth > 768;
+
+    // On desktop the globe bleeds off the right edge of the viewport, so
+    // size it off the left column's height rather than the wrap's width.
+    size = (isDesktop && textEl)
+      ? Math.max(420, Math.round(textEl.offsetHeight))
+      : Math.min(Math.min(wrap.offsetWidth, 480) * 2.5, 600);
+
+    wrap.style.setProperty('--g-size', size + 'px');
     canvas.width  = size * dpr;
     canvas.height = size * dpr;
     canvas.style.width  = size + 'px';
@@ -627,6 +661,7 @@
   }
   resize();
   window.addEventListener('resize', resize);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize);
 
   let land = null, graticuleFeature = null;
   try {
