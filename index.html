@@ -16,7 +16,7 @@
       min-height: 100svh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      justify-content: center;
       padding-top: 7rem;
       padding-bottom: var(--space-12);
       position: relative;
@@ -40,6 +40,37 @@
       transform-origin: left center;
     }
 
+    /* Hero background SVG — fan of circuit/neuron lines, right-aligned,
+       with short accent-coloured pulses travelling along random lines
+       left-to-right to suggest signals passing through a network. See
+       initHeroPulses() in main.js. */
+    .hero-bg-svg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .hero-bg-svg svg {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: min(58vw, 900px);
+      height: auto;
+    }
+    .hero-bg-lines {
+      stroke: url(#hero-line-fade);
+      stroke-width: 0.5;
+      fill: none;
+      opacity: 0.3;
+    }
+    .hero-bg-pulses {
+      fill: none;
+      stroke: url(#hero-pulse-fade);
+      stroke-linecap: round;
+    }
+
     .hero-content {
       position: relative;
       z-index: 1;
@@ -48,20 +79,72 @@
     .hero-eyebrow {
       font-size: var(--size-xs);
       font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
+      letter-spacing: 0.1em;
       color: var(--ink-muted);
-      margin-bottom: var(--space-6);
+      margin-bottom: var(--space-2);
       opacity: 0;
       transform: translateY(12px);
     }
 
     .hero-headline {
-      margin-bottom: var(--space-8);
+      line-height:115%;
       opacity: 0;
       transform: translateY(20px);
+      max-width: 100%;
+      margin-bottom: var(--space-8);
     }
-    .hero-headline .highlight { font-style: italic; font-weight: 300; color: var(--accent); }
+
+    /* "through" / "design" badges — replace the literal words with
+       angled colour-block labels that animate in on load. "through"
+       appears first; "design" slides out from behind it. Sits on its
+       own line below "Building better companies" (see the <br> in the
+       markup). Background uses the site's accent colour so it matches
+       the highlight tone used elsewhere. See initHeroStack() in main.js. */
+    .hero-stack {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.1em;
+      vertical-align: middle;
+      margin-top: 0.12em;
+    }
+    .hero-stack-word {
+      display: inline-block;
+      font-family: var(--f-sans);
+      font-weight: 700;
+      font-size: 0.825em;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      padding: 0.2em 0.35em 0.22em;
+      border-radius: 0.12em;
+      color: var(--bg);
+      background: var(--accent);
+      white-space: nowrap;
+      will-change: transform, opacity;
+    }
+    .hero-stack-word--through {
+      transform: rotate(-4deg);
+      position: relative;
+      z-index: 2;
+    }
+    .hero-stack-word--design {
+      transform: rotate(3deg);
+      position: relative;
+      z-index: 1;
+    }
+    @media (max-width: 560px) {
+      .hero-stack-word { font-size: 0.6em; }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
 
     .hero-lower {
       display: grid;
@@ -73,13 +156,13 @@
     .hero-sub {
       font-size: var(--size-md);
       line-height: 1.65;
-      font-weight: 300;
+      font-weight: 400;
       color: var(--ink-muted);
-      max-width: 38ch;
+      max-width: 100%;
       opacity: 0;
       transform: translateY(20px);
     }
-    .hero-sub strong { color: var(--ink); font-weight: 400; }
+    .hero-sub strong { color: var(--ink); font-weight: 600; }
 
     .hero-cta {
       display: flex;
@@ -112,7 +195,7 @@
     .hero-meta-stat { text-align: right; }
     .hero-meta-stat .stat-num {
       font-size: var(--size-xl);
-      font-weight: 300;
+      font-weight: 400;
       letter-spacing: -0.03em;
       line-height: 1;
     }
@@ -142,66 +225,6 @@
       }
       .hero-meta-stat { text-align: left; }
     }
-
-    /* =============================================
-       MARQUEE TICKER STRIP
-    ============================================= */
-    .marquee-strip {
-      overflow: hidden;
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-      padding: var(--space-3) 0;
-      background: var(--bg);
-    }
-    .marquee-row {
-      display: flex;
-      white-space: nowrap;
-      margin: 0.15rem 0;
-    }
-    .marquee-inner {
-      display: flex;
-      flex-shrink: 0;
-      min-width: 100%;
-      will-change: transform;
-      animation: marquee-left 36s linear infinite;
-    }
-    .marquee-inner--rev {
-      animation: marquee-right 44s linear infinite;
-    }
-    @keyframes marquee-left {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    @keyframes marquee-right {
-      0%   { transform: translateX(-50%); }
-      100% { transform: translateX(0); }
-    }
-    .marquee-item {
-      font-size: clamp(0.7rem, 1.1vw, 0.85rem);
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      padding: 0.2rem var(--space-5);
-      flex-shrink: 0;
-    }
-    .marquee-sep {
-      color: var(--rule);
-      padding: 0.2rem var(--space-2);
-      flex-shrink: 0;
-      font-size: clamp(0.7rem, 1.1vw, 0.85rem);
-    }
-    .marquee-row--large .marquee-item {
-      font-size: clamp(0.85rem, 1.6vw, 1.1rem);
-      font-weight: 300;
-      letter-spacing: -0.01em;
-      text-transform: none;
-      color: var(--ink-muted);
-    }
-    .marquee-row--large .marquee-sep {
-      font-size: clamp(0.85rem, 1.6vw, 1.1rem);
-    }
-    .marquee-strip:hover .marquee-inner { animation-play-state: paused; }
 
     /* =============================================
        STATS — editorial large numbers
@@ -256,20 +279,21 @@
     ============================================= */
     .how-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 0;
       border: 1px solid var(--rule);
     }
     .how-pillar {
       padding: var(--space-8) var(--space-6);
       border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
       position: relative;
       overflow: hidden;
       transition: background 0.3s ease;
     }
     .how-pillar:hover { background: var(--bg-alt); }
-    .how-pillar:last-child { border-right: none; }
-    .pillar-num { font-size: var(--size-xs); font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--space-6); display: block; }
+    .how-pillar:nth-child(2n) { border-right: none; }
+    .how-pillar:nth-child(n+3) { border-bottom: none; }
     .pillar-title { font-size: clamp(1.5rem, 2.5vw, 2.25rem); font-weight: 300; letter-spacing: -0.025em; margin-bottom: var(--space-3); }
     .pillar-body { font-size: var(--size-sm); line-height: 1.75; color: var(--ink-muted); }
     .pillar-deco-num {
@@ -295,24 +319,32 @@
     }
     @media (max-width: 768px) {
       .how-grid { grid-template-columns: 1fr; }
-      .how-pillar { padding: var(--space-4); border-right: none; border-bottom: 1px solid var(--rule); }
+      .how-pillar,
+      .how-pillar:nth-child(2n),
+      .how-pillar:nth-child(n+3) {
+        padding: var(--space-4);
+        border-right: none;
+        border-bottom: 1px solid var(--rule);
+      }
       .how-pillar:last-child { border-bottom: none; }
-      .pillar-num { margin-bottom: var(--space-4); }
     }
 
     /* =============================================
-       HORIZONTAL WORK SCROLL
+       SELECTED WORK GALLERY — cs- prefix (rebuilt fresh;
+       previous implementation removed due to bleed/jank
+       interactions with the bento gallery's pin above it)
     ============================================= */
-    .work-h-scroll {
+    .cs-gallery { padding: 0; overflow: hidden; }
+    .cs-gallery-viewport {
       position: relative;
       overflow: hidden;
     }
-    .work-h-track {
+    .cs-gallery-track {
       display: flex;
       align-items: stretch;
       will-change: transform;
     }
-    .work-panel {
+    .cs-panel {
       flex: 0 0 calc(75vw);
       max-width: 900px;
       min-height: 70vh;
@@ -325,19 +357,20 @@
       text-decoration: none;
       color: inherit;
     }
-    .work-panel:first-child { border-left: 1px solid var(--rule); }
-    .wp-img-wrap {
+    .cs-panel:first-child { border-left: 1px solid var(--rule); }
+    .cs-panel-media {
       overflow: hidden;
       position: relative;
+      background: var(--bg-alt);
     }
-    .wp-img {
+    .cs-panel-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
       min-height: 360px;
     }
-    .wp-img-placeholder {
+    .cs-panel-placeholder {
       width: 100%;
       min-height: 380px;
       background: var(--bg-alt);
@@ -345,7 +378,7 @@
       align-items: center;
       justify-content: center;
     }
-    .wp-info {
+    .cs-panel-info {
       padding: var(--space-6) var(--space-6) var(--space-8);
       border-top: 1px solid var(--rule);
       display: flex;
@@ -354,14 +387,14 @@
       gap: var(--space-4);
       background: var(--bg);
     }
-    .wp-title {
+    .cs-panel-title {
       font-size: clamp(1.25rem, 2vw, 1.75rem);
       font-weight: 300;
       letter-spacing: -0.02em;
       line-height: 1.2;
     }
-    .wp-tags { display: flex; gap: var(--space-1); flex-wrap: wrap; margin-bottom: var(--space-2); }
-    .wp-arrow {
+    .cs-panel-tags { display: flex; gap: var(--space-1); flex-wrap: wrap; margin-bottom: var(--space-2); }
+    .cs-panel-arrow {
       width: 44px;
       height: 44px;
       border: 1px solid var(--rule);
@@ -373,10 +406,10 @@
       flex-shrink: 0;
       transition: background 0.2s ease, border-color 0.2s ease;
     }
-    .work-panel:hover .wp-arrow { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+    .cs-panel:hover .cs-panel-arrow { background: var(--ink); border-color: var(--ink); color: var(--bg); }
 
     /* End panel */
-    .work-panel--end {
+    .cs-panel--end {
       flex: 0 0 420px;
       min-height: 70vh;
       display: flex;
@@ -389,22 +422,14 @@
     }
 
     /* Scroll progress bar */
-    .work-scroll-hint {
-      padding: var(--space-4) 0;
-      border-top: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-      display: flex;
-      align-items: center;
-      gap: var(--space-4);
-    }
-    .scroll-track {
+    .cs-gallery-track-bar {
       flex: 1;
       height: 1px;
       background: var(--rule);
       position: relative;
       overflow: hidden;
     }
-    .scroll-thumb {
+    .cs-gallery-track-fill {
       position: absolute;
       top: 0; left: 0;
       width: 33.3%;
@@ -414,71 +439,17 @@
     }
 
     @media (max-width: 768px) {
-      .work-panel {
+      .cs-panel {
         flex: 0 0 85vw;
         min-height: auto;
         grid-template-rows: auto auto;
       }
-      .work-panel--end { flex: 0 0 80vw; min-height: auto; padding: var(--space-6); }
-      .wp-img-wrap { aspect-ratio: 1 / 1; }
-      .wp-img,
-      .wp-img-placeholder { min-height: 0; height: 100%; }
-      .wp-info { padding: var(--space-4); flex-wrap: wrap; }
+      .cs-panel--end { flex: 0 0 80vw; min-height: auto; padding: var(--space-6); }
+      .cs-panel-media { aspect-ratio: 1 / 1; }
+      .cs-panel-img,
+      .cs-panel-placeholder { min-height: 0; height: 100%; }
+      .cs-panel-info { padding: var(--space-4); flex-wrap: wrap; }
     }
-
-    /* =============================================
-       AI SECTION
-    ============================================= */
-    .ai-section {
-      background: #0C0C0A;
-      color: #F4F2EF;
-      padding: var(--space-16) 0;
-      overflow: hidden;
-      position: relative;
-    }
-    .ai-deco {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 600px;
-      height: 600px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.04);
-      pointer-events: none;
-    }
-    .ai-deco-2 {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 900px;
-      height: 900px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.03);
-      pointer-events: none;
-    }
-    .ai-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-12);
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
-    .ai-heading {
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 300;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-      color: #F4F2EF;
-    }
-    .ai-heading .inner em { font-style: italic; color: rgba(244,242,239,0.4); }
-    .ai-body { font-size: var(--size-md); line-height: 1.7; font-weight: 300; color: rgba(244,242,239,0.6); }
-    .ai-list { margin-top: var(--space-6); list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
-    .ai-list li { font-size: var(--size-sm); color: rgba(244,242,239,0.45); padding-left: var(--space-4); position: relative; line-height: 1.6; }
-    .ai-list li::before { content: '—'; position: absolute; left: 0; color: rgba(244,242,239,0.2); }
-    @media (max-width: 768px) { .ai-inner { grid-template-columns: 1fr; gap: var(--space-8); } }
 
     /* =============================================
        THOUGHTS TEASER
@@ -532,39 +503,102 @@
     .cta-heading .inner em { font-style: italic; color: var(--accent); }
     @media (max-width: 768px) { .cta-band-inner { grid-template-columns: 1fr; } }
 
-    /* Reel */
-    .reel-section { padding: 120px; background: var(--ink); position: relative; }
-    .reel-inner { aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: var(--space-3); position: relative; border-radius: 40px; overflow: hidden; }
-    .reel-inner video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    @media (max-width: 768px) {
-      .reel-section { padding: 40px 20px; }
-      .reel-inner { border-radius: 20px; }
-    }
-    .reel-placeholder-label { font-size: var(--size-xs); font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(244,242,239,0.35); position: relative; z-index: 1; }
-    .reel-placeholder-icon { width: 56px; height: 56px; border: 1px solid rgba(244,242,239,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
-    .reel-placeholder-icon::after { content: ''; display: block; width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 14px solid rgba(244,242,239,0.4); margin-left: 3px; }
-
-    /* ---- Work section: pin starts below nav ---- */
-    .work-section-pin {
+    /* Bento gallery — scrubbed (GSAP Flip + ScrollTrigger) */
+    .bento-section { position: relative; overflow: hidden; }
+    .bento-gallery-wrap {
       position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
-    .work-section-header {
+    .bento-gallery {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      flex: none;
+    }
+    .bento-gallery-item {
+      flex: none;
+      position: relative;
+      background: var(--bg-alt);
+      border: 1px solid var(--rule);
+      overflow: hidden;
+    }
+    .bento-gallery-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+    }
+    .bento-gallery-placeholder-num {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      letter-spacing: -0.05em;
+      color: var(--rule);
+      line-height: 1;
+    }
+    .bento-gallery-placeholder-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .bento-gallery--bento {
+      display: grid;
+      gap: 1vh;
+      grid-template-columns: repeat(3, 32.5vw);
+      grid-template-rows: repeat(4, 23vh);
+      justify-content: center;
+      align-content: center;
+    }
+    .bento-gallery--final.bento-gallery--bento {
+      grid-template-columns: repeat(3, 100vw);
+      grid-template-rows: repeat(4, 49.5vh);
+      gap: 1vh;
+    }
+    .bento-gallery--bento .bento-gallery-item:nth-child(1) { grid-area: 1 / 1 / 3 / 2; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(2) { grid-area: 1 / 2 / 2 / 3; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(3) { grid-area: 2 / 2 / 4 / 3; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(4) { grid-area: 1 / 3 / 3 / 3; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(5) { grid-area: 3 / 1 / 3 / 2; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(6) { grid-area: 3 / 3 / 5 / 4; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(7) { grid-area: 4 / 1 / 5 / 2; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(8) { grid-area: 4 / 2 / 5 / 3; }
+
+    /* ---- Selected work gallery: pin starts below nav ---- */
+    .cs-gallery-pin {
+      position: relative;
+      /* Opaque background is required here: while pinned (position:fixed),
+         this container must fully mask whatever sits underneath in document
+         flow. Without it, any moment where a case-study image hasn't
+         painted yet (slow load, lazy load, before onerror fallback fires)
+         leaves a transparent gap that the previous section bleeds through. */
+      background: var(--bg);
+    }
+    .cs-gallery-header {
       background: var(--bg);
       border-bottom: 1px solid var(--rule);
       padding: var(--space-2) 0;
       display: flex;
       align-items: center;
     }
-    .work-header-row {
+    .cs-gallery-header-row {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
       width: 100%;
       gap: var(--space-4);
     }
-    .work-header-left { display: flex; align-items: center; gap: var(--space-4); justify-self: start; }
-    .work-header-center { display: flex; align-items: center; gap: var(--space-4); justify-self: center; }
-    .work-header-right { justify-self: end; }
+    .cs-gallery-header-left { display: flex; align-items: center; gap: var(--space-4); justify-self: start; }
+    .cs-gallery-header-center { display: flex; align-items: center; gap: var(--space-4); justify-self: center; }
+    .cs-gallery-header-right { justify-self: end; }
 
     /* =============================================
        GLOBE — HOMEPAGE (bold, full-bleed)
@@ -618,6 +652,19 @@
       .globe-hp-canvas-wrap canvas { max-width: none; flex-shrink: 0; }
     }
 
+    /* Extra breathing room between homepage sections */
+    .bento-section { margin-top: 120px; }
+    body > section:nth-of-type(2) { margin-top: 120px; } /* How I Work */
+    .work-section { margin-top: 120px; } /* Selected Work */
+    .globe-hp { margin-top: 120px; }
+    .cta-band { margin-top: 120px; }
+    @media (max-width: 768px) {
+      .bento-section,
+      body > section:nth-of-type(2),
+      .work-section,
+      .globe-hp,
+      .cta-band { margin-top: 48px; }
+    }
   </style>
 </head>
 <body>
@@ -655,9 +702,11 @@
         </svg>
       </a>
       <ul class="nav-links">
+        <li class="nav-link-mobile"><a href="index.html" class="active">Home</a></li>
         <li><a href="work.html">Work</a></li>
         <li><a href="process.html">Process</a></li>
         <li><a href="about.html">About</a></li>
+        <li class="nav-link-mobile"><a href="about.html#contact" class="nav-cta">Let's Talk</a></li>
       </ul>
       <div style="display:flex;align-items:center;gap:var(--space-3)">
         <button id="theme-toggle" aria-label="Switch to dark mode"><span class="toggle-icon">◐</span></button>
@@ -673,20 +722,77 @@
 ============================================= -->
 <section class="hero">
 
+  <div class="hero-bg-svg" aria-hidden="true">
+    <svg viewBox="0 0 765 808" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hero-line-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="765" y2="0">
+          <stop offset="0%" style="stop-color:var(--hero-line); stop-opacity:0"/>
+          <stop offset="100%" style="stop-color:var(--hero-line); stop-opacity:1"/>
+        </linearGradient>
+        <linearGradient id="hero-pulse-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="765" y2="0">
+          <stop offset="0%" style="stop-color:var(--accent); stop-opacity:0"/>
+          <stop offset="35%" style="stop-color:var(--accent); stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:var(--accent); stop-opacity:1"/>
+        </linearGradient>
+      </defs>
+      <g class="hero-bg-lines">
+        <path d="M0 388.25C458.5 388.25 379 0.25 766 0.25"/>
+        <path d="M0 389.25C458.5 389.25 379 25.25 766 25.25"/>
+        <path d="M0 390.25C458.5 390.25 379 50.25 766 50.25"/>
+        <path d="M0 391.25C458.5 391.25 379 75.25 766 75.25"/>
+        <path d="M0 392.25C458.5 392.25 379 100.25 766 100.25"/>
+        <path d="M0 393.25C458.5 393.25 379 125.25 766 125.25"/>
+        <path d="M0 394.25C458.5 394.25 379 150.25 766 150.25"/>
+        <path d="M0 395.25C458.5 395.25 379 175.25 766 175.25"/>
+        <path d="M0 396.25C458.5 396.25 379 200.25 766 200.25"/>
+        <path d="M0 397.25C458.5 397.25 379 225.25 766 225.25"/>
+        <path d="M0 398.25C458.5 398.25 379 250.25 766 250.25"/>
+        <path d="M0 399.25C458.5 399.25 379 275.25 766 275.25"/>
+        <path d="M0 400.25C458.5 400.25 379 300.25 766 300.25"/>
+        <path d="M0 401.25C458.5 401.25 379 325.25 766 325.25"/>
+        <path d="M0 402.25C458.5 402.25 379 350.25 766 350.25"/>
+        <path d="M0 403.25C458.5 403.25 379 375.25 766 375.25"/>
+        <path d="M0 418.25C458.5 418.25 379 782.25 766 782.25"/>
+        <path d="M0 417.25C458.5 417.25 379 757.25 766 757.25"/>
+        <path d="M0 416.25C458.5 416.25 379 732.25 766 732.25"/>
+        <path d="M0 415.25C458.5 415.25 379 707.25 766 707.25"/>
+        <path d="M0 414.25C458.5 414.25 379 682.25 766 682.25"/>
+        <path d="M0 413.25C458.5 413.25 379 657.25 766 657.25"/>
+        <path d="M0 412.25C458.5 412.25 379 632.25 766 632.25"/>
+        <path d="M0 411.25C458.5 411.25 379 607.25 766 607.25"/>
+        <path d="M0 410.25C458.5 410.25 379 582.25 766 582.25"/>
+        <path d="M0 409.25C458.5 409.25 379 557.25 766 557.25"/>
+        <path d="M0 408.25C458.5 408.25 379 532.25 766 532.25"/>
+        <path d="M0 407.25C458.5 407.25 379 507.25 766 507.25"/>
+        <path d="M0 406.25C458.5 406.25 379 482.25 766 482.25"/>
+        <path d="M0 405.25C458.5 405.25 379 457.25 766 457.25"/>
+        <path d="M0 404.25C458.5 404.25 379 432.25 766 432.25"/>
+        <path d="M0 419.25C458.5 419.25 379 807.25 766 807.25"/>
+        <path d="M0 403.25C462.495 403.25 374.628 403.25 765 403.25"/>
+      </g>
+      <g class="hero-bg-pulses"></g>
+    </svg>
+  </div>
+
   <div class="container">
     <div class="hero-content">
 
-      <p class="hero-eyebrow label">Product Design · UX · UI</p>
+      <p class="hero-eyebrow label">Design that earns it's place</p>
 
       <h1 class="hero-headline display-1">
-        Turning complex ideas into <span class="highlight">better digital products.</span>
-
+        Building better companies<br>
+        <span class="hero-stack" aria-hidden="true">
+          <span class="hero-stack-word hero-stack-word--through">through</span>
+          <span class="hero-stack-word hero-stack-word--design">design</span>
+        </span>
+        <span class="sr-only">through design.</span>
       </h1>
 
       <div class="hero-lower">
-        <p class="hero-sub">
-          I'm <strong>Bobby Anderson</strong>, a senior product designer helping startups and technology companies turn ideas into intuitive digital experiences through UX, UI and product thinking.
-        </p>
+        <div class="hero-sub">
+          <p>RAD is a <strong>design studio</strong> helping startups and technology companies build <strong>brands, products and digital experiences</strong> that are made to grow.</p>
+          <p style="margin-top:var(--space-3)">From identity and websites to product interfaces and design systems, we bring <strong>strategy, creativity and craft</strong> together to help companies <strong>move forward</strong>.</p>
+        </div>
         <div class="hero-cta">
           <div class="hero-cta-row">
             <a href="work.html" class="btn btn-arrow">View Work</a>
@@ -696,26 +802,6 @@
         </div>
       </div>
 
-      <div class="hero-meta">
-        <div class="hero-scroll-hint">
-          <span class="hero-scroll-line"></span>
-          <span class="label">Scroll</span>
-        </div>
-        <div class="hero-meta-stats" style="display:flex;gap:var(--space-8)">
-          <div class="hero-meta-stat">
-            <div class="stat-num"><span class="counter" data-target="20">0</span>+</div>
-            <div class="stat-label">Years experience</div>
-          </div>
-          <div class="hero-meta-stat">
-            <div class="stat-num">£<span class="counter" data-target="15">0</span>m+</div>
-            <div class="stat-label">Funding raised through design</div>
-          </div>
-          <div class="hero-meta-stat">
-            <div class="stat-num"><span class="counter" data-target="1">0</span>m+</div>
-            <div class="stat-label">Daily users reached</div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -723,16 +809,63 @@
 
 
 <!-- =============================================
-     REEL
+     BENTO GALLERY — scrubbed (GSAP Flip + ScrollTrigger)
+     Drop real images into each .bento-gallery-placeholder in place of
+     the numbered placeholder, e.g.:
+     <img src="your-image.jpg" alt="" style="width:100%;height:100%;object-fit:cover">
 ============================================= -->
-<div class="reel-section">
-  <div class="reel-inner">
-    <!--
-      Drop your reel here. Replace this comment with:
-      <video src="your-reel.mp4" autoplay muted loop playsinline></video>
-    -->
-    <div class="reel-placeholder-icon"></div>
-    <p class="reel-placeholder-label">Your reel goes here</p>
+<div class="bento-section">
+  <div class="bento-gallery-wrap">
+    <div class="bento-gallery bento-gallery--bento" id="bento-gallery">
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">01</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">02</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">03</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">04</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">05</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">06</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">07</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">08</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -752,24 +885,27 @@
 
     <div class="how-grid">
       <div class="how-pillar reveal-up">
-        <span class="pillar-num">01 — Understand</span>
-        <h3 class="pillar-title">Start with context, not pixels.</h3>
-        <p class="pillar-body">Understanding users, business goals and product context before touching any tool. Good design starts with the right questions.</p>
+        <h3 class="pillar-title">Understand</h3>
+        <p class="pillar-body">Context, users, goals, constraints. Getting to what actually matters before designing anything.</p>
         <span class="pillar-deco-num" aria-hidden="true">1</span>
         <div class="pillar-line"></div>
       </div>
       <div class="how-pillar reveal-up">
-        <span class="pillar-num">02 — Simplify</span>
-        <h3 class="pillar-title">Remove friction before adding features.</h3>
-        <p class="pillar-body">Reducing complexity and shaping ideas into workable product experiences. The best solution is usually the simplest one that actually solves the problem.</p>
+        <h3 class="pillar-title">Shape</h3>
+        <p class="pillar-body">User journeys, structure and flows. Turning ambiguity into clear product direction.</p>
         <span class="pillar-deco-num" aria-hidden="true">2</span>
         <div class="pillar-line"></div>
       </div>
       <div class="how-pillar reveal-up">
-        <span class="pillar-num">03 — Build &amp; Iterate</span>
-        <h3 class="pillar-title">Ship, learn and improve.</h3>
-        <p class="pillar-body">Working collaboratively through testing, refinement and continuous improvement. Design evolves with the product and the people using it.</p>
+        <h3 class="pillar-title">Design</h3>
+        <p class="pillar-body">Interfaces, systems and interactions built for real use, not just presentation.</p>
         <span class="pillar-deco-num" aria-hidden="true">3</span>
+        <div class="pillar-line"></div>
+      </div>
+      <div class="how-pillar reveal-up">
+        <h3 class="pillar-title">Refine</h3>
+        <p class="pillar-body">Working closely with teams to iterate, improve and align design with product reality.</p>
+        <span class="pillar-deco-num" aria-hidden="true">4</span>
         <div class="pillar-line"></div>
       </div>
     </div>
@@ -781,92 +917,90 @@
 </section>
 
 <!-- =============================================
-     SELECTED WORK — horizontal scroll
+     SELECTED WORK — horizontal scroll (rebuilt)
 ============================================= -->
-<section style="padding:0; overflow:hidden;">
+<section class="work-section cs-gallery">
   <!-- Header + panels pin together as one unit while panels scroll -->
-  <div class="work-section-pin">
-  <div class="work-section-header">
-    <div class="container">
-      <div class="work-header-row">
-        <div class="work-header-left">
-          <span class="section-num label">02</span>
-          <h2 class="heading-2" style="font-size:var(--size-base);letter-spacing:-0.01em;font-weight:400">Selected work</h2>
-        </div>
-        <div class="work-header-center">
-          <span class="label text-faint" style="font-size:0.65rem">← Scroll →</span>
-          <div class="scroll-track" style="width:120px"><div class="scroll-thumb" id="work-progress"></div></div>
-        </div>
-        <div class="work-header-right">
-          <a href="work.html" class="btn btn-ghost" style="padding:0.4rem 1rem;font-size:var(--size-xs)">All work</a>
+  <div class="cs-gallery-pin">
+    <div class="cs-gallery-header">
+      <div class="container">
+        <div class="cs-gallery-header-row">
+          <div class="cs-gallery-header-left">
+            <span class="section-num label">02</span>
+            <h2 class="heading-2" style="font-size:var(--size-base);letter-spacing:-0.01em;font-weight:400">Selected work</h2>
+          </div>
+          <div class="cs-gallery-header-center">
+            <span class="label text-faint" style="font-size:0.65rem">← Scroll →</span>
+            <div class="cs-gallery-track-bar" style="width:120px"><div class="cs-gallery-track-fill" id="cs-progress"></div></div>
+          </div>
+          <div class="cs-gallery-header-right">
+            <a href="work.html" class="btn btn-ghost" style="padding:0.4rem 1rem;font-size:var(--size-xs)">All work</a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Horizontal panels -->
-  <div class="work-h-scroll">
-    <div class="work-h-track">
+    <!-- Horizontal panels -->
+    <div class="cs-gallery-viewport">
+      <div class="cs-gallery-track" id="cs-gallery-track">
 
-      <a href="finserv.html" class="work-panel card-hover">
-        <div class="wp-img-wrap clip-reveal">
-          <img src="https://www.thisisrad.co/img/case-study-rbs.jpg" class="wp-img" alt="Financial services" onerror="this.parentElement.classList.add('wp-img-placeholder');this.remove()">
-        </div>
-        <div class="wp-info">
-          <div>
-            <div class="wp-tags">
-              <span class="tag">Financial Services</span>
-              <span class="tag">UX Research</span>
-            </div>
-            <h3 class="wp-title">Designing for financial services</h3>
+        <a href="finserv.html" class="cs-panel card-hover">
+          <div class="cs-panel-media clip-reveal">
+            <img src="https://www.thisisrad.co/img/case-study-rbs.jpg" class="cs-panel-img" alt="Financial services" onerror="this.parentElement.classList.add('cs-panel-placeholder');this.remove()">
           </div>
-          <div class="wp-arrow">↗</div>
-        </div>
-      </a>
-
-      <a href="fintech.html" class="work-panel card-hover">
-        <div class="wp-img-wrap clip-reveal">
-          <img src="https://www.thisisrad.co/img/case-study-md.jpg" class="wp-img" alt="Startups & scale-ups" onerror="this.parentElement.classList.add('wp-img-placeholder');this.remove()">
-        </div>
-        <div class="wp-info">
-          <div>
-            <div class="wp-tags">
-              <span class="tag">Startups</span>
-              <span class="tag">Mobile · Systems</span>
+          <div class="cs-panel-info">
+            <div>
+              <div class="cs-panel-tags">
+                <span class="tag">Financial Services</span>
+                <span class="tag">UX Research</span>
+              </div>
+              <h3 class="cs-panel-title">Designing for financial services</h3>
             </div>
-            <h3 class="wp-title">Startups &amp; scale-ups</h3>
+            <div class="cs-panel-arrow">↗</div>
           </div>
-          <div class="wp-arrow">↗</div>
-        </div>
-      </a>
+        </a>
 
-      <a href="work.html" class="work-panel card-hover">
-        <div class="wp-img-wrap">
-          <div class="wp-img-placeholder" style="min-height:380px;background:var(--bg-alt);display:flex;align-items:center;justify-content:center">
+        <a href="fintech.html" class="cs-panel card-hover">
+          <div class="cs-panel-media clip-reveal">
+            <img src="https://www.thisisrad.co/img/case-study-md.jpg" class="cs-panel-img" alt="Startups & scale-ups" onerror="this.parentElement.classList.add('cs-panel-placeholder');this.remove()">
+          </div>
+          <div class="cs-panel-info">
+            <div>
+              <div class="cs-panel-tags">
+                <span class="tag">Startups</span>
+                <span class="tag">Mobile · Systems</span>
+              </div>
+              <h3 class="cs-panel-title">Startups &amp; scale-ups</h3>
+            </div>
+            <div class="cs-panel-arrow">↗</div>
+          </div>
+        </a>
+
+        <a href="work.html" class="cs-panel card-hover">
+          <div class="cs-panel-media cs-panel-placeholder">
             <span class="label text-faint">Coming soon</span>
           </div>
-        </div>
-        <div class="wp-info">
-          <div>
-            <div class="wp-tags">
-              <span class="tag">Design Systems</span>
-              <span class="tag">Enterprise</span>
+          <div class="cs-panel-info">
+            <div>
+              <div class="cs-panel-tags">
+                <span class="tag">Design Systems</span>
+                <span class="tag">Enterprise</span>
+              </div>
+              <h3 class="cs-panel-title">Native Instruments &amp; Forrit</h3>
             </div>
-            <h3 class="wp-title">Native Instruments &amp; Forrit</h3>
+            <div class="cs-panel-arrow">↗</div>
           </div>
-          <div class="wp-arrow">↗</div>
+        </a>
+
+        <!-- End panel -->
+        <div class="cs-panel cs-panel--end">
+          <p class="label text-faint" style="margin-bottom:var(--space-4)">That's not all</p>
+          <h3 class="heading-2" style="margin-bottom:var(--space-6)">More work<br class="br-deco">in the archive</h3>
+          <a href="work.html" class="btn btn-arrow">All case studies</a>
         </div>
-      </a>
 
-      <!-- End panel -->
-      <div class="work-panel work-panel--end">
-        <p class="label text-faint" style="margin-bottom:var(--space-4)">That's not all</p>
-        <h3 class="heading-2" style="margin-bottom:var(--space-6)">More work<br class="br-deco">in the archive</h3>
-        <a href="work.html" class="btn btn-arrow">All case studies</a>
       </div>
-
     </div>
-  </div>
   </div>
 </section>
 
@@ -887,32 +1021,6 @@
         <canvas id="globe-canvas-hp"></canvas>
       </div>
 
-    </div>
-  </div>
-</div>
-
-<!-- =============================================
-     AI SECTION
-============================================= -->
-<div class="ai-section">
-  <div class="ai-deco"></div>
-  <div class="ai-deco-2"></div>
-  <div class="container">
-    <div class="ai-inner">
-      <div>
-        <h2 class="ai-heading reveal-line">
-          <span class="inner">AI as a tool,<br class="br-deco"><em>not a replacement</em><br class="br-deco">for thinking.</span>
-        </h2>
-      </div>
-      <div>
-        <p class="ai-body reveal-fade">I use modern AI tools to accelerate workflows, explore ideas faster and reduce repetitive work — while keeping product thinking, collaboration and experience at the centre of the process.</p>
-        <ul class="ai-list reveal-up">
-          <li>Faster research synthesis and competitive analysis</li>
-          <li>Rapid concept exploration without losing craft</li>
-          <li>Smarter documentation and design handoff</li>
-          <li>Better, more informed conversations with stakeholders</li>
-        </ul>
-      </div>
     </div>
   </div>
 </div>
@@ -954,6 +1062,8 @@
 <!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/EasePack.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
 <script src="main.js"></script>
@@ -1096,23 +1206,6 @@
   function tick() { rotLon += 0.14; draw(); requestAnimationFrame(tick); }
   new MutationObserver(() => draw()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   tick();
-})();
-</script>
-
-<script>
-/* ---- AI section decorative circle pulse ---- */
-(function() {
-  const circles = document.querySelectorAll('.ai-deco, .ai-deco-2');
-  circles.forEach((c, i) => {
-    gsap.to(c, {
-      scale: 1.04 + i * 0.02,
-      opacity: 0.6,
-      duration: 3 + i,
-      ease: 'sine.inOut',
-      yoyo: true,
-      repeat: -1,
-    });
-  });
 })();
 </script>
 

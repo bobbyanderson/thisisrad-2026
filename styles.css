@@ -3,7 +3,7 @@
    Global Stylesheet
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://rsms.me/inter/inter.css');
 
 /* ---- Reset & Base ---- */
 *, *::before, *::after {
@@ -22,10 +22,11 @@
   --rule:      #D8D5CF;
   --white:     #FAFAF8;
   --accent:    #7200D4; /* vivid purple — 7.05:1 AAA on light bg */
+  --hero-line: color-mix(in srgb, var(--accent) 50%, var(--ink) 50%); /* hero circuit-line stroke */
 
   /* ---- Typography ---- */
   --f-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --f-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --f-display: 'InterDisplay', 'Inter', system-ui, -apple-system, sans-serif;
 
   /* ---- Type scale ---- */
   --size-xs:   0.75rem;
@@ -65,6 +66,7 @@
   --rule:      #2A2926;
   --white:     #141412;
   --accent:    #D4FF2E; /* neon yellow — ~14:1 contrast on dark bg */
+  --hero-line: #FFFFFF; /* hero circuit-line stroke */
 }
 
 /* ---- Page-wide column grid overlay ---- */
@@ -97,7 +99,9 @@
 
 html {
   font-size: 16px;
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth removed — it fights with GSAP ScrollTrigger's
+     scroll-position sampling, causing visual glitches right as pinned
+     sections (e.g. the Selected Work gallery) engage. */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -106,7 +110,8 @@ body {
   font-family: var(--f-sans);
   background: var(--bg);
   color: var(--ink);
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 23px;
   overflow-x: hidden;
 }
 
@@ -222,14 +227,14 @@ h1, h2, h3, h4, h5 {
 }
 
 .body-lg {
-  font-size: var(--size-md);
-  line-height: 1.7;
+  font-size: 16px;
+  line-height: 23px;
   font-weight: 300;
 }
 
 .body-sm {
-  font-size: var(--size-sm);
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 23px;
 }
 
 .label {
@@ -343,6 +348,8 @@ nav.scrolled::before {
   color: var(--ink);
 }
 
+.nav-link-mobile { display: none; }
+
 .nav-cta {
   font-size: var(--size-sm);
   font-weight: 500;
@@ -395,66 +402,6 @@ nav.scrolled::before {
 [data-theme="dark"] .nav-logo img,
 [data-theme="dark"] .nav-logo svg {
   filter: invert(1) brightness(1.2);
-}
-
-/* Video placeholder */
-.reel-section {
-  padding: 0;
-  background: var(--ink);
-  position: relative;
-  overflow: hidden;
-}
-
-.reel-inner {
-  aspect-ratio: 16/7;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: var(--space-3);
-  position: relative;
-  min-height: 340px;
-}
-
-.reel-inner video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.reel-placeholder-label {
-  font-size: var(--size-xs);
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(244,242,239,0.35);
-  position: relative;
-  z-index: 1;
-}
-
-.reel-placeholder-icon {
-  width: 56px;
-  height: 56px;
-  border: 1px solid rgba(244,242,239,0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
-}
-
-.reel-placeholder-icon::after {
-  content: '';
-  display: block;
-  width: 0;
-  height: 0;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-left: 14px solid rgba(244,242,239,0.4);
-  margin-left: 3px;
 }
 
 /* Mobile nav */
@@ -511,6 +458,8 @@ nav.scrolled::before {
     pointer-events: all;
   }
   .nav-links a { font-size: var(--size-lg); }
+  .nav-link-mobile { display: block; }
+  .nav-link-mobile .nav-cta { margin-top: var(--space-2); }
 }
 
 /* ---- Rule / Divider ---- */

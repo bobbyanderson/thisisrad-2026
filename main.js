@@ -20,7 +20,7 @@
       cy += (my - cy) * 0.1;
       gsap.set(cursor, { x: cx, y: cy });
     });
-    document.querySelectorAll('a, button, .card-hover, .work-panel').forEach(el => {
+    document.querySelectorAll('a, button, .card-hover, .cs-panel').forEach(el => {
       el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
     });
@@ -232,49 +232,224 @@
   }
 
   /* =============================================
-     HORIZONTAL WORK SCROLL
+     HERO — circuit-line pulses
+     The hero background is a fan of 33 static lines (inlined SVG,
+     right-aligned, coloured via --rule). On top of that, short
+     accent-coloured "pulses" travel along randomly-chosen lines, one
+     at a time at randomised intervals, from the hub out past the
+     right edge — like signals firing through a circuit/neuron map.
+     Each pulse is a transient cloned <path> animated via the Web
+     Animations API (stroke-dashoffset sliding a short dash from
+     fully-before-start to fully-past-end), then removed on finish.
+     Pauses scheduling off-screen/hidden-tab; skipped entirely for
+     prefers-reduced-motion.
   ============================================= */
-  function initHorizontalWork() {
-    const container = document.querySelector('.work-section-pin');
-    if (!container) return;
+  function initHeroPulses() {
+    const svg = document.querySelector('.hero-bg-svg svg');
+    const hero = document.querySelector('.hero');
+    const lineGroup = document.querySelector('.hero-bg-lines');
+    const pulseGroup = document.querySelector('.hero-bg-pulses');
+    if (!svg || !hero || !lineGroup || !pulseGroup) return;
 
-    const track = container.querySelector('.work-h-track');
-    if (!track) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const lines = Array.from(lineGroup.querySelectorAll('path'));
+    if (!lines.length || reduced) return;
 
-    // Recalculate on resize
-    const getDistance = () => track.scrollWidth - window.innerWidth;
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const DASH = 42; // length (px, in viewBox units) of the travelling pulse segment
+    const MIN_DURATION = 3200;
+    const MAX_DURATION = 5200;
+    const MIN_DELAY = 1400;
+    const MAX_DELAY = 3200;
 
-    // Header now travels with the pinned unit, so we only need to clear the nav
-    const topOffset = () => {
-      const nav = document.querySelector('nav');
-      return nav ? nav.offsetHeight : 64;
+    let timer = null;
+    let running = false;
+
+    function firePulse() {
+      const source = lines[Math.floor(Math.random() * lines.length)];
+      const d = source.getAttribute('d');
+
+      const pulse = document.createElementNS(SVG_NS, 'path');
+      pulse.setAttribute('d', d);
+      pulse.setAttribute('stroke-width', '1.5');
+      pulseGroup.appendChild(pulse);
+
+      const total = pulse.getTotalLength();
+      const reach = total + DASH;
+      pulse.style.strokeDasharray = `${DASH} ${total}`;
+
+      const duration = MIN_DURATION + Math.random() * (MAX_DURATION - MIN_DURATION);
+      const anim = pulse.animate(
+        [
+          { strokeDashoffset: reach },
+          { strokeDashoffset: -reach },
+        ],
+        { duration, easing: 'linear', fill: 'forwards' }
+      );
+      anim.onfinish = () => pulse.remove();
+      anim.oncancel = () => pulse.remove();
+    }
+
+    function scheduleNext() {
+      if (!running) return;
+      const delay = MIN_DELAY + Math.random() * (MAX_DELAY - MIN_DELAY);
+      timer = setTimeout(() => {
+        firePulse();
+        scheduleNext();
+      }, delay);
+    }
+
+    function start() {
+      if (running) return;
+      running = true;
+      scheduleNext();
+    }
+
+    function stop() {
+      running = false;
+      clearTimeout(timer);
+      timer = null;
+    }
+
+    start();
+
+    // Pause when the hero scrolls out of view or the tab is hidden
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => (entry.isIntersecting ? start() : stop()));
+    }, { threshold: 0 });
+    io.observe(hero);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop();
+      else if (hero.getBoundingClientRect().bottom > 0) start();
+    });
+  }
+
+  /* =============================================
+     HERO "through design" BADGE REVEAL
+     "through" pops in first; "design" starts hidden directly behind
+     it (same spot, lower z-index) and slides out to its natural slot
+     beside it. Widths are measured at runtime so the offset always
+     matches the rendered word, whatever font loads.
+  ============================================= */
+  function initHeroStack() {
+    const stack = document.querySelector('.hero-stack');
+    if (!stack) return;
+    const through = stack.querySelector('.hero-stack-word--through');
+    const design = stack.querySelector('.hero-stack-word--design');
+    if (!through || !design) return;
+
+    const delay = loader ? 0.8 : 0;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduced) {
+      gsap.set([through, design], { opacity: 1 });
+      return;
+    }
+
+    const gap = parseFloat(getComputedStyle(stack).gap) || 0;
+    const throughWidth = through.getBoundingClientRect().width;
+
+    gsap.set(through, { opacity: 0, scale: 0.6, rotate: -14 });
+    gsap.set(design, { opacity: 0, scale: 0.6, rotate: -14, x: -(throughWidth + gap) });
+
+    gsap.timeline({ delay: delay + 0.9 })
+      .to(through, { opacity: 1, scale: 1, rotate: -4, duration: 0.55, ease: 'back.out(1.8)' })
+      .to(design, { opacity: 1, x: 0, scale: 1, rotate: 3, duration: 0.6, ease: 'power3.out' }, '+=0.12');
+  }
+
+  /* =============================================
+     SELECTED WORK GALLERY — horizontal scrub-pin
+     (rebuilt from scratch: isolated gsap.context so it can be
+     cleanly torn down/recreated, a debounced resize rebuild instead
+     of firing on every resize tick, refreshPriority so it always
+     recalculates AFTER sections above it — e.g. the bento gallery's
+     pin — have settled, and an explicit refresh once panel images
+     finish loading so layout shifts from late-loading images don't
+     leave the trigger's start/end based on stale geometry.)
+  ============================================= */
+  function initCaseGallery() {
+    const pin = document.querySelector('.cs-gallery-pin');
+    const track = document.getElementById('cs-gallery-track');
+    if (!pin || !track) return;
+
+    let ctx;
+    let panelImages = [];
+
+    const build = () => {
+      if (ctx) ctx.revert();
+
+      ctx = gsap.context(() => {
+        const getDistance = () => track.scrollWidth - window.innerWidth;
+
+        // Header travels with the pinned unit, so we only need to clear the nav
+        const topOffset = () => {
+          const nav = document.querySelector('nav');
+          return nav ? nav.offsetHeight : 64;
+        };
+
+        panelImages = Array.from(track.querySelectorAll('.cs-panel-img')).map(img => ({
+          img,
+          panel: img.closest('.cs-panel'),
+        }));
+
+        gsap.to(track, {
+          x: () => -getDistance(),
+          ease: 'none',
+          scrollTrigger: {
+            id: 'cs-gallery',
+            trigger: pin,
+            pin: true,
+            anticipatePin: 1,
+            scrub: 1,
+            start: () => 'top ' + topOffset() + 'px',
+            end: () => '+=' + getDistance(),
+            invalidateOnRefresh: true,
+            refreshPriority: -1,
+            onUpdate: self => {
+              const fill = document.getElementById('cs-progress');
+              if (fill) gsap.set(fill, { scaleX: self.progress, transformOrigin: 'left center' });
+
+              // Parallax images inside panels
+              panelImages.forEach(({ img, panel }) => {
+                const r = panel.getBoundingClientRect();
+                const centerOffset = (r.left + r.width / 2 - window.innerWidth / 2) / window.innerWidth;
+                gsap.set(img, { x: centerOffset * -60, scale: 1.12 });
+              });
+            }
+          }
+        });
+      });
     };
 
-    gsap.to(track, {
-      x: () => -getDistance(),
-      ease: 'none',
-      scrollTrigger: {
-        id: 'work-h',
-        trigger: container,
-        pin: true,
-        anticipatePin: 1,
-        scrub: 1,
-        start: () => 'top ' + topOffset() + 'px',
-        end: () => '+=' + getDistance(),
-        invalidateOnRefresh: true,
-        onUpdate: self => {
-          const thumb = document.getElementById('work-progress');
-          if (thumb) gsap.set(thumb, { scaleX: self.progress, transformOrigin: 'left center' });
+    build();
 
-          // Parallax images inside panels
-          track.querySelectorAll('.wp-img').forEach(img => {
-            const panelRect = img.closest('.work-panel').getBoundingClientRect();
-            const centerOffset = (panelRect.left + panelRect.width / 2 - window.innerWidth / 2) / window.innerWidth;
-            gsap.set(img, { x: centerOffset * -60, scale: 1.12 });
-          });
-        }
-      }
+    // Debounced rebuild on resize — avoids thrashing the pin/transform
+    // calculations on rapid-fire resize events (e.g. mobile address-bar
+    // show/hide while scrolling, which fires synthetic resize events).
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 200);
     });
+
+    // Case-study images can finish loading (or fail, via onerror) after
+    // ScrollTrigger has already measured layout. Once they've all settled,
+    // force a refresh so this trigger's start/end — and everything below
+    // it on the page — reflect final geometry rather than a placeholder-era
+    // measurement.
+    const imgs = track.querySelectorAll('img.cs-panel-img');
+    let pending = imgs.length;
+    if (pending) {
+      imgs.forEach(img => {
+        const settle = () => { pending -= 1; if (pending <= 0) ScrollTrigger.refresh(); };
+        if (img.complete) settle();
+        else {
+          img.addEventListener('load', settle, { once: true });
+          img.addEventListener('error', settle, { once: true });
+        }
+      });
+    }
   }
 
   /* =============================================
@@ -471,7 +646,7 @@
   ============================================= */
   function initMagneticButtons() {
     if (!window.matchMedia('(hover: hover)').matches) return;
-    document.querySelectorAll('.btn, .wp-arrow').forEach(btn => {
+    document.querySelectorAll('.btn, .cs-panel-arrow').forEach(btn => {
       btn.addEventListener('mousemove', e => {
         const r  = btn.getBoundingClientRect();
         const dx = (e.clientX - (r.left + r.width  / 2)) * 0.3;
@@ -501,7 +676,7 @@
       lastY = y;
 
       // Apply subtle skew to major content sections
-      document.querySelectorAll('.hero-content, .stats-grid, .how-grid, .ai-inner').forEach(el => {
+      document.querySelectorAll('.hero-content, .stats-grid, .how-grid').forEach(el => {
         gsap.set(el, { skewY: -velocity * 0.4 });
       });
     });
@@ -544,6 +719,61 @@
   }
 
   /* =============================================
+     BENTO GALLERY — scrubbed (homepage only)
+  ============================================= */
+  function initBentoGallery() {
+    const galleryElement = document.querySelector('#bento-gallery');
+    if (!galleryElement || typeof Flip === 'undefined') return;
+    gsap.registerPlugin(Flip);
+
+    const galleryItems = galleryElement.querySelectorAll('.bento-gallery-item');
+    let flipCtx;
+
+    const build = () => {
+      flipCtx && flipCtx.revert();
+      galleryElement.classList.remove('bento-gallery--final');
+
+      flipCtx = gsap.context(() => {
+        // Temporarily add the final (full-bleed) class to capture the end state
+        galleryElement.classList.add('bento-gallery--final');
+        const flipState = Flip.getState(galleryItems);
+        galleryElement.classList.remove('bento-gallery--final');
+
+        const flip = Flip.to(flipState, { simple: true, ease: 'expoScale(1, 5)' });
+
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: galleryElement,
+            start: 'center center',
+            end: '+=100%',
+            scrub: true,
+            pin: galleryElement.parentNode
+          }
+        }).add(flip);
+
+        return () => gsap.set(galleryItems, { clearProps: 'all' });
+      });
+    };
+
+    build();
+
+    // Debounced rebuild on resize, followed by a full ScrollTrigger refresh.
+    // The Flip-driven pin here sits earlier in the page than the Selected
+    // Work gallery and the globe section, so any change to its layout
+    // shifts where those sections start. Refreshing once after this rebuilds
+    // (rather than relying on each section's own independent resize
+    // listener) keeps everything below in sync with this section's new size.
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        build();
+        ScrollTrigger.refresh();
+      }, 200);
+    });
+  }
+
+  /* =============================================
      INIT
   ============================================= */
   function init() {
@@ -551,7 +781,10 @@
     initPageTransitions();
     initReveals();
     initHero();
-    initHorizontalWork();
+    initHeroPulses();
+    initHeroStack();
+    initBentoGallery();
+    initCaseGallery();
     initClipReveals();
     initCounters();
     initPillarHovers();

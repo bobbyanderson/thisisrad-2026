@@ -1,0 +1,42 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="320" height="320" fill="#F8F9FA"/>
+<circle cx="122" cy="92" r="28" fill="black" fill-opacity="0.1"/>
+<ellipse cx="240" cy="160" rx="28" ry="28" transform="rotate(-180 240 160)" fill="black" fill-opacity="0.1"/>
+<ellipse cx="122" cy="228" rx="28" ry="28" transform="rotate(-180 122 228)" fill="black" fill-opacity="0.1"/>
+<circle cx="118" cy="88" r="28" stroke="#495057" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 10"/>
+<ellipse cx="236" cy="156" rx="28" ry="28" transform="rotate(-180 236 156)" stroke="#495057" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 10"/>
+<ellipse cx="118" cy="224" rx="28" ry="28" transform="rotate(-180 118 224)" stroke="#495057" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 10"/>
+<mask id="mask0_2203_155" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="48" y="128" width="56" height="56">
+<circle cx="76" cy="156" r="28" fill="white"/>
+</mask>
+<g mask="url(#mask0_2203_155)">
+<line x1="57.1161" y1="174.116" x2="94.1161" y2="137.116" stroke="#495057" stroke-width="2.5"/>
+<line x1="49.1161" y1="166.116" x2="86.1161" y2="129.116" stroke="#495057" stroke-width="2.5"/>
+<line x1="41.1161" y1="158.116" x2="78.1161" y2="121.116" stroke="#495057" stroke-width="2.5"/>
+<line x1="65.1161" y1="182.116" x2="102.116" y2="145.116" stroke="#495057" stroke-width="2.5"/>
+<line x1="73.1161" y1="190.116" x2="110.116" y2="153.116" stroke="#495057" stroke-width="2.5"/>
+</g>
+<circle cx="76" cy="156" r="26.75" stroke="#495057" stroke-width="2.5"/>
+<mask id="mask1_2203_155" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="166" y="60" width="56" height="56">
+<circle cx="194" cy="88" r="28" fill="white"/>
+</mask>
+<g mask="url(#mask1_2203_155)">
+<line x1="175.116" y1="106.116" x2="212.116" y2="69.1161" stroke="#495057" stroke-width="2.5"/>
+<line x1="167.116" y1="98.1161" x2="204.116" y2="61.1161" stroke="#495057" stroke-width="2.5"/>
+<line x1="159.116" y1="90.1161" x2="196.116" y2="53.1161" stroke="#495057" stroke-width="2.5"/>
+<line x1="183.116" y1="114.116" x2="220.116" y2="77.1161" stroke="#495057" stroke-width="2.5"/>
+<line x1="191.116" y1="122.116" x2="228.116" y2="85.1161" stroke="#495057" stroke-width="2.5"/>
+</g>
+<circle cx="194" cy="88" r="26.75" stroke="#495057" stroke-width="2.5"/>
+<mask id="mask2_2203_155" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="166" y="196" width="56" height="56">
+<circle cx="194" cy="224" r="28" fill="white"/>
+</mask>
+<g mask="url(#mask2_2203_155)">
+<line x1="175.116" y1="242.116" x2="212.116" y2="205.116" stroke="#495057" stroke-width="2.5"/>
+<line x1="167.116" y1="234.116" x2="204.116" y2="197.116" stroke="#495057" stroke-width="2.5"/>
+<line x1="159.116" y1="226.116" x2="196.116" y2="189.116" stroke="#495057" stroke-width="2.5"/>
+<line x1="183.116" y1="250.116" x2="220.116" y2="213.116" stroke="#495057" stroke-width="2.5"/>
+<line x1="191.116" y1="258.116" x2="228.116" y2="221.116" stroke="#495057" stroke-width="2.5"/>
+</g>
+<circle cx="194" cy="224" r="26.75" stroke="#495057" stroke-width="2.5"/>
+</svg>
