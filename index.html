@@ -13,12 +13,12 @@
        HERO
     ============================================= */
     .hero {
-      min-height: 100svh;
+      min-height: 110svh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding-top: 7rem;
-      padding-bottom: var(--space-12);
+      padding-top: 0;
+      padding-bottom: 80px;
       position: relative;
       overflow: hidden;
     }
@@ -53,11 +53,16 @@
     }
     .hero-bg-svg svg {
       position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: min(58vw, 900px);
-      height: auto;
+      top: 2em;
+      left: 50%;
+      /* Rotate 90° CW: lines now run top→bottom, convergence point at top-centre.
+         Gradients and dashoffset animations stay in SVG coordinate space so they
+         automatically reorient — no other changes needed.
+         height:100% pre-rotation becomes the visual width; auto width (~0.95×height)
+         becomes the visual height, covering substantially all of the hero. */
+      transform: translateX(-50%) rotate(90deg);
+      height: 100%;
+      width: auto;
     }
     .hero-bg-lines {
       stroke: url(#hero-line-fade);
@@ -81,7 +86,7 @@
       font-weight: 500;
       letter-spacing: 0.1em;
       color: var(--ink-muted);
-      margin-bottom: var(--space-2);
+      margin-bottom: 0;
       opacity: 0;
       transform: translateY(12px);
     }
@@ -133,7 +138,8 @@
       z-index: 1;
     }
     @media (max-width: 560px) {
-      .hero-stack-word { font-size: 0.6em; }
+      .hero-headline.display-1 { font-size: 3rem; }
+      .hero-stack-word { font-size: 0.8em; }
     }
 
     .sr-only {
@@ -330,6 +336,130 @@
     }
 
     /* =============================================
+       WHO WE WORK WITH — accordion
+    ============================================= */
+    .wwww-accordion {
+      border: 1px solid var(--rule);
+    }
+    .wwww-item {
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+    }
+    .wwww-item:last-child { border-bottom: none; }
+    /* Accent left-edge bar on active item */
+    .wwww-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: top center;
+      transition: transform 0.35s ease;
+    }
+    .wwww-item.open::before { transform: scaleY(1); }
+    /* Trigger row — always visible */
+    .wwww-trigger {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+      width: 100%;
+      padding: var(--space-6) var(--space-6) var(--space-6) var(--space-8);
+      background: none;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .wwww-trigger:hover { background: var(--bg-alt); }
+    .wwww-item.open .wwww-trigger { background: var(--bg-alt); }
+.wwww-trigger-title {
+      flex: 1;
+      font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: var(--ink-muted);
+      transition: color 0.2s;
+    }
+    .wwww-item.open .wwww-trigger-title { color: var(--ink); }
+    /* Plus/minus icon */
+    .wwww-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      position: relative;
+      color: var(--ink-faint);
+    }
+    .wwww-icon::before,
+    .wwww-icon::after {
+      content: '';
+      position: absolute;
+      background: currentColor;
+      border-radius: 1px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .wwww-icon::before { width: 100%; height: 1.5px; top: 50%; left: 0; transform: translateY(-50%); }
+    .wwww-icon::after  { width: 1.5px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+    .wwww-item.open .wwww-icon::after { transform: translateX(-50%) rotate(90deg); opacity: 0; }
+    /* Collapsible body */
+    .wwww-body-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.4s ease;
+    }
+    .wwww-item.open .wwww-body-wrap { grid-template-rows: 1fr; }
+    .wwww-body-inner {
+      overflow: hidden;
+    }
+    .wwww-body-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+      padding: var(--space-4) var(--space-8);
+    }
+    .wwww-body-text {
+      font-size: var(--size-md);
+      line-height: 1.75;
+      color: var(--ink);
+    }
+    .wwww-fit-label {
+      display: block;
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: var(--space-2);
+    }
+    .wwww-fit-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .wwww-fit-list li {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--size-md);
+      color: var(--ink-muted);
+      padding: calc(var(--space-1) * 1.25) 0;
+      border-top: 1px solid var(--rule);
+    }
+    .wwww-fit-list li::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    @media (max-width: 768px) {
+      .wwww-trigger { padding: var(--space-4); gap: var(--space-3); }
+      .wwww-body-content { grid-template-columns: 1fr; gap: var(--space-4); padding: var(--space-4); }
+    }
+
+    /* =============================================
        SELECTED WORK GALLERY — cs- prefix (rebuilt fresh;
        previous implementation removed due to bleed/jank
        interactions with the bento gallery's pin above it)
@@ -483,22 +613,62 @@
     ============================================= */
     .cta-band {
       padding: var(--space-24) 0;
-      border-top: 1px solid var(--rule);
       overflow: hidden;
       position: relative;
     }
+    .cta-bg-svg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .cta-bg-svg svg {
+      position: absolute;
+      bottom: 2em;
+      left: 50%;
+      /* Mirror of hero: rotate -90deg so lines fan from bottom-centre upward */
+      transform: translateX(-50%) rotate(-90deg);
+      height: 100%;
+      width: auto;
+    }
+    .cta-bg-lines {
+      stroke: url(#cta-line-fade);
+      stroke-width: 0.5;
+      fill: none;
+      opacity: 0.3;
+    }
+    .cta-bg-pulses {
+      fill: none;
+      stroke: url(#cta-pulse-fade);
+      stroke-linecap: round;
+    }
+    .cta-band > .container { position: relative; z-index: 1; }
     .cta-band-inner {
       display: grid;
-      grid-template-columns: 1fr auto;
-      gap: var(--space-8);
-      align-items: end;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      text-align: center;
     }
     .cta-heading {
       font-size: clamp(2.5rem, 5vw, 5rem);
-      font-weight: 300;
-      letter-spacing: -0.03em;
+      font-weight: 600;
+      letter-spacing: -0.035em;
       line-height: 1.05;
       max-width: 18ch;
+      margin: 0 auto;
+      color: var(--ink);
+    }
+    .btn-accent {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
+    }
+    .btn-accent:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
     }
     .cta-heading .inner em { font-style: italic; color: var(--accent); }
     @media (max-width: 768px) { .cta-band-inner { grid-template-columns: 1fr; } }
@@ -524,8 +694,17 @@
       flex: none;
       position: relative;
       background: var(--bg-alt);
-      border: 1px solid var(--rule);
       overflow: hidden;
+    }
+    /* Border is drawn by the SVG overlay injected by initBentoPulses()
+       so it can be animated as a travelling accent-colour pulse. */
+    .bento-item-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
     }
     .bento-gallery-placeholder {
       width: 100%;
@@ -556,12 +735,13 @@
       grid-template-columns: repeat(3, 32.5vw);
       grid-template-rows: repeat(4, 23vh);
       justify-content: center;
-      align-content: center;
+      align-content: start; /* was 'center' — caused ~2.5vh gap at hero/bento join */
     }
     .bento-gallery--final.bento-gallery--bento {
       grid-template-columns: repeat(3, 100vw);
       grid-template-rows: repeat(4, 49.5vh);
       gap: 1vh;
+      align-content: center; /* restore centering so item 3 fills 0→100vh in the Flip end-state */
     }
     .bento-gallery--bento .bento-gallery-item:nth-child(1) { grid-area: 1 / 1 / 3 / 2; }
     .bento-gallery--bento .bento-gallery-item:nth-child(2) { grid-area: 1 / 2 / 2 / 3; }
@@ -652,14 +832,89 @@
       .globe-hp-canvas-wrap canvas { max-width: none; flex-shrink: 0; }
     }
 
+    /* ── Logo marquee ── */
+    .logo-marquee-label {
+      text-align: center;
+      font-size: clamp(2.8rem, 4.5vw, 4.5rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      color: var(--ink);
+      margin: 0 0 var(--space-12);
+      padding: var(--space-16) var(--space-6) 0;
+    }
+    .wwww-subhead {
+      text-align: center;
+      font-size: clamp(1.75rem, 3vw, 2.75rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      color: var(--ink);
+      max-width: 25ch;
+      margin: 0 auto;
+      padding: var(--space-16) var(--space-6);
+    }
+    @media (max-width: 768px) {
+      .wwww-subhead { padding: var(--space-16) var(--space-3); }
+    }
+    .logo-marquee-outer {
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+    }
+    .logo-marquee-outer::before,
+    .logo-marquee-outer::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 120px;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .logo-marquee-outer::before { left:  0; background: linear-gradient(to right, var(--bg), transparent); }
+    .logo-marquee-outer::after  { right: 0; background: linear-gradient(to left,  var(--bg), transparent); }
+    .logo-marquee-track {
+      display: flex;
+      align-items: center;
+      gap: 56px;
+      width: max-content;
+      padding: 4px 0;
+      animation: logo-scroll 40s linear infinite;
+    }
+    @keyframes logo-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .logo-marquee-item {
+      height: 40px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      opacity: 0.28;
+      transition: opacity 0.25s;
+      color: var(--ink);
+    }
+    .logo-marquee-item:hover { opacity: 0.6; }
+    .logo-marquee-item svg,
+    .logo-marquee-item img { height: 40px; width: auto; display: block; }
+    /* Text placeholder — swap for <img src="…" alt="…"> when you have real logos */
+    .logo-ph {
+      font-family: var(--font-display, system-ui, sans-serif);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: currentColor;
+    }
+
     /* Extra breathing room between homepage sections */
-    .bento-section { margin-top: 120px; }
+    .bento-section { margin-top: 0; }
     body > section:nth-of-type(2) { margin-top: 120px; } /* How I Work */
     .work-section { margin-top: 120px; } /* Selected Work */
     .globe-hp { margin-top: 120px; }
-    .cta-band { margin-top: 120px; }
+    .cta-band { margin-top: 0; }
     @media (max-width: 768px) {
-      .bento-section,
       body > section:nth-of-type(2),
       .work-section,
       .globe-hp,
@@ -668,7 +923,6 @@
   </style>
 </head>
 <body>
-
 
 <!-- Page loader -->
 <div id="page-loader">
@@ -706,11 +960,11 @@
         <li><a href="work.html">Work</a></li>
         <li><a href="process.html">Process</a></li>
         <li><a href="about.html">About</a></li>
-        <li class="nav-link-mobile"><a href="about.html#contact" class="nav-cta">Let's Talk</a></li>
+        <li class="nav-link-mobile"><a href="about.html#contact" class="nav-cta">Start your project</a></li>
       </ul>
       <div style="display:flex;align-items:center;gap:var(--space-3)">
         <button id="theme-toggle" aria-label="Switch to dark mode"><span class="toggle-icon">◐</span></button>
-        <a href="about.html#contact" class="nav-cta">Let's Talk</a>
+        <a href="about.html#contact" class="nav-cta">Start your project</a>
         <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span></button>
       </div>
     </div>
@@ -777,7 +1031,7 @@
   <div class="container">
     <div class="hero-content">
 
-      <p class="hero-eyebrow label">Design that earns it's place</p>
+      <p class="hero-eyebrow label">This is RAD</p>
 
       <h1 class="hero-headline display-1">
         Building better companies<br>
@@ -796,7 +1050,6 @@
         <div class="hero-cta">
           <div class="hero-cta-row">
             <a href="work.html" class="btn btn-arrow">View Work</a>
-            <a href="about.html#contact" class="btn btn-ghost">Let's Talk</a>
           </div>
           <p class="body-sm text-muted" style="text-align:right">Based in the UK · Available for new projects</p>
         </div>
@@ -805,8 +1058,6 @@
     </div>
   </div>
 </section>
-
-
 
 <!-- =============================================
      BENTO GALLERY — scrubbed (GSAP Flip + ScrollTrigger)
@@ -870,48 +1121,146 @@
 </div>
 
 <!-- =============================================
-     HOW I WORK
+     WHO WE WORK WITH
 ============================================= -->
 <section>
+
+  <h2 class="logo-marquee-label reveal-fade">Trusted by teams including</h2>
+
+  <div class="logo-marquee-outer reveal-fade">
+    <div class="logo-marquee-track" aria-label="Client logos">
+      <!-- ── Set 1 ── -->
+      <span class="logo-marquee-item"><span class="logo-ph">Apex</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Nova</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Orbital</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Coda</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Flux</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Alto</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Prism</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Luma</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Vela</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Kite</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Dune</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Pyre</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Wavelength</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Zinc</span></span>
+      <span class="logo-marquee-item"><span class="logo-ph">Opal</span></span>
+      <!-- ── Set 2 (duplicate for seamless loop) ── -->
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Apex</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Nova</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Orbital</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Coda</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Flux</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Alto</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Prism</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Luma</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Vela</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Kite</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Dune</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Pyre</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Wavelength</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Zinc</span></span>
+      <span class="logo-marquee-item" aria-hidden="true"><span class="logo-ph">Opal</span></span>
+    </div>
+  </div>
+
+  <p class="wwww-subhead reveal-fade">Design support for wherever you are in your journey.</p>
+
   <div class="container">
-    <div class="section-intro reveal-fade">
-      <span class="section-num label">01</span>
-      <h2 class="heading-2">How I work</h2>
-    </div>
+    <div class="wwww-accordion reveal-up">
 
-    <p class="body-lg text-muted reveal-fade" style="max-width:52ch;margin-bottom:var(--space-12)">
-      Not a service list. An approach. The way I think about problems shapes everything that follows.
-    </p>
+      <div class="wwww-item open">
+        <button class="wwww-trigger" aria-expanded="true">
+          <span class="wwww-trigger-title">Starting something new</span>
+          <span class="wwww-icon" aria-hidden="true"></span>
+        </button>
+        <div class="wwww-body-wrap">
+          <div class="wwww-body-inner">
+            <div class="wwww-body-content">
+              <p class="wwww-body-text">For teams turning an idea into a brand, product or experience.</p>
+              <div>
+                <span class="wwww-fit-label">Best fit</span>
+                <ul class="wwww-fit-list">
+                  <li>Early-stage startups</li>
+                  <li>New products</li>
+                  <li>MVPs</li>
+                  <li>Fundraising preparation</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    <div class="how-grid">
-      <div class="how-pillar reveal-up">
-        <h3 class="pillar-title">Understand</h3>
-        <p class="pillar-body">Context, users, goals, constraints. Getting to what actually matters before designing anything.</p>
-        <span class="pillar-deco-num" aria-hidden="true">1</span>
-        <div class="pillar-line"></div>
+      <div class="wwww-item">
+        <button class="wwww-trigger" aria-expanded="false">
+          <span class="wwww-trigger-title">Improving what exists</span>
+          <span class="wwww-icon" aria-hidden="true"></span>
+        </button>
+        <div class="wwww-body-wrap">
+          <div class="wwww-body-inner">
+            <div class="wwww-body-content">
+              <p class="wwww-body-text">For companies whose product or customer experience needs to catch up with their ambition.</p>
+              <div>
+                <span class="wwww-fit-label">Best fit</span>
+                <ul class="wwww-fit-list">
+                  <li>SaaS platforms</li>
+                  <li>Web applications</li>
+                  <li>Internal tools</li>
+                  <li>Product redesigns</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="how-pillar reveal-up">
-        <h3 class="pillar-title">Shape</h3>
-        <p class="pillar-body">User journeys, structure and flows. Turning ambiguity into clear product direction.</p>
-        <span class="pillar-deco-num" aria-hidden="true">2</span>
-        <div class="pillar-line"></div>
-      </div>
-      <div class="how-pillar reveal-up">
-        <h3 class="pillar-title">Design</h3>
-        <p class="pillar-body">Interfaces, systems and interactions built for real use, not just presentation.</p>
-        <span class="pillar-deco-num" aria-hidden="true">3</span>
-        <div class="pillar-line"></div>
-      </div>
-      <div class="how-pillar reveal-up">
-        <h3 class="pillar-title">Refine</h3>
-        <p class="pillar-body">Working closely with teams to iterate, improve and align design with product reality.</p>
-        <span class="pillar-deco-num" aria-hidden="true">4</span>
-        <div class="pillar-line"></div>
-      </div>
-    </div>
 
-    <div style="margin-top:var(--space-8);text-align:right" class="reveal-fade">
-      <a href="process.html" class="btn btn-ghost btn-arrow">Full process</a>
+      <div class="wwww-item">
+        <button class="wwww-trigger" aria-expanded="false">
+          <span class="wwww-trigger-title">Scaling with confidence</span>
+          <span class="wwww-icon" aria-hidden="true"></span>
+        </button>
+        <div class="wwww-body-wrap">
+          <div class="wwww-body-inner">
+            <div class="wwww-body-content">
+              <p class="wwww-body-text">For teams needing systems, consistency and senior design thinking.</p>
+              <div>
+                <span class="wwww-fit-label">Best fit</span>
+                <ul class="wwww-fit-list">
+                  <li>Design systems</li>
+                  <li>Product improvements</li>
+                  <li>Scaling interfaces</li>
+                  <li>New features</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wwww-item">
+        <button class="wwww-trigger" aria-expanded="false">
+          <span class="wwww-trigger-title">Extending your team</span>
+          <span class="wwww-icon" aria-hidden="true"></span>
+        </button>
+        <div class="wwww-body-wrap">
+          <div class="wwww-body-inner">
+            <div class="wwww-body-content">
+              <p class="wwww-body-text">For companies looking for additional design leadership and expertise.</p>
+              <div>
+                <span class="wwww-fit-label">Best fit</span>
+                <ul class="wwww-fit-list">
+                  <li>Marketing websites</li>
+                  <li>Customer portals</li>
+                  <li>Digital transformation</li>
+                  <li>New digital products</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -954,7 +1303,7 @@
                 <span class="tag">Financial Services</span>
                 <span class="tag">UX Research</span>
               </div>
-              <h3 class="cs-panel-title">Designing for financial services</h3>
+              <h3 class="cs-panel-title">It always starts with behaviour</h3>
             </div>
             <div class="cs-panel-arrow">↗</div>
           </div>
@@ -976,9 +1325,9 @@
           </div>
         </a>
 
-        <a href="work.html" class="cs-panel card-hover">
-          <div class="cs-panel-media cs-panel-placeholder">
-            <span class="label text-faint">Coming soon</span>
+        <a href="designsystems.html" class="cs-panel card-hover">
+          <div class="cs-panel-media clip-reveal">
+            <img src="https://www.thisisrad.co/img/case-study-ni-forrit.jpg" class="cs-panel-img" alt="Design systems for Native Instruments and Forrit" onerror="this.parentElement.classList.add('cs-panel-placeholder');this.remove()">
           </div>
           <div class="cs-panel-info">
             <div>
@@ -986,7 +1335,7 @@
                 <span class="tag">Design Systems</span>
                 <span class="tag">Enterprise</span>
               </div>
-              <h3 class="cs-panel-title">Native Instruments &amp; Forrit</h3>
+              <h3 class="cs-panel-title">Design systems that scale products, teams and businesses</h3>
             </div>
             <div class="cs-panel-arrow">↗</div>
           </div>
@@ -1013,8 +1362,8 @@
 
       <div class="globe-hp-text reveal-fade">
         <p class="label" style="margin-bottom:var(--space-4)">Remote-first · Worldwide</p>
-        <h2 class="globe-hp-headline">Solving problems for companies across the globe.</h2>
-        <p class="globe-hp-sub">Location has never been a constraint. From Scotland to New York, Berlin to Sydney — good thinking travels.</p>
+        <h2 class="globe-hp-headline">Good partnerships know no borders.</h2>
+        <p class="globe-hp-sub">RAD partners with ambitious teams around the world, bringing senior design thinking into products, brands and businesses without geography getting in the way.</p>
       </div>
 
       <div class="globe-hp-canvas-wrap">
@@ -1029,15 +1378,67 @@
      CTA
 ============================================= -->
 <div class="cta-band">
+
+  <div class="cta-bg-svg" aria-hidden="true">
+    <svg viewBox="0 0 765 808" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cta-line-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="765" y2="0">
+          <stop offset="0%" style="stop-color:var(--hero-line); stop-opacity:0"/>
+          <stop offset="100%" style="stop-color:var(--hero-line); stop-opacity:1"/>
+        </linearGradient>
+        <linearGradient id="cta-pulse-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="765" y2="0">
+          <stop offset="0%" style="stop-color:var(--accent); stop-opacity:0"/>
+          <stop offset="35%" style="stop-color:var(--accent); stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:var(--accent); stop-opacity:1"/>
+        </linearGradient>
+      </defs>
+      <g class="cta-bg-lines">
+        <path d="M0 388.25C458.5 388.25 379 0.25 766 0.25"/>
+        <path d="M0 389.25C458.5 389.25 379 25.25 766 25.25"/>
+        <path d="M0 390.25C458.5 390.25 379 50.25 766 50.25"/>
+        <path d="M0 391.25C458.5 391.25 379 75.25 766 75.25"/>
+        <path d="M0 392.25C458.5 392.25 379 100.25 766 100.25"/>
+        <path d="M0 393.25C458.5 393.25 379 125.25 766 125.25"/>
+        <path d="M0 394.25C458.5 394.25 379 150.25 766 150.25"/>
+        <path d="M0 395.25C458.5 395.25 379 175.25 766 175.25"/>
+        <path d="M0 396.25C458.5 396.25 379 200.25 766 200.25"/>
+        <path d="M0 397.25C458.5 397.25 379 225.25 766 225.25"/>
+        <path d="M0 398.25C458.5 398.25 379 250.25 766 250.25"/>
+        <path d="M0 399.25C458.5 399.25 379 275.25 766 275.25"/>
+        <path d="M0 400.25C458.5 400.25 379 300.25 766 300.25"/>
+        <path d="M0 401.25C458.5 401.25 379 325.25 766 325.25"/>
+        <path d="M0 402.25C458.5 402.25 379 350.25 766 350.25"/>
+        <path d="M0 403.25C458.5 403.25 379 375.25 766 375.25"/>
+        <path d="M0 418.25C458.5 418.25 379 782.25 766 782.25"/>
+        <path d="M0 417.25C458.5 417.25 379 757.25 766 757.25"/>
+        <path d="M0 416.25C458.5 416.25 379 732.25 766 732.25"/>
+        <path d="M0 415.25C458.5 415.25 379 707.25 766 707.25"/>
+        <path d="M0 414.25C458.5 414.25 379 682.25 766 682.25"/>
+        <path d="M0 413.25C458.5 413.25 379 657.25 766 657.25"/>
+        <path d="M0 412.25C458.5 412.25 379 632.25 766 632.25"/>
+        <path d="M0 411.25C458.5 411.25 379 607.25 766 607.25"/>
+        <path d="M0 410.25C458.5 410.25 379 582.25 766 582.25"/>
+        <path d="M0 409.25C458.5 409.25 379 557.25 766 557.25"/>
+        <path d="M0 408.25C458.5 408.25 379 532.25 766 532.25"/>
+        <path d="M0 407.25C458.5 407.25 379 507.25 766 507.25"/>
+        <path d="M0 406.25C458.5 406.25 379 482.25 766 482.25"/>
+        <path d="M0 405.25C458.5 405.25 379 457.25 766 457.25"/>
+        <path d="M0 404.25C458.5 404.25 379 432.25 766 432.25"/>
+        <path d="M0 419.25C458.5 419.25 379 807.25 766 807.25"/>
+        <path d="M0 403.25C462.495 403.25 374.628 403.25 765 403.25"/>
+      </g>
+      <g class="cta-bg-pulses"></g>
+    </svg>
+  </div>
+
   <div class="container">
     <div class="cta-band-inner">
       <h2 class="cta-heading">
-        <span class="reveal-line"><span class="inner">Building something</span></span>
-        <span class="reveal-line"><span class="inner">worth getting <em>right?</em></span></span>
+        <span class="reveal-line"><span class="inner">Ready when you are.</span></span>
       </h2>
-      <div class="reveal-fade" style="padding-bottom:0.5rem">
-        <p class="body-sm text-muted" style="max-width:28ch;margin-bottom:var(--space-4)">I partner with startups and businesses to bring clarity to complex ideas, combining UX, UI and product thinking to create digital products that are useful, intuitive and built to last.</p>
-        <a href="about.html#contact" class="btn btn-arrow">Get in touch</a>
+      <div class="reveal-fade">
+        <p class="body-lg" style="max-width:60%;margin:0 auto var(--space-4);color:var(--ink)">If you think RAD might be the right fit for your team, we'd love to hear about your project and where you're hoping to take it.</p>
+        <a href="about.html#contact" class="btn btn-arrow btn-accent">Start your project</a>
       </div>
     </div>
   </div>
@@ -1094,13 +1495,9 @@
   function resize() {
     const wrap = canvas.parentElement;
     const isDesktop = window.innerWidth > 900;
-
-    // Mobile: globe is intentionally oversized for legibility, matching
-    // the process page's globe (capped so it doesn't run away on tablets).
     size = isDesktop
       ? Math.min(wrap.offsetWidth - 32, 600)
       : Math.min(Math.min(wrap.offsetWidth, 480) * 2.5, 600);
-
     canvas.width  = size * dpr;
     canvas.height = size * dpr;
     canvas.style.width  = size + 'px';
@@ -1130,75 +1527,132 @@
     return t * t * (3 - 2 * t);
   }
 
+  // Point on a quadratic bezier at t
+  function bezierPt(p0, ctrl, p2, t) {
+    const mt = 1 - t;
+    return [
+      mt*mt*p0[0] + 2*mt*t*ctrl[0] + t*t*p2[0],
+      mt*mt*p0[1] + 2*mt*t*ctrl[1] + t*t*p2[1],
+    ];
+  }
+
   function draw() {
     ctx.clearRect(0, 0, size, size);
-    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const ink  = dark ? '240,237,232' : '12,12,10';
+    const dark   = document.documentElement.getAttribute('data-theme') === 'dark';
+    const ink    = dark ? '240,237,232' : '12,12,10';
+    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#4f6bff';
 
-    const proj = d3.geoOrthographic().scale(radius).translate([cx, cy]).rotate([rotLon, -10]);
+    const proj    = d3.geoOrthographic().scale(radius).translate([cx, cy]).rotate([rotLon, -10]);
     const geoPath = d3.geoPath().projection(proj).context(ctx);
 
+    // Sphere
     const og = ctx.createRadialGradient(cx - radius * 0.3, cy - radius * 0.3, 0, cx, cy, radius);
     og.addColorStop(0, dark ? '#1e1e1b' : '#f5f3f0');
     og.addColorStop(1, dark ? '#0e0e0c' : '#e8e5e0');
     ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2);
     ctx.fillStyle = og; ctx.fill();
 
+    // Graticule
     if (graticuleFeature) {
       ctx.beginPath(); geoPath(graticuleFeature);
       ctx.strokeStyle = dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
       ctx.lineWidth = 0.5; ctx.stroke();
     }
+    // Land
     if (land) {
       ctx.beginPath(); geoPath(land);
-      ctx.fillStyle = dark ? 'rgba(240,237,232,0.15)' : 'rgba(12,12,10,0.11)'; ctx.fill();
+      ctx.fillStyle   = dark ? 'rgba(240,237,232,0.15)' : 'rgba(12,12,10,0.11)'; ctx.fill();
       ctx.strokeStyle = dark ? 'rgba(240,237,232,0.28)' : 'rgba(12,12,10,0.2)';
       ctx.lineWidth = 0.75; ctx.stroke();
     }
-
+    // Border
     ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2);
     ctx.strokeStyle = dark ? '#2a2926' : '#d8d5cf'; ctx.lineWidth = 1.5; ctx.stroke();
 
-    const now = Date.now();
+    const now  = Date.now();
     const home = CITIES[0];
     const hFade = smoothFade(visibility(home.lat, home.lon));
-    if (hFade > 0.02) {
-      const hp = proj([home.lon, home.lat]);
-      if (hp) {
-        CITIES.slice(1).forEach(city => {
-          const cFade = smoothFade(visibility(city.lat, city.lon));
-          if (cFade > 0.05) {
-            const cp = proj([city.lon, city.lat]);
-            if (cp) {
-              const alpha = Math.min(hFade, cFade) * 0.28;
-              const dist = Math.hypot(cp[0] - hp[0], cp[1] - hp[1]);
-              ctx.beginPath(); ctx.moveTo(hp[0], hp[1]);
-              ctx.quadraticCurveTo((hp[0]+cp[0])/2, (hp[1]+cp[1])/2 - dist*0.2, cp[0], cp[1]);
-              ctx.strokeStyle = `rgba(${ink},${alpha})`; ctx.lineWidth = 1; ctx.stroke();
-            }
-          }
-        });
-      }
+    const hp    = hFade > 0.02 ? proj([home.lon, home.lat]) : null;
+
+    // Arcs + traveling pulses
+    if (hp) {
+      CITIES.slice(1).forEach((city, i) => {
+        const cFade = smoothFade(visibility(city.lat, city.lon));
+        if (cFade < 0.05) return;
+        const cp = proj([city.lon, city.lat]);
+        if (!cp) return;
+
+        const visAlpha = Math.min(hFade, cFade);
+        const dist  = Math.hypot(cp[0] - hp[0], cp[1] - hp[1]);
+        const ctrl  = [(hp[0]+cp[0])/2, (hp[1]+cp[1])/2 - dist * 0.2];
+
+        // Arc line in accent
+        ctx.save();
+        ctx.globalAlpha = visAlpha * 0.22;
+        ctx.beginPath();
+        ctx.moveTo(hp[0], hp[1]);
+        ctx.quadraticCurveTo(ctrl[0], ctrl[1], cp[0], cp[1]);
+        ctx.strokeStyle = accent;
+        ctx.lineWidth   = 1;
+        ctx.stroke();
+        ctx.restore();
+
+        // Traveling pulse — each city offset so they don't all sync
+        const pulseT = ((now / 2400) + i / (CITIES.length - 1)) % 1;
+        // Bell-curve opacity: fades in and out as pulse travels
+        const bellOpacity = Math.sin(pulseT * Math.PI);
+        const [bx, by] = bezierPt(hp, ctrl, cp, pulseT);
+
+        ctx.save();
+        ctx.globalAlpha = visAlpha * bellOpacity * 0.95;
+        ctx.shadowBlur  = 10;
+        ctx.shadowColor = accent;
+        ctx.fillStyle   = accent;
+        ctx.beginPath(); ctx.arc(bx, by, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
     }
 
+    // City dots — accent coloured
     CITIES.forEach(city => {
       const fade = smoothFade(visibility(city.lat, city.lon));
       if (fade < 0.01) return;
       const pos = proj([city.lon, city.lat]);
       if (!pos) return;
       const [px, py] = pos;
+
+      // Scotland expanding pulse ring
       if (city.home && fade > 0.3) {
         const pulse = (Math.sin(now / 700) + 1) / 2;
+        ctx.save();
+        ctx.globalAlpha = fade * 0.22;
+        ctx.strokeStyle = accent;
+        ctx.lineWidth   = 1.5;
         ctx.beginPath(); ctx.arc(px, py, 6 + 6 * pulse, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(${ink},${fade * 0.14})`; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.stroke();
+        ctx.restore();
       }
+
+      // Dot with glow
       const r = city.home ? 5 : 4;
+      ctx.save();
+      ctx.globalAlpha = fade;
+      ctx.shadowBlur  = city.home ? 12 : 6;
+      ctx.shadowColor = accent;
+      ctx.fillStyle   = accent;
       ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${ink},${fade})`; ctx.fill();
+      ctx.fill();
+      ctx.restore();
+
+      // Label
       if (fade > 0.4) {
-        ctx.font = `500 11px Inter, system-ui, sans-serif`;
-        ctx.fillStyle = `rgba(${ink},${fade * 0.85})`;
+        ctx.save();
+        ctx.globalAlpha = fade * 0.85;
+        ctx.font        = '500 11px Inter, system-ui, sans-serif';
+        ctx.fillStyle   = `rgba(${ink},1)`;
         ctx.fillText(city.name, px + r + 8, py + 1);
+        ctx.restore();
       }
     });
   }

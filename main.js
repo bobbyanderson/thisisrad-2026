@@ -326,6 +326,202 @@
   }
 
   /* =============================================
+     CTA BAND — mirrored background pulses
+  ============================================= */
+  function initCtaPulses() {
+    const band       = document.querySelector('.cta-band');
+    const lineGroup  = document.querySelector('.cta-bg-lines');
+    const pulseGroup = document.querySelector('.cta-bg-pulses');
+    if (!band || !lineGroup || !pulseGroup) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const lines   = Array.from(lineGroup.querySelectorAll('path'));
+    if (!lines.length || reduced) return;
+
+    const SVG_NS     = 'http://www.w3.org/2000/svg';
+    const DASH       = 42;
+    const MIN_DURATION = 3200;
+    const MAX_DURATION = 5200;
+    const MIN_DELAY  = 1400;
+    const MAX_DELAY  = 3200;
+
+    let timer   = null;
+    let running = false;
+
+    function firePulse() {
+      const source = lines[Math.floor(Math.random() * lines.length)];
+      const pulse  = document.createElementNS(SVG_NS, 'path');
+      pulse.setAttribute('d', source.getAttribute('d'));
+      pulse.setAttribute('stroke-width', '1.5');
+      pulseGroup.appendChild(pulse);
+
+      const total = pulse.getTotalLength();
+      const reach = total + DASH;
+      pulse.style.strokeDasharray = `${DASH} ${total}`;
+
+      const duration = MIN_DURATION + Math.random() * (MAX_DURATION - MIN_DURATION);
+      const anim = pulse.animate(
+        [{ strokeDashoffset: -reach }, { strokeDashoffset: reach }],
+        { duration, easing: 'linear', fill: 'forwards' }
+      );
+      anim.onfinish = () => pulse.remove();
+      anim.oncancel = () => pulse.remove();
+    }
+
+    function scheduleNext() {
+      if (!running) return;
+      const delay = MIN_DELAY + Math.random() * (MAX_DELAY - MIN_DELAY);
+      timer = setTimeout(() => { firePulse(); scheduleNext(); }, delay);
+    }
+
+    function start() { if (running) return; running = true; scheduleNext(); }
+    function stop()  { running = false; clearTimeout(timer); timer = null; }
+
+    start();
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => (e.isIntersecting ? start() : stop()));
+    }, { threshold: 0 });
+    io.observe(band);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop();
+      else if (band.getBoundingClientRect().bottom > 0) start();
+    });
+  }
+
+  /* =============================================
+     BENTO GALLERY — pulsing border effect
+     Each .bento-gallery-item gets an inline SVG overlay containing:
+       • a base <rect> (stroke: var(--rule), replaces the removed CSS border)
+       • a pulse <rect> (stroke: var(--accent)) with a short dash that
+         travels around the perimeter via stroke-dashoffset animation,
+         fired at random intervals per item so they're staggered.
+     Pauses when the gallery is off-screen / tab hidden; skipped for
+     prefers-reduced-motion.
+  ============================================= */
+  function initBentoPulses() {
+    const items = Array.from(document.querySelectorAll('.bento-gallery-item'));
+    if (!items.length) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const DASH     = 32;    // pulse segment length — shorter so it enters/exits quickly
+    const MIN_DUR  = 6400;  // animation travel time (ms) — slow movement
+    const MAX_DUR  = 10000;
+    const MIN_GAP  = 1500;  // pause between pulses on the same item (ms)
+    const MAX_GAP  = 5000;
+
+    // Build an SVG overlay for every item (measures at init, layout is stable by this point)
+    const data = items.map(item => {
+      const w = item.clientWidth  || 320;
+      const h = item.clientHeight || 200;
+      // Perimeter of the inset-1 rect (stroke sits fully inside the overflow:hidden box)
+      const P = 2 * ((w - 2) + (h - 2));
+
+      const svg = document.createElementNS(SVG_NS, 'svg');
+      svg.setAttribute('class', 'bento-item-svg');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      svg.setAttribute('preserveAspectRatio', 'none');
+
+      // Base border rect — replaces the removed CSS border: 1px solid var(--rule)
+      const base = document.createElementNS(SVG_NS, 'rect');
+      base.setAttribute('x', '1'); base.setAttribute('y', '1');
+      base.setAttribute('width', w - 2); base.setAttribute('height', h - 2);
+      base.setAttribute('fill', 'none');
+      base.style.stroke = 'var(--rule)';
+      base.setAttribute('stroke-width', '1');
+      svg.appendChild(base);
+
+      // Animated pulse dash
+      const pulse = document.createElementNS(SVG_NS, 'rect');
+      pulse.setAttribute('x', '1'); pulse.setAttribute('y', '1');
+      pulse.setAttribute('width', w - 2); pulse.setAttribute('height', h - 2);
+      pulse.setAttribute('fill', 'none');
+      pulse.setAttribute('stroke-width', '1.5');
+      pulse.setAttribute('stroke-linecap', 'round');
+      pulse.style.stroke = 'var(--accent)';
+      pulse.style.strokeDasharray = `${DASH} ${P}`;
+      pulse.style.strokeDashoffset = `${P + DASH}`;  // start fully hidden
+      pulse.style.opacity = '0';  // invisible until animation begins; animations override this
+      svg.appendChild(pulse);
+
+      item.appendChild(svg);
+      return { pulse, P, anim: null };
+    });
+
+    if (reduced) return;
+
+    let running = false;
+    const timers = new Map();
+
+    function firePulse(i) {
+      const d = data[i];
+      if (d.anim) { d.anim.cancel(); d.anim = null; }
+      const dur   = MIN_DUR + Math.random() * (MAX_DUR - MIN_DUR);
+      const reach = d.P + DASH;
+      // Random perimeter entry point so each pulse appears on a different edge/corner
+      const r  = Math.floor(Math.random() * d.P);
+      const s0 = reach - r;          // start dashoffset (offset so pulse enters at arc-length r)
+      const s1 = s0 - 2 * reach;    // end dashoffset (same total travel = 2*reach)
+      // Four keyframe stops with proportional dashoffset movement throughout (easing:linear):
+      // opacity: 0→1 over first 12%, holds 1 to 70%, fades 1→0 over last 30% (bell curve)
+      const anim  = d.pulse.animate(
+        [
+          { strokeDashoffset: s0,              opacity: 0, offset: 0    },
+          { strokeDashoffset: s0 - 0.24*reach, opacity: 1, offset: 0.12 },
+          { strokeDashoffset: s1 + 0.60*reach, opacity: 1, offset: 0.70 },
+          { strokeDashoffset: s1,              opacity: 0, offset: 1    },
+        ],
+        { duration: dur, easing: 'linear', fill: 'forwards' }
+      );
+      d.anim = anim;
+      anim.onfinish = anim.oncancel = () => {
+        if (d.anim === anim) { d.anim = null; scheduleItem(i); }
+      };
+    }
+
+    function scheduleItem(i) {
+      if (!running) return;
+      const delay = MIN_GAP + Math.random() * (MAX_GAP - MIN_GAP);
+      timers.set(i, setTimeout(() => firePulse(i), delay));
+    }
+
+    function start() {
+      if (running) return;
+      running = true;
+      // Split items into 4 groups of 2, each group offset by avgDur so only
+      // ~2 pulses are active at any one time. Items are shuffled so the groups
+      // aren't the same physical cells each session.
+      const GROUP_SIZE = 2;
+      const avgDur = (MIN_DUR + MAX_DUR) / 2;
+      const order = data.map((_, i) => i).sort(() => Math.random() - 0.5);
+      order.forEach((i, n) => {
+        const groupIndex = Math.floor(n / GROUP_SIZE);
+        const posInGroup  = n % GROUP_SIZE;
+        setTimeout(() => scheduleItem(i), groupIndex * avgDur + posInGroup * 80);
+      });
+    }
+
+    function stop() {
+      running = false;
+      timers.forEach(t => clearTimeout(t));
+      timers.clear();
+      data.forEach(d => { if (d.anim) { d.anim.cancel(); d.anim = null; } });
+    }
+
+    // Start immediately — no scroll-trigger gate.
+    // (The section is just below the hero; waiting for IntersectionObserver
+    //  added a noticeable delay before the first pulse appeared.)
+    start();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop(); else start();
+    });
+  }
+
+  /* =============================================
      HERO "through design" BADGE REVEAL
      "through" pops in first; "design" starts hidden directly behind
      it (same spot, lower z-index) and slides out to its natural slot
@@ -402,7 +598,7 @@
             pin: true,
             anticipatePin: 1,
             scrub: 1,
-            start: () => 'top ' + topOffset() + 'px',
+            start: () => 'top ' + (topOffset() - 16) + 'px',
             end: () => '+=' + getDistance(),
             invalidateOnRefresh: true,
             refreshPriority: -1,
@@ -774,6 +970,70 @@
   }
 
   /* =============================================
+     SUBHEAD WORD REVEAL
+  ============================================= */
+  function initSubheadReveal() {
+    const el = document.querySelector('.wwww-subhead');
+    if (!el || typeof gsap === 'undefined') return;
+
+    const text = el.textContent.trim();
+
+    // Wrap each word: outer clip, inner animatable span
+    el.innerHTML = text.split(' ').map(word =>
+      `<span style="display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:0.1em"><span class="sh-word" style="display:inline-block">${word}</span></span>`
+    ).join(' ');
+
+    const words = el.querySelectorAll('.sh-word');
+    gsap.set(words, { y: '110%', opacity: 0 });
+
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      once: true,
+      onEnter: () => {
+        gsap.to(words, {
+          y: 0,
+          opacity: 1,
+          duration: 0.75,
+          stagger: 0.09,
+          ease: 'power3.out',
+          delay: 0.2,
+        });
+      },
+    });
+  }
+
+  /* =============================================
+     WHO WE WORK WITH — accordion
+  ============================================= */
+  function initWWWW() {
+    const items = Array.from(document.querySelectorAll('.wwww-item'));
+    if (!items.length) return;
+
+    items.forEach(item => {
+      const trigger = item.querySelector('.wwww-trigger');
+      if (!trigger) return;
+
+      trigger.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+
+        // Close all
+        items.forEach(i => {
+          i.classList.remove('open');
+          const t = i.querySelector('.wwww-trigger');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        });
+
+        // Open clicked (unless it was already open — toggle off)
+        if (!isOpen) {
+          item.classList.add('open');
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  }
+
+  /* =============================================
      INIT
   ============================================= */
   function init() {
@@ -782,8 +1042,12 @@
     initReveals();
     initHero();
     initHeroPulses();
+    initCtaPulses();
     initHeroStack();
     initBentoGallery();
+    initBentoPulses();
+    initSubheadReveal();
+    initWWWW();
     initCaseGallery();
     initClipReveals();
     initCounters();

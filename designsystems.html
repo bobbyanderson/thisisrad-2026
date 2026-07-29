@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Systems That Scale — Case Study</title>
+  <meta name="description" content="How design systems evolve from component libraries into products that scale teams and businesses — a four-year multi-brand partnership with Native Instruments, and enterprise CMS design at Forrit.">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('rad-theme') || 'dark')</script>
+</head>
+<body>
+
+<div id="pt-wrap" aria-hidden="true"></div>
+<div id="cursor"></div>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="This is RAD">
+          <path d="M35.1289 36.9176H13.3203V15.1198L35.1289 36.9176ZM15.1201 35.1178H30.7822L15.1201 19.4635V35.1178ZM16.1045 12.3854C20.3126 8.17724 27.1815 8.19872 31.3896 12.4069C35.5977 16.6149 35.5976 23.4614 31.3896 27.6696L29.7539 29.3053C14.1424 13.6938 30.0813 29.6317 14.4697 14.0201L16.1045 12.3854Z" fill="#343A40"/>
+          <mask id="mask0_2161_111" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="17" width="19" height="19">
+            <path d="M14.1599 36V17.52L32.1599 36H14.1599Z" fill="#C4C4C4"/>
+          </mask>
+          <g mask="url(#mask0_2161_111)">
+            <path class="logo-dot" d="M26.0399 32.52C26.0399 33.1827 25.5026 33.72 24.8399 33.72C24.1772 33.72 23.6399 33.1827 23.6399 32.52C23.6399 31.8573 24.1772 31.32 24.8399 31.32C25.5026 31.32 26.0399 31.8573 26.0399 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 28.92C22.44 29.5828 21.9028 30.12 21.24 30.12C20.5773 30.12 20.04 29.5828 20.04 28.92C20.04 28.2573 20.5773 27.72 21.24 27.72C21.9028 27.72 22.44 28.2573 22.44 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 25.32C18.8399 25.9827 18.3027 26.52 17.6399 26.52C16.9772 26.52 16.4399 25.9827 16.4399 25.32C16.4399 24.6573 16.9772 24.12 17.6399 24.12C18.3027 24.12 18.8399 24.6573 18.8399 25.32Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 32.52C22.44 33.1827 21.9028 33.72 21.24 33.72C20.5773 33.72 20.04 33.1827 20.04 32.52C20.04 31.8573 20.5773 31.32 21.24 31.32C21.9028 31.32 22.44 31.8573 22.44 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 28.92C18.8399 29.5828 18.3027 30.12 17.6399 30.12C16.9772 30.12 16.4399 29.5828 16.4399 28.92C16.4399 28.2573 16.9772 27.72 17.6399 27.72C18.3027 27.72 18.8399 28.2573 18.8399 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 32.52C18.8399 33.1827 18.3027 33.72 17.6399 33.72C16.9772 33.72 16.4399 33.1827 16.4399 32.52C16.4399 31.8573 16.9772 31.32 17.6399 31.32C18.3027 31.32 18.8399 31.8573 18.8399 32.52Z" fill="#343A40"/>
+          </g>
+        </svg>
+      </a>
+      <ul class="nav-links">
+        <li><a href="work.html" class="active">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:var(--space-3)">
+        <button id="theme-toggle" aria-label="Switch to dark mode"><span class="toggle-icon">◐</span></button>
+        <a href="about.html#contact" class="nav-cta">Let's Talk</a>
+        <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="cs-hero">
+  <div class="container">
+    <div class="cs-hero-meta">
+      <a href="work.html" class="cs-back">← All Work</a>
+      <div style="display:flex;gap:var(--space-1);flex-wrap:wrap">
+        <span class="tag">Design Systems</span>
+        <span class="tag">Enterprise</span>
+        <span class="tag">UX Strategy</span>
+        <span class="tag">Cross-functional Collaboration</span>
+      </div>
+    </div>
+    <h1 class="cs-title reveal-line"><span class="inner">Design systems that scale products, teams and businesses</span></h1>
+    <p class="cs-subtitle reveal-fade">Helping enterprise teams create consistency, reduce complexity and ship faster through design systems, UX strategy and cross-functional collaboration.</p>
+
+    <div class="cs-hero-grid reveal-up">
+      <div class="cs-stat">
+        <span class="cs-stat-label">Clients</span>
+        <span class="cs-stat-value">Native Instruments · Forrit</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-label">Disciplines</span>
+        <span class="cs-stat-value">Design Systems · UX Strategy · Workshops · Cross-functional Collaboration</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-label">Key outcome</span>
+        <span class="cs-stat-value">4+ year embedded partnership · ~€500k daily platform revenue supported</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-label">Type</span>
+        <span class="cs-stat-value">Embedded design partnership + enterprise product design</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cover -->
+<div class="cs-cover">
+  <img src="https://www.thisisrad.co/img/case-study-ni-forrit.jpg" alt="Design systems work for Native Instruments and Forrit"
+       onerror="this.parentElement.style.background='var(--bg-alt)';this.remove()">
+</div>
+
+<!-- Body -->
+<div class="cs-body">
+  <div class="container">
+    <div class="cs-body-inner">
+
+      <!-- Side nav -->
+      <nav class="cs-nav" aria-label="Case study sections">
+        <span class="cs-nav-label">Contents</span>
+        <ul class="cs-nav-list">
+          <li><a href="#overview">Overview</a></li>
+          <div class="cs-nav-divider"></div>
+          <li><a href="#ni-problem">Native Instruments</a></li>
+          <li><a href="#ni-system">The System</a></li>
+          <li><a href="#ni-outcome">Impact</a></li>
+          <div class="cs-nav-divider"></div>
+          <li><a href="#forrit-problem">Forrit</a></li>
+          <li><a href="#forrit-approach">The Approach</a></li>
+          <li><a href="#forrit-outcome">Impact</a></li>
+          <div class="cs-nav-divider"></div>
+          <li><a href="#how-i-work">How I Work</a></li>
+        </ul>
+      </nav>
+
+      <!-- Content -->
+      <div class="cs-content">
+
+        <!-- Overview -->
+        <div class="cs-section" id="overview">
+          <span class="cs-section-label">Overview</span>
+          <h2>A design system isn't just a library of components.</h2>
+          <p>Done well, it's an operating system for product teams. It creates consistency for customers, gives engineering a shared language, and enables organisations to move faster without sacrificing quality.</p>
+          <p>Across multiple enterprise organisations, I've helped evolve design systems beyond UI libraries into products that support thousands of users, multiple brands and teams distributed across different countries.</p>
+          <p>The two engagements that follow sit at different points on that spectrum. Native Instruments needed a multi-brand system built to support a fast-growing portfolio of acquisitions. Forrit needed one evolved within the tighter constraints of an existing component library, Material UI. Both needed the same thing underneath: a system that let the organisation move faster without losing consistency or quality.</p>
+        </div>
+
+        <!-- Native Instruments -->
+        <div class="cs-section" id="ni-problem">
+          <div class="project-badge">Project 01 — Native Instruments</div>
+          <h2>Scaling a global ecommerce platform across multiple brands.</h2>
+          <p>Initially brought in to conduct a UX audit of the Native Instruments webshop, the engagement quickly expanded into a long-term design partnership spanning more than four years.</p>
+          <p>The original project focused on identifying friction throughout the purchasing journey — analysing customer behaviour, uncovering usability barriers and redesigning key parts of the experience to improve conversion and reduce unnecessary complexity.</p>
+        </div>
+
+        <div class="cs-section" id="ni-system">
+          <span class="cs-section-label">The System</span>
+          <h2>From component library to enterprise design system.</h2>
+          <p>As Native Instruments migrated to a custom CMS, my role evolved from solving individual UX problems to helping define the design system that would underpin multiple brands, teams and products across the company's growing portfolio.</p>
+          <p>The goal wasn't to create another component library. It was to build a shared foundation that allowed every brand to maintain its own identity while giving product and engineering teams consistent patterns, accessibility standards and reusable building blocks.</p>
+
+          <h3>Publishing tools for a global partner network</h3>
+          <p>As Native Instruments grew, its customer support teams were spending an increasing amount of time managing software and instrument updates on behalf of third-party developers. Valuable time and resources were being diverted away from helping customers and into administrative work — at a real cost to the business.</p>
+          <p>Working closely with stakeholders, product managers and engineering across Germany, I helped design a new self-service publishing platform that let third-party partners fully manage their own products — software, updates and content — through a purpose-built workflow, rather than relying on internal teams to publish on their behalf.</p>
+          <p>The project involved discovery workshops, stakeholder interviews, user journey mapping and usability testing to understand the needs of both internal teams and external partners — balancing business objectives with technical constraints throughout.</p>
+          <p>The result wasn't simply a new internal tool. It freed support staff to focus on supporting users and cut the time it took customers to get a response — happier staff, happier partners and happier customers.</p>
+
+          <div class="cs-pullquote">
+            <p>The best product work isn't always customer-facing. Sometimes the biggest impact comes from removing friction behind the scenes — giving teams the tools they need to work faster and allowing them to spend more time creating value for customers.</p>
+          </div>
+        </div>
+
+        <div class="cs-section" id="ni-outcome">
+          <span class="cs-section-label">Impact</span>
+          <h2>A product ecosystem, not just a storefront.</h2>
+          <p>What started as a webshop audit became a multi-year foundation supporting Native Instruments' commercial platform, its brand portfolio and the partners publishing into it.</p>
+
+          <div class="cs-metrics">
+            <div class="cs-metric">
+              <div class="cs-metric-num">4+ yrs</div>
+              <div class="cs-metric-label">Embedded design partnership</div>
+            </div>
+            <div class="cs-metric">
+              <div class="cs-metric-num">~€500k</div>
+              <div class="cs-metric-label">Daily platform revenue supported outside major campaigns</div>
+            </div>
+            <div class="cs-metric">
+              <div class="cs-metric-num">Multi-brand</div>
+              <div class="cs-metric-label">Enterprise design system across the brand portfolio</div>
+            </div>
+          </div>
+
+          <ul class="cs-outcomes">
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Supported migration to a custom CMS</span></li>
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Self-service publishing platform that shifted ownership to third-party partners</span></li>
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Freed customer support teams to spend more time helping customers</span></li>
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Reduced response times for customers, partners and staff alike</span></li>
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Workshops &amp; user testing across Germany-based teams</span></li>
+          </ul>
+        </div>
+
+        <hr class="project-divider">
+
+        <!-- Forrit -->
+        <div class="cs-section" id="forrit-problem">
+          <div class="project-badge">Project 02 — Forrit</div>
+          <h2>Designing an enterprise CMS around the people using it.</h2>
+          <p>Forrit develops enterprise CMS software used by organisations with complex publishing needs. What began as a defined engagement has grown into an ongoing partnership of close to two years, embedded alongside their product and delivery teams.</p>
+          <p>The challenge wasn't creating a visually impressive interface — it was designing a product that balanced the needs of clients, delivery teams and engineers, while remaining scalable as the platform evolved.</p>
+        </div>
+
+        <div class="cs-section" id="forrit-approach">
+          <span class="cs-section-label">The Approach</span>
+          <h2>Building within Material UI, not around it.</h2>
+          <p>Working within the constraints of Material UI, I helped extend and refine the product's design language without sacrificing usability or brand identity. Material UI became a foundation rather than a constraint — allowing new functionality to feel familiar, consistent and easier to build.</p>
+
+          <h3>Reducing cognitive load across complex workflows</h3>
+          <p>Every feature was approached from the user's perspective — questioning interactions, simplifying navigation, improving content hierarchy, refining language and restructuring journeys to make difficult tasks feel considerably easier.</p>
+          <p>Working closely with delivery teams and engineers meant solutions could be validated early, balancing user needs with technical feasibility while continually evolving the product through iterative improvements.</p>
+          <p>The result was a platform that became easier to learn, more efficient to use and significantly more consistent as new functionality was introduced.</p>
+        </div>
+
+        <div class="cs-section" id="forrit-outcome">
+          <span class="cs-section-label">Impact</span>
+          <h2>Consistency that held as the platform grew.</h2>
+          <p>The design system work meant new features could ship without eroding the coherence of the product — a constraint most enterprise platforms lose as they scale.</p>
+
+          <div class="cs-metrics">
+            <div class="cs-metric">
+              <div class="cs-metric-num">~2 yrs</div>
+              <div class="cs-metric-label">Embedded design partnership, and counting</div>
+            </div>
+          </div>
+
+          <ul class="cs-outcomes">
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Design system evolution built on Material UI</span></li>
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Reduced cognitive load across complex workflows</span></li>
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Improved interaction patterns, IA &amp; UX writing</span></li>
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Bridged client, delivery &amp; engineering needs</span></li>
+          </ul>
+        </div>
+
+        <!-- How I Work -->
+        <div class="cs-section" id="how-i-work">
+          <span class="cs-section-label">How I Work</span>
+          <h2>Large organisations rarely struggle for lack of talent.</h2>
+          <p>They struggle because products evolve faster than systems, teams become disconnected, and every new feature introduces more inconsistency. My role is often to connect those moving parts.</p>
+          <p>Every organisation is different, but the role I play is often the same: bringing clarity where products, people and priorities have become disconnected. Sometimes that means facilitating workshops and shaping strategy. Other times it's designing systems, improving workflows or working alongside engineering to turn ideas into products that scale. The deliverables change. The objective doesn't.</p>
+          <p>That flexibility works both ways. I'm equally comfortable embedded within a larger design and product team — as I was at Native Instruments and Forrit, working alongside PMs, engineers and delivery leads — or brought in as the sole designer on a project, owning research, design and stakeholder conversations end to end. The size of the team changes; the approach doesn't.</p>
+
+          <ul class="cs-outcomes">
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Create products that are easier to use</span></li>
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Build systems that are easier to maintain</span></li>
+            <li class="cs-outcome-item"><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 4.5L6.5 11.5L2.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Help teams make better decisions, faster</span></li>
+          </ul>
+
+          <p>The best design systems don't just make interfaces more consistent — they make organisations more effective. They reduce duplication, speed up delivery, improve collaboration and create better experiences for customers. That's why I enjoy working on them. They're never just about design. They're about helping businesses scale with confidence.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Next -->
+<div class="cs-next">
+  <div class="container">
+    <div class="cs-next-inner">
+      <div>
+        <span class="cs-next-label">Next project</span>
+        <h3 class="cs-next-title">Money Dashboard — Fintech at speed</h3>
+      </div>
+      <a href="fintech.html" class="btn btn-arrow">View project</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 This is RAD</span>
+      <ul class="footer-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="mailto:hello@thisisrad.co">Email</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="main.js"></script>
+<script>
+  const sections = document.querySelectorAll('.cs-section[id]');
+  const navLinks = document.querySelectorAll('.cs-nav-list a');
+  if (sections.length && navLinks.length) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector(`.cs-nav-list a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+    sections.forEach(s => obs.observe(s));
+  }
+</script>
+</body>
+</html>
