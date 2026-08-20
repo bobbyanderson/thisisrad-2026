@@ -522,11 +522,15 @@
   }
 
   /* =============================================
-     HERO "through design" BADGE REVEAL
-     "through" pops in first; "design" starts hidden directly behind
+     HERO "Design partner" BADGE REVEAL
+     "Design" pops in first; "partner" starts hidden directly behind
      it (same spot, lower z-index) and slides out to its natural slot
      beside it. Widths are measured at runtime so the offset always
-     matches the rendered word, whatever font loads.
+     matches the rendered word, whatever font loads. (Selectors below
+     still target .hero-stack-word--through/--design — those class
+     names are legacy and no longer describe the copy.)
+     Once both badges have settled, .hero-headline-sub ("for ambitious
+     companies") fades up as the final step in the same timeline.
   ============================================= */
   function initHeroStack() {
     const stack = document.querySelector('.hero-stack');
@@ -535,11 +539,13 @@
     const design = stack.querySelector('.hero-stack-word--design');
     if (!through || !design) return;
 
+    const sub = document.querySelector('.hero-headline-sub');
     const delay = loader ? 0.8 : 0;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (reduced) {
       gsap.set([through, design], { opacity: 1 });
+      if (sub) gsap.set(sub, { opacity: 1, y: 0 });
       return;
     }
 
@@ -549,9 +555,13 @@
     gsap.set(through, { opacity: 0, scale: 0.6, rotate: -14 });
     gsap.set(design, { opacity: 0, scale: 0.6, rotate: -14, x: -(throughWidth + gap) });
 
-    gsap.timeline({ delay: delay + 0.9 })
+    const tl = gsap.timeline({ delay: delay + 0.9 })
       .to(through, { opacity: 1, scale: 1, rotate: -4, duration: 0.55, ease: 'back.out(1.8)' })
       .to(design, { opacity: 1, x: 0, scale: 1, rotate: 3, duration: 0.6, ease: 'power3.out' }, '+=0.12');
+
+    if (sub) {
+      tl.to(sub, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '+=0.15');
+    }
   }
 
   /* =============================================

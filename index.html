@@ -79,13 +79,13 @@
     .hero-content {
       position: relative;
       z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
     }
 
     .hero-eyebrow {
-      font-size: var(--size-xs);
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      color: var(--ink-muted);
       margin-bottom: 0;
       opacity: 0;
       transform: translateY(12px);
@@ -99,12 +99,16 @@
       margin-bottom: var(--space-8);
     }
 
-    /* "through" / "design" badges — replace the literal words with
-       angled colour-block labels that animate in on load. "through"
-       appears first; "design" slides out from behind it. Sits on its
-       own line below "Building better companies" (see the <br> in the
-       markup). Background uses the site's accent colour so it matches
-       the highlight tone used elsewhere. See initHeroStack() in main.js. */
+    /* "Design" / "partner" badges — replace the literal words with
+       angled colour-block labels that animate in on load. "Design"
+       appears first; "partner" slides out from behind it. Sits on its
+       own line above "for ambitious companies" (see the <br> in the
+       markup, and .hero-headline-sub below — that line fades in only
+       once these badges have finished animating). Background uses the
+       site's accent colour so it matches the highlight tone used
+       elsewhere. See initHeroStack() in main.js.
+       (Class names hero-stack-word--through/--design are legacy but
+       still wired up in main.js — no functional meaning tied to the text.) */
     .hero-stack {
       position: relative;
       display: inline-flex;
@@ -142,6 +146,16 @@
       .hero-stack-word { font-size: 0.8em; }
     }
 
+    /* Second headline line — same size/weight as the rest of the
+       headline (no badge treatment). Starts hidden and is faded in by
+       initHeroStack() in main.js once the "Design"/"partner" badges
+       above have finished animating. */
+    .hero-headline-sub {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
     .sr-only {
       position: absolute;
       width: 1px; height: 1px;
@@ -153,10 +167,10 @@
     }
 
     .hero-lower {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-8);
-      align-items: flex-end;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-6);
       margin-top: var(--space-8);
     }
     .hero-sub {
@@ -164,7 +178,8 @@
       line-height: 1.65;
       font-weight: 400;
       color: var(--ink-muted);
-      max-width: 100%;
+      max-width: 60ch;
+      margin: 0 auto;
       opacity: 0;
       transform: translateY(20px);
     }
@@ -173,12 +188,12 @@
     .hero-cta {
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
+      align-items: center;
       gap: var(--space-3);
       opacity: 0;
       transform: translateY(20px);
     }
-    .hero-cta-row { display: flex; gap: var(--space-2); }
+    .hero-cta-row { display: flex; justify-content: center; gap: var(--space-2); }
 
     .hero-meta {
       margin-top: var(--space-12);
@@ -213,8 +228,7 @@
     }
 
     @media (max-width: 768px) {
-      .hero-lower { grid-template-columns: 1fr; gap: var(--space-6); }
-      .hero-cta { align-items: flex-start; }
+      .hero-lower { gap: var(--space-6); }
       .hero-cta-row { flex-wrap: wrap; }
     }
 
@@ -612,9 +626,13 @@
        CTA BAND
     ============================================= */
     .cta-band {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
       padding: var(--space-24) 0;
       overflow: hidden;
       position: relative;
+      box-sizing: border-box;
     }
     .cta-bg-svg {
       position: absolute;
@@ -643,7 +661,7 @@
       stroke: url(#cta-pulse-fade);
       stroke-linecap: round;
     }
-    .cta-band > .container { position: relative; z-index: 1; }
+    .cta-band > .container { position: relative; z-index: 1; width: 100%; }
     .cta-band-inner {
       display: grid;
       grid-template-columns: 1fr;
@@ -671,7 +689,12 @@
       color: var(--bg);
     }
     .cta-heading .inner em { font-style: italic; color: var(--accent); }
-    @media (max-width: 768px) { .cta-band-inner { grid-template-columns: 1fr; } }
+    .cta-copy { max-width: 60%; }
+    @media (max-width: 768px) {
+      .cta-band-inner { grid-template-columns: 1fr; }
+      .cta-copy { max-width: none; }
+      .cta-band .btn-accent { width: 100%; justify-content: center; }
+    }
 
     /* Bento gallery — scrubbed (GSAP Flip + ScrollTrigger) */
     .bento-section { position: relative; overflow: hidden; }
@@ -917,8 +940,8 @@
     @media (max-width: 768px) {
       body > section:nth-of-type(2),
       .work-section,
-      .globe-hp,
-      .cta-band { margin-top: 48px; }
+      .globe-hp { margin-top: 48px; }
+      .cta-band { margin-top: 0; }
     }
   </style>
 </head>
@@ -1031,27 +1054,27 @@
   <div class="container">
     <div class="hero-content">
 
-      <p class="hero-eyebrow label">This is RAD</p>
+      <p class="hero-eyebrow label">Become the benchmark</p>
 
       <h1 class="hero-headline display-1">
-        Building better companies<br>
         <span class="hero-stack" aria-hidden="true">
-          <span class="hero-stack-word hero-stack-word--through">through</span>
-          <span class="hero-stack-word hero-stack-word--design">design</span>
+          <span class="hero-stack-word hero-stack-word--through">Design</span>
+          <span class="hero-stack-word hero-stack-word--design">partner</span>
         </span>
-        <span class="sr-only">through design.</span>
+        <span class="sr-only">Design partner</span>
+        <br>
+        <span class="hero-headline-sub">for ambitious companies</span>
       </h1>
 
       <div class="hero-lower">
         <div class="hero-sub">
-          <p>RAD is a <strong>design studio</strong> helping startups and technology companies build <strong>brands, products and digital experiences</strong> that are made to grow.</p>
-          <p style="margin-top:var(--space-3)">From identity and websites to product interfaces and design systems, we bring <strong>strategy, creativity and craft</strong> together to help companies <strong>move forward</strong>.</p>
+          <p>RAD partners with <strong>startups and technology companies</strong> to create <strong>brands, websites and digital products</strong>.</p>
         </div>
         <div class="hero-cta">
           <div class="hero-cta-row">
             <a href="work.html" class="btn btn-arrow">View Work</a>
           </div>
-          <p class="body-sm text-muted" style="text-align:right">Based in the UK · Available for new projects</p>
+          <p class="body-sm text-muted" style="text-align:center">Based in the UK · Available for new projects</p>
         </div>
       </div>
 
@@ -1437,7 +1460,7 @@
         <span class="reveal-line"><span class="inner">Ready when you are.</span></span>
       </h2>
       <div class="reveal-fade">
-        <p class="body-lg" style="max-width:60%;margin:0 auto var(--space-4);color:var(--ink)">If you think RAD might be the right fit for your team, we'd love to hear about your project and where you're hoping to take it.</p>
+        <p class="body-lg cta-copy" style="margin:0 auto var(--space-4);color:var(--ink)">If you think RAD might be the right fit for your team, we'd love to hear about your project and where you're hoping to take it.</p>
         <a href="about.html#contact" class="btn btn-arrow btn-accent">Start your project</a>
       </div>
     </div>
