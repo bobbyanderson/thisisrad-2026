@@ -1,42 +1,41 @@
-<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="320" height="320" fill="#F8F9FA"/>
-<circle cx="122" cy="92" r="28" fill="black" fill-opacity="0.1"/>
-<ellipse cx="240" cy="160" rx="28" ry="28" transform="rotate(-180 240 160)" fill="black" fill-opacity="0.1"/>
-<ellipse cx="122" cy="228" rx="28" ry="28" transform="rotate(-180 122 228)" fill="black" fill-opacity="0.1"/>
-<circle cx="118" cy="88" r="28" stroke="#495057" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 10"/>
-<ellipse cx="236" cy="156" rx="28" ry="28" transform="rotate(-180 236 156)" stroke="#495057" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 10"/>
-<ellipse cx="118" cy="224" rx="28" ry="28" transform="rotate(-180 118 224)" stroke="#495057" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 10"/>
-<mask id="mask0_2203_155" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="48" y="128" width="56" height="56">
-<circle cx="76" cy="156" r="28" fill="white"/>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="70.9818" cy="40.4364" r="21.3818" fill="black" fill-opacity="0.1"/>
+<ellipse cx="162.618" cy="101.527" rx="21.3818" ry="21.3818" transform="rotate(-180 162.618 101.527)" fill="black" fill-opacity="0.1"/>
+<ellipse cx="70.9818" cy="162.618" rx="21.3818" ry="21.3818" transform="rotate(-180 70.9818 162.618)" fill="black" fill-opacity="0.1"/>
+<circle cx="67.9272" cy="37.3818" r="21.3818" stroke="#495057" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 10"/>
+<ellipse cx="159.564" cy="98.4727" rx="21.3818" ry="21.3818" transform="rotate(-180 159.564 98.4727)" stroke="#495057" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 10"/>
+<ellipse cx="67.9273" cy="159.564" rx="21.3818" ry="21.3818" transform="rotate(-180 67.9273 159.564)" stroke="#495057" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 10"/>
+<mask id="mask0_2203_155" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="16" y="77" width="43" height="43">
+<circle cx="37.3818" cy="98.4727" r="21.3818" fill="white"/>
 </mask>
 <g mask="url(#mask0_2203_155)">
-<line x1="57.1161" y1="174.116" x2="94.1161" y2="137.116" stroke="#495057" stroke-width="2.5"/>
-<line x1="49.1161" y1="166.116" x2="86.1161" y2="129.116" stroke="#495057" stroke-width="2.5"/>
-<line x1="41.1161" y1="158.116" x2="78.1161" y2="121.116" stroke="#495057" stroke-width="2.5"/>
-<line x1="65.1161" y1="182.116" x2="102.116" y2="145.116" stroke="#495057" stroke-width="2.5"/>
-<line x1="73.1161" y1="190.116" x2="110.116" y2="153.116" stroke="#495057" stroke-width="2.5"/>
+<line x1="22.7525" y1="112.098" x2="51.007" y2="83.8434" stroke="#495057" stroke-width="2.5"/>
+<line x1="16.6433" y1="105.989" x2="44.8979" y2="77.7343" stroke="#495057" stroke-width="2.5"/>
+<line x1="10.5343" y1="99.8797" x2="38.7889" y2="71.6252" stroke="#495057" stroke-width="2.5"/>
+<line x1="28.8616" y1="118.207" x2="57.1161" y2="89.9525" stroke="#495057" stroke-width="2.5"/>
+<line x1="34.9706" y1="124.316" x2="63.2252" y2="96.0616" stroke="#495057" stroke-width="2.5"/>
 </g>
-<circle cx="76" cy="156" r="26.75" stroke="#495057" stroke-width="2.5"/>
-<mask id="mask1_2203_155" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="166" y="60" width="56" height="56">
-<circle cx="194" cy="88" r="28" fill="white"/>
+<circle cx="37.3818" cy="98.4727" r="20.1318" stroke="#495057" stroke-width="2.5"/>
+<mask id="mask1_2203_155" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="107" y="16" width="44" height="43">
+<circle cx="129.018" cy="37.3818" r="21.3818" fill="white"/>
 </mask>
 <g mask="url(#mask1_2203_155)">
-<line x1="175.116" y1="106.116" x2="212.116" y2="69.1161" stroke="#495057" stroke-width="2.5"/>
-<line x1="167.116" y1="98.1161" x2="204.116" y2="61.1161" stroke="#495057" stroke-width="2.5"/>
-<line x1="159.116" y1="90.1161" x2="196.116" y2="53.1161" stroke="#495057" stroke-width="2.5"/>
-<line x1="183.116" y1="114.116" x2="220.116" y2="77.1161" stroke="#495057" stroke-width="2.5"/>
-<line x1="191.116" y1="122.116" x2="228.116" y2="85.1161" stroke="#495057" stroke-width="2.5"/>
+<line x1="114.389" y1="51.007" x2="142.643" y2="22.7525" stroke="#495057" stroke-width="2.5"/>
+<line x1="108.28" y1="44.8979" x2="136.534" y2="16.6434" stroke="#495057" stroke-width="2.5"/>
+<line x1="102.171" y1="38.7888" x2="130.425" y2="10.5343" stroke="#495057" stroke-width="2.5"/>
+<line x1="120.498" y1="57.1161" x2="148.752" y2="28.8616" stroke="#495057" stroke-width="2.5"/>
+<line x1="126.607" y1="63.2252" x2="154.861" y2="34.9706" stroke="#495057" stroke-width="2.5"/>
 </g>
-<circle cx="194" cy="88" r="26.75" stroke="#495057" stroke-width="2.5"/>
-<mask id="mask2_2203_155" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="166" y="196" width="56" height="56">
-<circle cx="194" cy="224" r="28" fill="white"/>
+<circle cx="129.018" cy="37.3818" r="20.1318" stroke="#495057" stroke-width="2.5"/>
+<mask id="mask2_2203_155" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="107" y="138" width="44" height="43">
+<circle cx="129.018" cy="159.564" r="21.3818" fill="white"/>
 </mask>
 <g mask="url(#mask2_2203_155)">
-<line x1="175.116" y1="242.116" x2="212.116" y2="205.116" stroke="#495057" stroke-width="2.5"/>
-<line x1="167.116" y1="234.116" x2="204.116" y2="197.116" stroke="#495057" stroke-width="2.5"/>
-<line x1="159.116" y1="226.116" x2="196.116" y2="189.116" stroke="#495057" stroke-width="2.5"/>
-<line x1="183.116" y1="250.116" x2="220.116" y2="213.116" stroke="#495057" stroke-width="2.5"/>
-<line x1="191.116" y1="258.116" x2="228.116" y2="221.116" stroke="#495057" stroke-width="2.5"/>
+<line x1="114.389" y1="173.189" x2="142.643" y2="144.934" stroke="#495057" stroke-width="2.5"/>
+<line x1="108.28" y1="167.08" x2="136.534" y2="138.825" stroke="#495057" stroke-width="2.5"/>
+<line x1="102.171" y1="160.971" x2="130.425" y2="132.716" stroke="#495057" stroke-width="2.5"/>
+<line x1="120.498" y1="179.298" x2="148.752" y2="151.043" stroke="#495057" stroke-width="2.5"/>
+<line x1="126.607" y1="185.407" x2="154.861" y2="157.152" stroke="#495057" stroke-width="2.5"/>
 </g>
-<circle cx="194" cy="224" r="26.75" stroke="#495057" stroke-width="2.5"/>
+<circle cx="129.018" cy="159.564" r="20.1318" stroke="#495057" stroke-width="2.5"/>
 </svg>

@@ -3,7 +3,7 @@
    Global Stylesheet
    ============================================ */
 
-@import url('https://rsms.me/inter/inter.css');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
 
 /* ---- Reset & Base ---- */
 *, *::before, *::after {
@@ -25,8 +25,8 @@
   --hero-line: color-mix(in srgb, var(--accent) 50%, var(--ink) 50%); /* hero circuit-line stroke */
 
   /* ---- Typography ---- */
-  --f-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --f-display: 'InterDisplay', 'Inter', system-ui, -apple-system, sans-serif;
+  --f-sans: 'Geist', system-ui, -apple-system, sans-serif;
+  --f-display: 'Geist', system-ui, -apple-system, sans-serif;
 
   /* ---- Type scale ---- */
   --size-xs:   0.75rem;
@@ -49,6 +49,7 @@
   --space-8:  4rem;
   --space-12: 6rem;
   --space-16: 8rem;
+  --space-20: 10rem;
   --space-24: 12rem;
 
   /* ---- Easing ---- */
@@ -93,9 +94,6 @@
 }
 .page-grid-col:first-child { border-left: 1px solid var(--rule); }
 
-@media (max-width: 768px) {
-  .page-grid-inner { grid-template-columns: repeat(4, 1fr); }
-}
 
 html {
   font-size: 16px;
@@ -188,6 +186,59 @@ body {
   #cursor { display: none; }
 }
 
+/* ---- Scroll viewport glow ----
+   A subtle rainbow-spectrum rim light around the edges of the
+   viewport, faded in only while the page is actively scrolling
+   (see initScrollGlow() in main.js). Sits above regular content
+   but below the page-loader/cursor/transition overlays so it never
+   competes with them. */
+.scroll-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  /* --sg-hue is updated on every scroll event (main.js) so the
+     spectrum visibly travels along the rim while scrolling. */
+  filter: hue-rotate(var(--sg-hue, 0deg));
+}
+
+.scroll-glow.is-active {
+  opacity: 0.34;
+}
+
+.sg-edge {
+  position: absolute;
+  filter: blur(30px);
+}
+
+.sg-top,
+.sg-bottom {
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to right,
+    hsl(0, 80%, 55%), hsl(70, 80%, 55%), hsl(140, 80%, 55%),
+    hsl(210, 80%, 55%), hsl(280, 80%, 55%));
+}
+
+.sg-top { top: -30px; }
+.sg-bottom { bottom: -30px; }
+
+.sg-left,
+.sg-right {
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  background: linear-gradient(to bottom,
+    hsl(0, 80%, 55%), hsl(70, 80%, 55%), hsl(140, 80%, 55%),
+    hsl(210, 80%, 55%), hsl(280, 80%, 55%));
+}
+
+.sg-left { left: -30px; }
+.sg-right { right: -30px; }
+
 /* ---- Typography ---- */
 h1, h2, h3, h4, h5 {
   font-family: var(--f-display);
@@ -244,9 +295,9 @@ h1, h2, h3, h4, h5 {
   letter-spacing: 0;
   line-height: 1em;
   padding: 8px 12px;
-  border: 1px solid color-mix(in srgb, var(--ink-muted) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink-muted) 20%, transparent);
   border-radius: 100px;
-  background: color-mix(in srgb, var(--ink-muted) 15%, transparent);
+  background: color-mix(in srgb, var(--ink-muted) 10%, transparent);
   color: var(--ink-muted);
 }
 
@@ -262,9 +313,6 @@ a {
   padding: 0 var(--space-6);
 }
 
-@media (max-width: 768px) {
-  .container { padding: 0 var(--space-3); }
-}
 
 .grid-12 {
   display: grid;
@@ -358,6 +406,9 @@ nav.scrolled::before {
 .nav-link-mobile { display: none; }
 
 .nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
   font-size: var(--size-sm);
   font-weight: 500;
   color: var(--bg) !important;
@@ -365,12 +416,18 @@ nav.scrolled::before {
   border: 1px solid var(--accent);
   padding: 0.5rem 1.25rem;
   border-radius: 2rem;
-  transition: background 0.2s ease, border-color 0.2s ease !important;
+  transition: background 0.2s ease, border-color 0.2s ease, filter 0.35s ease !important;
+  /* Growing spectrum glow on hover — colour set by initCtaGlow() (main.js)
+     from hover position along the same red->violet spectrum used
+     elsewhere on the site. filter paints behind the button's own fill,
+     so it needs no pseudo-element layering to stay clear of it. */
+  filter: drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent);
 }
 
-.nav-cta::after { display: none !important; }
-
 .nav-cta:hover {
+  filter:
+    drop-shadow(0 0 6px var(--spectrum-color, var(--accent)))
+    drop-shadow(0 0 20px var(--spectrum-color, var(--accent)));
   background: var(--ink) !important;
   color: var(--bg) !important;
   border-color: var(--ink) !important;
@@ -407,8 +464,12 @@ nav.scrolled::before {
   object-fit: contain;
 }
 
+/* The invert targets the main mark only (direct-child path) — the
+   logo-dot paths inside the masked <g> are excluded so their fill can be
+   driven directly by JS (scroll-spectrum flicker, white at rest) without
+   the invert filter distorting those colours. */
 [data-theme="dark"] .nav-logo img,
-[data-theme="dark"] .nav-logo svg {
+[data-theme="dark"] .logo-svg > path {
   filter: invert(1) brightness(1.2);
 }
 
@@ -442,33 +503,6 @@ nav.scrolled::before {
   transform: translateY(-3px) rotate(-45deg);
 }
 
-@media (max-width: 768px) {
-  .nav-menu-btn { display: flex; }
-  .nav-links {
-    position: fixed;
-    inset: 0;
-    left: 0;
-    transform: none; /* reset the desktop centering transform (left:50%/translateX(-50%)) */
-    background: var(--bg);
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: var(--space-4);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-    z-index: 99;
-    padding: 0 var(--space-4);
-    text-align: center;
-  }
-  .nav-links.open {
-    opacity: 1;
-    pointer-events: all;
-  }
-  .nav-links a { font-size: var(--size-lg); }
-  .nav-link-mobile { display: block; }
-  .nav-link-mobile .nav-cta { margin-top: var(--space-2); }
-}
 
 /* ---- Rule / Divider ---- */
 .rule {
@@ -539,9 +573,6 @@ section {
   padding: var(--space-24) 0;
 }
 
-@media (max-width: 768px) {
-  section { padding: var(--space-12) 0; }
-}
 
 /* ---- Section intro ---- */
 .section-intro {
@@ -623,10 +654,6 @@ footer {
   color: var(--ink-faint);
 }
 
-@media (max-width: 640px) {
-  .footer-inner { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
-  .footer-links { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
-}
 
 /* ---- Utility ---- */
 .text-muted   { color: var(--ink-muted); }
@@ -654,9 +681,6 @@ footer {
    Some headings use a manual <br> purely for desktop typography.
    Wrap those breaks in this class so mobile lets the text reflow
    naturally instead of forcing an awkward/clipped extra line. */
-@media (max-width: 640px) {
-  br.br-deco { display: none; }
-}
 
 /* ---- Globe canvases ----
    JS sizing sets explicit pixel width/height; if the parent shrinks
@@ -1147,3 +1171,63 @@ footer {
   .cs-stat:last-child { border-bottom: none; }
   .cs-next-inner { flex-direction: column; align-items: flex-start; }
 }
+
+/* =============================================
+   RESPONSIVE — consolidated overrides
+   (all max-width media queries for a given breakpoint
+   live in one block here instead of being scattered
+   next to each component)
+============================================= */
+
+@media (max-width: 768px) {
+  .page-grid-inner { grid-template-columns: repeat(4, 1fr); }
+
+  .container { padding: 0 var(--space-3); }
+
+  .nav-menu-btn { display: flex; }
+  .nav-links {
+    position: fixed;
+    inset: 0;
+    left: 0;
+    transform: none; /* reset the desktop centering transform (left:50%/translateX(-50%)) */
+    background: var(--bg);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 99;
+    padding: 0 var(--space-4);
+    text-align: center;
+  }
+  .nav-links.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .nav-links a { font-size: var(--size-lg); }
+  .nav-link-mobile { display: block; }
+  .nav-link-mobile .nav-cta { margin-top: var(--space-2); }
+
+  section { padding: var(--space-12) 0; }
+
+  /* Scroll viewport glow — dialled back on mobile so it doesn't
+     overwhelm a small screen: thinner, softer, and less opaque. */
+  .scroll-glow.is-active { opacity: 0.13; }
+  .sg-top, .sg-bottom { height: 40px; }
+  .sg-left, .sg-right { width: 40px; }
+  .sg-top { top: -20px; }
+  .sg-bottom { bottom: -20px; }
+  .sg-left { left: -20px; }
+  .sg-right { right: -20px; }
+  .sg-edge { filter: blur(21px); }
+}
+
+@media (max-width: 640px) {
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+  .footer-links { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+
+  br.br-deco { display: none; }
+}
+

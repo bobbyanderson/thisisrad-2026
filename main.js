@@ -7,6 +7,10 @@
   'use strict';
 
   gsap.registerPlugin(ScrollTrigger);
+  // SplitText is only loaded on pages that need it (currently just the
+  // homepage hero) — guard the registration so pages without the script
+  // tag don't throw on load.
+  if (typeof SplitText !== 'undefined') gsap.registerPlugin(SplitText);
 
   /* =============================================
      CUSTOM CURSOR
@@ -20,7 +24,7 @@
       cy += (my - cy) * 0.1;
       gsap.set(cursor, { x: cx, y: cy });
     });
-    document.querySelectorAll('a, button, .card-hover, .cs-panel').forEach(el => {
+    document.querySelectorAll('a, button, .card-hover').forEach(el => {
       el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
     });
@@ -201,10 +205,8 @@
       opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: delay + 0.3
     });
 
-    // Headline
-    gsap.to('.hero-headline', {
-      opacity: 1, y: 0, duration: 1.1, ease: 'power4.out', delay: delay + 0.4
-    });
+    // Headline — no block-level fade; initHeroTextFlip() animates it in
+    // character-by-character instead (see that function below).
 
     // Scramble tagline if present
     const scrambleEl = document.querySelector('.hero-scramble');
@@ -232,12 +234,76 @@
   }
 
   /* =============================================
+     RAINBOW SPECTRUM HELPERS
+     Shared by the hero/CTA circuit pulses and the bento gallery glow so
+     all three read from the same left-to-right spectrum: whichever
+     element sits furthest left on screen is red, furthest right is
+     violet, evenly stepped across everything in between (ROYGBIV,
+     hue 0→280). Ranking is done by *actual on-screen position*
+     (getScreenCTM for the rotated hero/CTA SVGs, getBoundingClientRect
+     for the bento grid) rather than source-order, since e.g. the hero
+     SVG is rotated 90deg via CSS so raw path coordinates don't reflect
+     what's visually leftmost.
+  ============================================= */
+  function rainbowColor(t) {
+    const hue = Math.round(Math.max(0, Math.min(1, t)) * 280);
+    return `hsl(${hue}, 80%, 55%)`;
+  }
+
+  function rainbowRank(items, getScreenX) {
+    const ranked = items.map((item, i) => ({ i, x: getScreenX(item) })).sort((a, b) => a.x - b.x);
+    const colors = new Array(items.length);
+    ranked.forEach((r, pos) => {
+      const t = ranked.length > 1 ? pos / (ranked.length - 1) : 0.5;
+      colors[r.i] = rainbowColor(t);
+    });
+    return colors;
+  }
+
+  // On-screen x of a circuit line's fanned-out tip (not its hub end,
+  // since every line clusters at the same point there and wouldn't rank).
+  function svgPathScreenX(path) {
+    const pt = path.getPointAtLength(path.getTotalLength());
+    const ctm = path.getScreenCTM && path.getScreenCTM();
+    if (ctm && typeof DOMPoint !== 'undefined') return new DOMPoint(pt.x, pt.y).matrixTransform(ctm).x;
+    return pt.x;
+  }
+
+  // One <linearGradient> per colour, replicating the original pulse-fade
+  // shape (transparent at the hub end, fully opaque by 35% along the
+  // path) but tinted to that line's rainbow colour instead of a flat
+  // accent. Returns the gradient ids, same order as `colors`.
+  function buildRainbowGradients(defs, idPrefix, colors) {
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    return colors.map((color, i) => {
+      const id = `${idPrefix}-${i}`;
+      const grad = document.createElementNS(SVG_NS, 'linearGradient');
+      grad.setAttribute('id', id);
+      grad.setAttribute('gradientUnits', 'userSpaceOnUse');
+      grad.setAttribute('x1', '0'); grad.setAttribute('y1', '0');
+      grad.setAttribute('x2', '765'); grad.setAttribute('y2', '0');
+      [['0%', '0'], ['35%', '1'], ['100%', '1']].forEach(([offset, opacity]) => {
+        const stop = document.createElementNS(SVG_NS, 'stop');
+        stop.setAttribute('offset', offset);
+        stop.setAttribute('stop-color', color);
+        stop.setAttribute('stop-opacity', opacity);
+        grad.appendChild(stop);
+      });
+      defs.appendChild(grad);
+      return id;
+    });
+  }
+
+  /* =============================================
      HERO — circuit-line pulses
      The hero background is a fan of 33 static lines (inlined SVG,
      right-aligned, coloured via --rule). On top of that, short
-     accent-coloured "pulses" travel along randomly-chosen lines, one
-     at a time at randomised intervals, from the hub out past the
-     right edge — like signals firing through a circuit/neuron map.
+     pulses travel along randomly-chosen lines, one at a time at
+     randomised intervals, from the hub out past the right edge — like
+     signals firing through a circuit/neuron map. Each line is ranked
+     by its actual on-screen left-to-right position and tinted a
+     rainbow colour accordingly (see RAINBOW SPECTRUM HELPERS above),
+     with a small colour-matched glow.
      Each pulse is a transient cloned <path> animated via the Web
      Animations API (stroke-dashoffset sliding a short dash from
      fully-before-start to fully-past-end), then removed on finish.
@@ -262,16 +328,24 @@
     const MIN_DELAY = 1400;
     const MAX_DELAY = 3200;
 
+    const colors = rainbowRank(lines, svgPathScreenX);
+    const defs = svg.querySelector('defs');
+    const gradientIds = defs ? buildRainbowGradients(defs, 'hero-pulse-rainbow', colors) : null;
+
     let timer = null;
     let running = false;
 
     function firePulse() {
-      const source = lines[Math.floor(Math.random() * lines.length)];
+      const idx = Math.floor(Math.random() * lines.length);
+      const source = lines[idx];
       const d = source.getAttribute('d');
+      const color = colors[idx];
 
       const pulse = document.createElementNS(SVG_NS, 'path');
       pulse.setAttribute('d', d);
       pulse.setAttribute('stroke-width', '1.5');
+      pulse.style.stroke = gradientIds ? `url(#${gradientIds[idx]})` : color;
+      pulse.style.filter = `drop-shadow(0 0 3px ${color})`;
       pulseGroup.appendChild(pulse);
 
       const total = pulse.getTotalLength();
@@ -327,9 +401,14 @@
 
   /* =============================================
      CTA BAND — mirrored background pulses
+     Same rainbow treatment as the hero (see RAINBOW SPECTRUM HELPERS
+     above), ranked independently from this SVG's own on-screen geometry
+     — it's mirrored (rotated -90deg, not 90deg) so its left-to-right
+     order isn't assumed to match the hero's.
   ============================================= */
   function initCtaPulses() {
     const band       = document.querySelector('.cta-band');
+    const svg        = document.querySelector('.cta-bg-svg svg');
     const lineGroup  = document.querySelector('.cta-bg-lines');
     const pulseGroup = document.querySelector('.cta-bg-pulses');
     if (!band || !lineGroup || !pulseGroup) return;
@@ -345,14 +424,22 @@
     const MIN_DELAY  = 1400;
     const MAX_DELAY  = 3200;
 
+    const colors = rainbowRank(lines, svgPathScreenX);
+    const defs = svg ? svg.querySelector('defs') : null;
+    const gradientIds = defs ? buildRainbowGradients(defs, 'cta-pulse-rainbow', colors) : null;
+
     let timer   = null;
     let running = false;
 
     function firePulse() {
-      const source = lines[Math.floor(Math.random() * lines.length)];
+      const idx    = Math.floor(Math.random() * lines.length);
+      const source = lines[idx];
+      const color  = colors[idx];
       const pulse  = document.createElementNS(SVG_NS, 'path');
       pulse.setAttribute('d', source.getAttribute('d'));
       pulse.setAttribute('stroke-width', '1.5');
+      pulse.style.stroke = gradientIds ? `url(#${gradientIds[idx]})` : color;
+      pulse.style.filter = `drop-shadow(0 0 3px ${color})`;
       pulseGroup.appendChild(pulse);
 
       const total = pulse.getTotalLength();
@@ -394,9 +481,12 @@
      BENTO GALLERY — pulsing border effect
      Each .bento-gallery-item gets an inline SVG overlay containing:
        • a base <rect> (stroke: var(--rule), replaces the removed CSS border)
-       • a pulse <rect> (stroke: var(--accent)) with a short dash that
-         travels around the perimeter via stroke-dashoffset animation,
-         fired at random intervals per item so they're staggered.
+       • a pulse <rect> with a short dash that travels around the
+         perimeter via stroke-dashoffset animation, fired at random
+         intervals per item so they're staggered.
+     Items are ranked by their on-screen horizontal centre and tinted
+     from the same rainbow spectrum as the hero/CTA pulses (see RAINBOW
+     SPECTRUM HELPERS above), with a small colour-matched glow.
      Pauses when the gallery is off-screen / tab hidden; skipped for
      prefers-reduced-motion.
   ============================================= */
@@ -406,18 +496,25 @@
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const SVG_NS = 'http://www.w3.org/2000/svg';
-    const DASH     = 32;    // pulse segment length — shorter so it enters/exits quickly
-    const MIN_DUR  = 6400;  // animation travel time (ms) — slow movement
-    const MAX_DUR  = 10000;
+    const DASH     = 52;    // pulse segment length
+    const MIN_DUR  = 5000;  // animation travel time (ms) — one full lap of the perimeter
+    const MAX_DUR  = 8000;
     const MIN_GAP  = 1500;  // pause between pulses on the same item (ms)
     const MAX_GAP  = 5000;
+    const CORNER_R = 10;    // rounds the travelling pulse's corners so it curves through
+                             // turns instead of snapping around a hard right angle —
+                             // softer, closer to the hero's smooth curved lines
+
+    const colors = rainbowRank(items, item => {
+      const r = item.getBoundingClientRect();
+      return r.left + r.width / 2;
+    });
 
     // Build an SVG overlay for every item (measures at init, layout is stable by this point)
-    const data = items.map(item => {
+    const data = items.map((item, i) => {
       const w = item.clientWidth  || 320;
       const h = item.clientHeight || 200;
-      // Perimeter of the inset-1 rect (stroke sits fully inside the overflow:hidden box)
-      const P = 2 * ((w - 2) + (h - 2));
+      const color = colors[i];
 
       const svg = document.createElementNS(SVG_NS, 'svg');
       svg.setAttribute('class', 'bento-item-svg');
@@ -429,6 +526,7 @@
       const base = document.createElementNS(SVG_NS, 'rect');
       base.setAttribute('x', '1'); base.setAttribute('y', '1');
       base.setAttribute('width', w - 2); base.setAttribute('height', h - 2);
+      base.setAttribute('rx', CORNER_R); base.setAttribute('ry', CORNER_R);
       base.setAttribute('fill', 'none');
       base.style.stroke = 'var(--rule)';
       base.setAttribute('stroke-width', '1');
@@ -438,16 +536,25 @@
       const pulse = document.createElementNS(SVG_NS, 'rect');
       pulse.setAttribute('x', '1'); pulse.setAttribute('y', '1');
       pulse.setAttribute('width', w - 2); pulse.setAttribute('height', h - 2);
+      pulse.setAttribute('rx', CORNER_R); pulse.setAttribute('ry', CORNER_R);
       pulse.setAttribute('fill', 'none');
       pulse.setAttribute('stroke-width', '1.5');
       pulse.setAttribute('stroke-linecap', 'round');
-      pulse.style.stroke = 'var(--accent)';
+      pulse.style.stroke = color;
+      // Layered blur reads as a softer, more diffuse glow than one tight shadow
+      pulse.style.filter = `drop-shadow(0 0 2px ${color}) drop-shadow(0 0 6px ${color})`;
+      svg.appendChild(pulse);
+
+      // Must be attached to the document before measuring — getTotalLength()
+      // throws on a detached/non-rendered element. Measured after the rx is
+      // applied so it accounts for the rounded corners automatically (a
+      // plain 2*(w+h) formula would overshoot now the corners are curved).
+      item.appendChild(svg);
+      const P = pulse.getTotalLength();
       pulse.style.strokeDasharray = `${DASH} ${P}`;
       pulse.style.strokeDashoffset = `${P + DASH}`;  // start fully hidden
       pulse.style.opacity = '0';  // invisible until animation begins; animations override this
-      svg.appendChild(pulse);
 
-      item.appendChild(svg);
       return { pulse, P, anim: null };
     });
 
@@ -464,15 +571,21 @@
       // Random perimeter entry point so each pulse appears on a different edge/corner
       const r  = Math.floor(Math.random() * d.P);
       const s0 = reach - r;          // start dashoffset (offset so pulse enters at arc-length r)
-      const s1 = s0 - 2 * reach;    // end dashoffset (same total travel = 2*reach)
-      // Four keyframe stops with proportional dashoffset movement throughout (easing:linear):
-      // opacity: 0→1 over first 12%, holds 1 to 70%, fades 1→0 over last 30% (bell curve)
+      const s1 = s0 - reach;         // end dashoffset — exactly one full lap of travel, then fades out
+      // strokeDashoffset is only given at offset 0 and 1, so it interpolates
+      // in a straight line across the *entire* duration — one constant speed
+      // from entry to exit. Opacity gets its own, separate set of stops
+      // (0→1 over first 12%, holds 1 to 70%, fades 1→0 over last 30%) for
+      // the fade in/out, independent of the dash's travel — the two used to
+      // share the same offsets, which forced the dash to lag through the
+      // 12%–70% hold (only 16% of the travel in 58% of the time) then rush
+      // through the last 30%, reading as a slow-down in the middle.
       const anim  = d.pulse.animate(
         [
-          { strokeDashoffset: s0,              opacity: 0, offset: 0    },
-          { strokeDashoffset: s0 - 0.24*reach, opacity: 1, offset: 0.12 },
-          { strokeDashoffset: s1 + 0.60*reach, opacity: 1, offset: 0.70 },
-          { strokeDashoffset: s1,              opacity: 0, offset: 1    },
+          { strokeDashoffset: s0, opacity: 0, offset: 0    },
+          {                       opacity: 1, offset: 0.12 },
+          {                       opacity: 1, offset: 0.70 },
+          { strokeDashoffset: s1, opacity: 0, offset: 1    },
         ],
         { duration: dur, easing: 'linear', fill: 'forwards' }
       );
@@ -522,152 +635,40 @@
   }
 
   /* =============================================
-     HERO "Design partner" BADGE REVEAL
-     "Design" pops in first; "partner" starts hidden directly behind
-     it (same spot, lower z-index) and slides out to its natural slot
-     beside it. Widths are measured at runtime so the offset always
-     matches the rendered word, whatever font loads. (Selectors below
-     still target .hero-stack-word--through/--design — those class
-     names are legacy and no longer describe the copy.)
-     Once both badges have settled, .hero-headline-sub ("for ambitious
-     companies") fades up as the final step in the same timeline.
+     HERO HEADLINE — line reveal
+     Adapted from GSAP's "Animate Text" demo
+     (https://demos.gsap.com/demo/animate-text/ —
+     https://codepen.io/GreenSock/pen/xxmaNYj), specifically its
+     "Lines" variant: each line tips up into place (rotationX, with a
+     pulled-back transformOrigin for a subtle 3D fold) while fading
+     in, staggered line by line. Subtler than a per-character flip,
+     and it naturally suits copy that's already broken across lines
+     ("A design partner" / "for ambitious companies") — each
+     .hero-line is treated as one SplitText "line". Needs `perspective`
+     on the headline (see .hero-headline in index.html) for the
+     rotationX fold to read as 3D rather than a flat vertical squash.
   ============================================= */
-  function initHeroStack() {
-    const stack = document.querySelector('.hero-stack');
-    if (!stack) return;
-    const through = stack.querySelector('.hero-stack-word--through');
-    const design = stack.querySelector('.hero-stack-word--design');
-    if (!through || !design) return;
+  function initHeroTextFlip() {
+    if (typeof SplitText === 'undefined') return;
+    const lines = document.querySelectorAll('.hero-headline .hero-line');
+    if (!lines.length) return;
 
-    const sub = document.querySelector('.hero-headline-sub');
     const delay = loader ? 0.8 : 0;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const split = SplitText.create(lines, { type: 'lines' });
 
     if (reduced) {
-      gsap.set([through, design], { opacity: 1 });
-      if (sub) gsap.set(sub, { opacity: 1, y: 0 });
+      gsap.set(split.lines, { opacity: 1, rotationX: 0 });
       return;
     }
 
-    const gap = parseFloat(getComputedStyle(stack).gap) || 0;
-    const throughWidth = through.getBoundingClientRect().width;
-
-    gsap.set(through, { opacity: 0, scale: 0.6, rotate: -14 });
-    gsap.set(design, { opacity: 0, scale: 0.6, rotate: -14, x: -(throughWidth + gap) });
-
-    const tl = gsap.timeline({ delay: delay + 0.9 })
-      .to(through, { opacity: 1, scale: 1, rotate: -4, duration: 0.55, ease: 'back.out(1.8)' })
-      .to(design, { opacity: 1, x: 0, scale: 1, rotate: 3, duration: 0.6, ease: 'power3.out' }, '+=0.12');
-
-    if (sub) {
-      tl.to(sub, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '+=0.15');
-    }
-  }
-
-  /* =============================================
-     SELECTED WORK GALLERY — horizontal scrub-pin
-     (rebuilt from scratch: isolated gsap.context so it can be
-     cleanly torn down/recreated, a debounced resize rebuild instead
-     of firing on every resize tick, refreshPriority so it always
-     recalculates AFTER sections above it — e.g. the bento gallery's
-     pin — have settled, and an explicit refresh once panel images
-     finish loading so layout shifts from late-loading images don't
-     leave the trigger's start/end based on stale geometry.)
-  ============================================= */
-  function initCaseGallery() {
-    const pin = document.querySelector('.cs-gallery-pin');
-    const track = document.getElementById('cs-gallery-track');
-    if (!pin || !track) return;
-
-    let ctx;
-    let panelImages = [];
-
-    const build = () => {
-      if (ctx) ctx.revert();
-
-      ctx = gsap.context(() => {
-        const getDistance = () => track.scrollWidth - window.innerWidth;
-
-        // Header travels with the pinned unit, so we only need to clear the nav
-        const topOffset = () => {
-          const nav = document.querySelector('nav');
-          return nav ? nav.offsetHeight : 64;
-        };
-
-        panelImages = Array.from(track.querySelectorAll('.cs-panel-img')).map(img => ({
-          img,
-          panel: img.closest('.cs-panel'),
-        }));
-
-        gsap.to(track, {
-          x: () => -getDistance(),
-          ease: 'none',
-          scrollTrigger: {
-            id: 'cs-gallery',
-            trigger: pin,
-            pin: true,
-            anticipatePin: 1,
-            scrub: 1,
-            start: () => 'top ' + (topOffset() - 16) + 'px',
-            end: () => '+=' + getDistance(),
-            invalidateOnRefresh: true,
-            refreshPriority: -1,
-            onUpdate: self => {
-              const fill = document.getElementById('cs-progress');
-              if (fill) gsap.set(fill, { scaleX: self.progress, transformOrigin: 'left center' });
-
-              // Parallax images inside panels
-              panelImages.forEach(({ img, panel }) => {
-                const r = panel.getBoundingClientRect();
-                const centerOffset = (r.left + r.width / 2 - window.innerWidth / 2) / window.innerWidth;
-                gsap.set(img, { x: centerOffset * -60, scale: 1.12 });
-              });
-            }
-          }
-        });
-      });
-    };
-
-    build();
-
-    // Debounced rebuild on resize — avoids thrashing the pin/transform
-    // calculations on rapid-fire resize events (e.g. mobile address-bar
-    // show/hide while scrolling, which fires synthetic resize events).
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(build, 200);
-    });
-
-    // Case-study images can finish loading (or fail, via onerror) after
-    // ScrollTrigger has already measured layout. Once they've all settled,
-    // force a refresh so this trigger's start/end — and everything below
-    // it on the page — reflect final geometry rather than a placeholder-era
-    // measurement.
-    const imgs = track.querySelectorAll('img.cs-panel-img');
-    let pending = imgs.length;
-    if (pending) {
-      imgs.forEach(img => {
-        const settle = () => { pending -= 1; if (pending <= 0) ScrollTrigger.refresh(); };
-        if (img.complete) settle();
-        else {
-          img.addEventListener('load', settle, { once: true });
-          img.addEventListener('error', settle, { once: true });
-        }
-      });
-    }
-  }
-
-  /* =============================================
-     CLIP-PATH REVEALS
-  ============================================= */
-  function initClipReveals() {
-    document.querySelectorAll('.clip-reveal').forEach(el => {
-      gsap.fromTo(el,
-        { clipPath: 'inset(100% 0% 0% 0%)' },
-        { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.0, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 88%' } }
-      );
+    gsap.timeline({ delay: delay + 0.4 }).from(split.lines, {
+      rotationX: -100,
+      transformOrigin: '50% 50% -160px',
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power3',
+      stagger: 0.25
     });
   }
 
@@ -764,18 +765,32 @@
     const dots = document.querySelectorAll('.logo-dot');
     if (!dots.length) return;
 
+    // Same red→violet spectrum (hue 0→280) used everywhere else on the
+    // site. While scrolling, each fade dip also jumps to a fresh spectrum
+    // colour; at rest the dots settle back to white. In light mode "white"
+    // would vanish against the off-white background, so at rest we fall
+    // back to the mark's own dark-grey (matching the rest of the logo,
+    // which is excluded from this colour cycling — see .logo-svg > path
+    // in styles.css — so the invert filter doesn't distort it).
+    function idleColor() {
+      return document.documentElement.getAttribute('data-theme') === 'dark' ? '#ffffff' : '#343A40';
+    }
+    gsap.set(dots, { fill: idleColor() });
+
     let scrolling = false;
     let idleTimer;
 
     function flickerLoop(dot) {
       gsap.to(dot, {
         opacity: 0.12 + Math.random() * 0.3,
+        fill: rainbowColor(Math.random()),
         duration: 0.25 + Math.random() * 0.45,
         ease: 'sine.inOut',
         delay: 0.3 + Math.random() * 1.4,
         onComplete: () => {
           gsap.to(dot, {
             opacity: 1,
+            fill: rainbowColor(Math.random()),
             duration: 0.25 + Math.random() * 0.45,
             ease: 'sine.inOut',
             onComplete: () => { if (scrolling) flickerLoop(dot); }
@@ -792,9 +807,17 @@
       clearTimeout(idleTimer);
       idleTimer = setTimeout(() => {
         scrolling = false;
-        gsap.to(dots, { opacity: 1, duration: 0.4, ease: 'power2.out', overwrite: true });
+        gsap.to(dots, { opacity: 1, fill: idleColor(), duration: 0.4, ease: 'power2.out', overwrite: true });
       }, 350);
     }, { passive: true });
+
+    // Keep the dots correct if the theme is toggled while at rest.
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        if (!scrolling) gsap.to(dots, { fill: idleColor(), duration: 0.3, overwrite: 'auto' });
+      });
+    }
   }
 
   /* =============================================
@@ -852,7 +875,7 @@
   ============================================= */
   function initMagneticButtons() {
     if (!window.matchMedia('(hover: hover)').matches) return;
-    document.querySelectorAll('.btn, .cs-panel-arrow').forEach(btn => {
+    document.querySelectorAll('.btn').forEach(btn => {
       btn.addEventListener('mousemove', e => {
         const r  = btn.getBoundingClientRect();
         const dx = (e.clientX - (r.left + r.width  / 2)) * 0.3;
@@ -863,6 +886,131 @@
         gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.55)', overwrite: 'auto' });
       });
     });
+  }
+
+  /* =============================================
+     HERO EYEBROW — static rainbow glow + colour-matched hover hotspot
+     + subtle wobble
+     The rainbow band itself (::before, a static linear left-to-right
+     spectrum) is pure CSS (see .hero-eyebrow::before/::after above
+     index.html's hero styles). This supplies the three things CSS can't:
+     the cursor position (driving --mx/--my, which the ::after hotspot
+     reads to grow wherever the mouse actually is), which exact colour
+     of the spectrum to grow it in (--spectrum-color, sampled with the
+     same rainbowColor() used by the hero/CTA pulses and bento gallery,
+     so a hover on the left of the pill glows red, the right glows
+     violet, matching the band underneath), and a gentle wobble — same
+     magnetic-follow mechanic as initMagneticButtons() above, but a much
+     smaller multiplier so the pill nudges rather than chases the cursor.
+  ============================================= */
+  function initEyebrowGlow() {
+    if (!window.matchMedia('(hover: hover)').matches) return;
+    const eyebrow = document.querySelector('.hero-eyebrow');
+    if (!eyebrow) return;
+
+    eyebrow.addEventListener('mousemove', e => {
+      const r = eyebrow.getBoundingClientRect();
+      const t = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+      const mx = t * 100;
+      const my = ((e.clientY - r.top) / r.height) * 100;
+      eyebrow.style.setProperty('--mx', `${mx}%`);
+      eyebrow.style.setProperty('--my', `${my}%`);
+      eyebrow.style.setProperty('--spectrum-color', rainbowColor(t));
+
+      const dx = (e.clientX - (r.left + r.width  / 2)) * 0.12;
+      const dy = (e.clientY - (r.top  + r.height / 2)) * 0.12;
+      gsap.to(eyebrow, { x: dx, y: dy, duration: 0.35, ease: 'power2.out', overwrite: 'auto' });
+    });
+    eyebrow.addEventListener('mouseleave', () => {
+      // Clears the hotspot layer so it doesn't linger at its last colour —
+      // the :hover rule only fades the glow's overall size/opacity back
+      // down, it doesn't touch this variable.
+      eyebrow.style.setProperty('--spectrum-color', 'transparent');
+      gsap.to(eyebrow, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.55)', overwrite: 'auto' });
+    });
+  }
+
+  /* =============================================
+     CTA GLOW — growing spectrum glow on hover, for the site's main
+     calls to action ("Book a call" / .nav-cta, and "Start your project"
+     / .btn-accent). Same rainbowColor() mapping as the eyebrow glow
+     above (hover position -> hue), but implemented as a drop-shadow
+     filter rather than layered backgrounds: these buttons already paint
+     their own opaque fill, and .btn-arrow's ::after is taken by the
+     arrow glyph, so there's no free pseudo-element to layer a fill over
+     a background-based glow the way the eyebrow does. A filter applies
+     to the whole rendered element and paints behind it like a real drop
+     shadow, so it needs no extra layering to stay clear of the button's
+     own fill and text.
+  ============================================= */
+  function initCtaGlow() {
+    if (!window.matchMedia('(hover: hover)').matches) return;
+    const ctas = document.querySelectorAll('.nav-cta, .btn-accent');
+
+    ctas.forEach(cta => {
+      cta.addEventListener('mousemove', e => {
+        const r = cta.getBoundingClientRect();
+        const t = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
+        cta.style.setProperty('--spectrum-color', rainbowColor(t));
+      });
+      cta.addEventListener('mouseleave', () => {
+        cta.style.setProperty('--spectrum-color', 'transparent');
+      });
+    });
+  }
+
+  /* =============================================
+     SCROLL VIEWPORT GLOW
+     A subtle rainbow-spectrum glow that rims the edges of the
+     viewport while the page is being scrolled, fading back out to
+     nothing at rest. Built once here (rather than in markup) so it
+     applies site-wide off a single shared script, matching the
+     scroll/idle-timeout pattern used by initLogoDots() above.
+  ============================================= */
+  function initScrollGlow() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const glow = document.createElement('div');
+    glow.className = 'scroll-glow';
+    glow.setAttribute('aria-hidden', 'true');
+    glow.innerHTML =
+      '<i class="sg-edge sg-top"></i>' +
+      '<i class="sg-edge sg-bottom"></i>' +
+      '<i class="sg-edge sg-left"></i>' +
+      '<i class="sg-edge sg-right"></i>';
+    document.body.appendChild(glow);
+
+    // Hue-rotate the whole rim in step with scroll position, so the
+    // spectrum visibly travels while scrolling rather than sitting
+    // static — freezes at its current hue the moment scrolling stops.
+    function updateHue() {
+      const hue = (window.scrollY * 0.08) % 360;
+      glow.style.setProperty('--sg-hue', hue + 'deg');
+    }
+    updateHue();
+
+    // Require a deliberate scroll before the glow shows itself — a
+    // small nudge (under ACTIVATE_DELTA px net movement from wherever
+    // the user last came to rest) doesn't trigger it.
+    const ACTIVATE_DELTA = 40;
+    let baseY = window.scrollY;
+    let idleTimer;
+
+    window.addEventListener('scroll', () => {
+      updateHue();
+
+      const y = window.scrollY;
+      if (!glow.classList.contains('is-active')) {
+        if (Math.abs(y - baseY) < ACTIVATE_DELTA) return;
+        glow.classList.add('is-active');
+      }
+
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        glow.classList.remove('is-active');
+        baseY = window.scrollY; // reset the baseline for the next activation
+      }, 400);
+    }, { passive: true });
   }
 
   /* =============================================
@@ -1053,13 +1201,11 @@
     initHero();
     initHeroPulses();
     initCtaPulses();
-    initHeroStack();
+    initHeroTextFlip();
     initBentoGallery();
     initBentoPulses();
     initSubheadReveal();
     initWWWW();
-    initCaseGallery();
-    initClipReveals();
     initCounters();
     initPillarHovers();
     initWorkCards();
@@ -1068,6 +1214,9 @@
     initLogoDots();
     initCaseStudyCards();
     initMagneticButtons();
+    initEyebrowGlow();
+    initCtaGlow();
+    initScrollGlow();
     initScrollVelocity();
     initSplitReveals();
   }
