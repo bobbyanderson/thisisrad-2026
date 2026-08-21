@@ -152,8 +152,8 @@ body {
 }
 
 #page-loader .loader-mark {
-  width: 48px;
-  height: 48px;
+  width: 96px;
+  height: 96px;
   opacity: 0;
   filter: invert(1) brightness(1.2);
 }
@@ -411,13 +411,24 @@ nav.scrolled::before {
   object-fit: contain;
 }
 
-/* The invert targets the main mark only (direct-child path) — the
-   logo-dot paths inside the masked <g> are excluded so their fill can be
-   driven directly by JS (scroll-spectrum flicker, white at rest) without
-   the invert filter distorting those colours. */
-[data-theme="dark"] .nav-logo img,
-[data-theme="dark"] .logo-svg > path {
+/* Nav logo image (legacy/fallback — the header logo itself is always
+   inline SVG, never an <img>, but this stays in case one is used
+   elsewhere). filter is the only option for a raster/embedded image. */
+[data-theme="dark"] .nav-logo img {
   filter: invert(1) brightness(1.2);
+}
+
+/* Main mark colour — direct-child path only; the logo-dot paths inside
+   the masked <g> are excluded so their fill can be driven directly by
+   JS (scroll-spectrum flicker, white at rest) without this rule
+   fighting it. Uses a plain `fill` rather than a CSS filter: applying
+   `filter: invert()` to an individual nested SVG <path> (rather than
+   the <svg> element itself) is unreliable on mobile Safari, which is
+   why the mark could show up in its unthemed dark colour on phones
+   even though it inverted correctly everywhere it was tested here. A
+   direct themed fill has no such cross-browser gap. */
+[data-theme="dark"] .logo-svg > path {
+  fill: var(--ink);
 }
 
 /* Mobile nav */
