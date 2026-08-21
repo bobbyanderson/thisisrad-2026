@@ -845,7 +845,7 @@
 
 
       .wwww-subhead { padding: var(--space-16) var(--space-3); }
-      .logo-marquee-label { font-size: 2.7em; }
+      .logo-marquee-label { font-size: 2.4em; }
 
 
       body > section:nth-of-type(2),
@@ -856,6 +856,15 @@
     }
 
     @media (max-width: 560px) {
+      /* Nudges the whole hero block down 40px — transform rather than
+         margin/padding, so it doesn't fight the flex justify-content:
+         center on .hero (which would only pass through half of any
+         added margin/padding) and composes cleanly with the GSAP
+         scroll-linked parallax already applied to this same element
+         (initHeroTextFlip() in main.js animates yPercent on scroll;
+         GSAP layers that onto whatever transform is already present). */
+      .hero-content { transform: translateY(40px); }
+
       .hero-headline.display-1 { font-size: 2.5em; font-weight: 400; line-height: 100%; }
       .hero-sub { font-size: var(--size-sm); }
       .hero-cta .body-sm { font-size: var(--size-sm); }
@@ -881,7 +890,7 @@
 
 <!-- Page loader -->
 <div id="page-loader">
-  <img class="loader-mark" src="logo.svg" alt="This is RAD">
+  <img class="loader-mark" src="Logo.svg" alt="This is RAD">
 </div>
 
 <!-- Page transition overlay -->
