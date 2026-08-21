@@ -186,59 +186,6 @@ body {
   #cursor { display: none; }
 }
 
-/* ---- Scroll viewport glow ----
-   A subtle rainbow-spectrum rim light around the edges of the
-   viewport, faded in only while the page is actively scrolling
-   (see initScrollGlow() in main.js). Sits above regular content
-   but below the page-loader/cursor/transition overlays so it never
-   competes with them. */
-.scroll-glow {
-  position: fixed;
-  inset: 0;
-  z-index: 9990;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-  /* --sg-hue is updated on every scroll event (main.js) so the
-     spectrum visibly travels along the rim while scrolling. */
-  filter: hue-rotate(var(--sg-hue, 0deg));
-}
-
-.scroll-glow.is-active {
-  opacity: 0.34;
-}
-
-.sg-edge {
-  position: absolute;
-  filter: blur(30px);
-}
-
-.sg-top,
-.sg-bottom {
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: linear-gradient(to right,
-    hsl(0, 80%, 55%), hsl(70, 80%, 55%), hsl(140, 80%, 55%),
-    hsl(210, 80%, 55%), hsl(280, 80%, 55%));
-}
-
-.sg-top { top: -30px; }
-.sg-bottom { bottom: -30px; }
-
-.sg-left,
-.sg-right {
-  top: 0;
-  bottom: 0;
-  width: 60px;
-  background: linear-gradient(to bottom,
-    hsl(0, 80%, 55%), hsl(70, 80%, 55%), hsl(140, 80%, 55%),
-    hsl(210, 80%, 55%), hsl(280, 80%, 55%));
-}
-
-.sg-left { left: -30px; }
-.sg-right { right: -30px; }
-
 /* ---- Typography ---- */
 h1, h2, h3, h4, h5 {
   font-family: var(--f-display);
@@ -1211,17 +1158,6 @@ footer {
   .nav-link-mobile .nav-cta { margin-top: var(--space-2); }
 
   section { padding: var(--space-12) 0; }
-
-  /* Scroll viewport glow — dialled back on mobile so it doesn't
-     overwhelm a small screen: thinner, softer, and less opaque. */
-  .scroll-glow.is-active { opacity: 0.13; }
-  .sg-top, .sg-bottom { height: 40px; }
-  .sg-left, .sg-right { width: 40px; }
-  .sg-top { top: -20px; }
-  .sg-bottom { bottom: -20px; }
-  .sg-left { left: -20px; }
-  .sg-right { right: -20px; }
-  .sg-edge { filter: blur(21px); }
 }
 
 @media (max-width: 640px) {

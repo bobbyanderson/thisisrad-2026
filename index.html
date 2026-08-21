@@ -775,6 +775,45 @@
       .hero-cta-row { flex-wrap: wrap; }
 
 
+      /* Bento gallery — a dedicated single-column mobile layout,
+         rather than the desktop 3-column grid scaled down (which
+         squashed each tile to ~32.5vw and made the placeholder
+         labels unreadable). Tile heights alternate tall/short for
+         some visual rhythm as you scroll past it.
+
+         The scroll-driven Flip animation (initBentoGallery() in
+         main.js) reads actual rendered element positions rather
+         than grid structure, so a different column/row count here
+         needs no JS changes — it just flips from a different
+         starting arrangement. Item 5 is the hero tile that expands
+         to fill the viewport at the end of the scrub (mirroring
+         item 3's role in the desktop layout); the row heights in
+         the --final override are tuned so its rendered box lands
+         on exactly 0→100vh, and the surrounding rows are weighted
+         so the content above and below the hero stays balanced
+         (4 rows before it vs 3 after), keeping it centred. */
+      .bento-gallery--bento {
+        grid-template-columns: 100vw;
+        grid-template-rows: 13vh 9vh 13vh 9vh 13vh 9vh 13vh 9vh;
+        gap: 1vh;
+      }
+      .bento-gallery--bento .bento-gallery-item:nth-child(1) { grid-area: 1 / 1 / 2 / 2; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(2) { grid-area: 2 / 1 / 3 / 2; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(3) { grid-area: 3 / 1 / 4 / 2; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(4) { grid-area: 4 / 1 / 5 / 2; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(5) { grid-area: 5 / 1 / 6 / 2; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(6) { grid-area: 6 / 1 / 7 / 2; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(7) { grid-area: 7 / 1 / 8 / 2; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(8) { grid-area: 8 / 1 / 9 / 2; }
+
+      .bento-gallery--final.bento-gallery--bento {
+        grid-template-columns: 100vw;
+        grid-template-rows: 14.75vh 14.75vh 14.75vh 14.75vh 100vh 20vh 20vh 20vh;
+        gap: 1vh;
+        align-content: center;
+      }
+
+
       .stats-grid { grid-template-columns: 1fr; }
       .stat-block { border-right: none; border-bottom: 1px solid var(--rule); padding: var(--space-6) 0 !important; }
       .stat-block:last-child { border-bottom: none; }

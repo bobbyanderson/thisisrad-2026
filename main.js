@@ -960,60 +960,6 @@
   }
 
   /* =============================================
-     SCROLL VIEWPORT GLOW
-     A subtle rainbow-spectrum glow that rims the edges of the
-     viewport while the page is being scrolled, fading back out to
-     nothing at rest. Built once here (rather than in markup) so it
-     applies site-wide off a single shared script, matching the
-     scroll/idle-timeout pattern used by initLogoDots() above.
-  ============================================= */
-  function initScrollGlow() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const glow = document.createElement('div');
-    glow.className = 'scroll-glow';
-    glow.setAttribute('aria-hidden', 'true');
-    glow.innerHTML =
-      '<i class="sg-edge sg-top"></i>' +
-      '<i class="sg-edge sg-bottom"></i>' +
-      '<i class="sg-edge sg-left"></i>' +
-      '<i class="sg-edge sg-right"></i>';
-    document.body.appendChild(glow);
-
-    // Hue-rotate the whole rim in step with scroll position, so the
-    // spectrum visibly travels while scrolling rather than sitting
-    // static — freezes at its current hue the moment scrolling stops.
-    function updateHue() {
-      const hue = (window.scrollY * 0.08) % 360;
-      glow.style.setProperty('--sg-hue', hue + 'deg');
-    }
-    updateHue();
-
-    // Require a deliberate scroll before the glow shows itself — a
-    // small nudge (under ACTIVATE_DELTA px net movement from wherever
-    // the user last came to rest) doesn't trigger it.
-    const ACTIVATE_DELTA = 40;
-    let baseY = window.scrollY;
-    let idleTimer;
-
-    window.addEventListener('scroll', () => {
-      updateHue();
-
-      const y = window.scrollY;
-      if (!glow.classList.contains('is-active')) {
-        if (Math.abs(y - baseY) < ACTIVATE_DELTA) return;
-        glow.classList.add('is-active');
-      }
-
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => {
-        glow.classList.remove('is-active');
-        baseY = window.scrollY; // reset the baseline for the next activation
-      }, 400);
-    }, { passive: true });
-  }
-
-  /* =============================================
      SCROLL VELOCITY SKEW
   ============================================= */
   function initScrollVelocity() {
@@ -1216,7 +1162,6 @@
     initMagneticButtons();
     initEyebrowGlow();
     initCtaGlow();
-    initScrollGlow();
     initScrollVelocity();
     initSplitReveals();
   }
