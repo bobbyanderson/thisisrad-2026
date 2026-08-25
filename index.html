@@ -756,6 +756,29 @@
     .logo-marquee-item img { filter: invert(1); }
     [data-theme="dark"] .logo-marquee-item img { filter: none; }
 
+    /* Native Instruments — a much wider/shorter mark than the other
+       logos (766x35 natural), so the shared max-height:40px cap left it
+       barely visible once max-width:240px kicked in to keep it in
+       check. Sized on its own terms instead: fixed height, width free
+       to run wider than the other logos, ratio preserved via auto. */
+    .logo-marquee-item img.logo-native {
+      max-width: none;
+      max-height: none;
+      height: 32px;
+      width: auto;
+    }
+
+    /* Attis, Cigna, Glen Garioch, Nile, Prudential, Save the Children —
+       boosted taller than the shared 40px cap; max-width lifted too so
+       ratio stays exact (Save the Children's natural ratio would
+       otherwise just clip against the 240px cap at this height). */
+    .logo-marquee-item img.logo-tall {
+      max-width: none;
+      max-height: none;
+      height: 50px;
+      width: auto;
+    }
+
     /* Extra breathing room between homepage sections */
     .bento-section { margin-top: 0; }
     body > section:nth-of-type(2) { margin-top: 120px; } /* How I Work */
@@ -775,42 +798,61 @@
       .hero-cta-row { flex-wrap: wrap; }
 
 
-      /* Bento gallery — a dedicated single-column mobile layout,
-         rather than the desktop 3-column grid scaled down (which
-         squashed each tile to ~32.5vw and made the placeholder
-         labels unreadable). Tile heights alternate tall/short for
-         some visual rhythm as you scroll past it.
+      /* Bento gallery — a 2-column mobile layout: two square tiles
+         side by side, then one full-width "large" tile, repeating,
+         with the very last tile (item 8) as the hero that scroll-
+         scrubs to fill the screen.
+
+           Row 1: [01] [02]   <- squares
+           Row 2: [   03   ]  <- large
+           Row 3: [04] [05]   <- squares
+           Row 4: [   06   ]  <- large
+           Row 5: [07]        <- square, alone
+           Row 6: [   08   ]  <- large, HERO
+
+         Square tiles get an explicit width/height (so they're
+         actually square) and are centred within their grid track
+         via justify-self/align-self; large tiles are left to the
+         grid's default stretch so they fill the full row width.
+         Row heights (10vh squares / 19vh large, 6 rows + 5 gaps)
+         are tuned so all 8 tiles fit inside the 100vh wrap with a
+         little room to spare — matching the "everything visible
+         before you scroll into the pin" behaviour this gallery
+         already relied on.
 
          The scroll-driven Flip animation (initBentoGallery() in
          main.js) reads actual rendered element positions rather
-         than grid structure, so a different column/row count here
-         needs no JS changes — it just flips from a different
-         starting arrangement. Item 5 is the hero tile that expands
-         to fill the viewport at the end of the scrub (mirroring
-         item 3's role in the desktop layout); the row heights in
-         the --final override are tuned so its rendered box lands
-         on exactly 0→100vh, and the surrounding rows are weighted
-         so the content above and below the hero stays balanced
-         (4 rows before it vs 3 after), keeping it centred. */
+         than grid structure, so this layout needs no JS changes.
+
+         Item 8 is now the LAST tile, with no "after" content to
+         balance against (unlike the previous item-5 hero), so the
+         final state uses align-content: end instead of the old
+         symmetric before/after centering trick: that pins the
+         *bottom* of the whole (overflowing) grid to the bottom of
+         the 100vh wrap, so the last row — item 8, given an explicit
+         100vh height — always lands exactly on 0→100vh no matter
+         how much content precedes it. Everything before it simply
+         overflows above the top edge and is clipped by the wrap's
+         overflow:hidden. */
       .bento-gallery--bento {
-        grid-template-columns: 100vw;
-        grid-template-rows: 13vh 9vh 13vh 9vh 13vh 9vh 13vh 9vh;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 10vh 19vh 10vh 19vh 10vh 19vh;
         gap: 1vh;
       }
-      .bento-gallery--bento .bento-gallery-item:nth-child(1) { grid-area: 1 / 1 / 2 / 2; }
-      .bento-gallery--bento .bento-gallery-item:nth-child(2) { grid-area: 2 / 1 / 3 / 2; }
-      .bento-gallery--bento .bento-gallery-item:nth-child(3) { grid-area: 3 / 1 / 4 / 2; }
-      .bento-gallery--bento .bento-gallery-item:nth-child(4) { grid-area: 4 / 1 / 5 / 2; }
-      .bento-gallery--bento .bento-gallery-item:nth-child(5) { grid-area: 5 / 1 / 6 / 2; }
-      .bento-gallery--bento .bento-gallery-item:nth-child(6) { grid-area: 6 / 1 / 7 / 2; }
-      .bento-gallery--bento .bento-gallery-item:nth-child(7) { grid-area: 7 / 1 / 8 / 2; }
-      .bento-gallery--bento .bento-gallery-item:nth-child(8) { grid-area: 8 / 1 / 9 / 2; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(1) { grid-area: 1 / 1 / 2 / 2; width: 10vh; height: 10vh; justify-self: center; align-self: center; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(2) { grid-area: 1 / 2 / 2 / 3; width: 10vh; height: 10vh; justify-self: center; align-self: center; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(3) { grid-area: 2 / 1 / 3 / 3; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(4) { grid-area: 3 / 1 / 4 / 2; width: 10vh; height: 10vh; justify-self: center; align-self: center; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(5) { grid-area: 3 / 2 / 4 / 3; width: 10vh; height: 10vh; justify-self: center; align-self: center; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(6) { grid-area: 4 / 1 / 5 / 3; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(7) { grid-area: 5 / 1 / 6 / 2; width: 10vh; height: 10vh; justify-self: center; align-self: center; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(8) { grid-area: 6 / 1 / 7 / 3; }
 
       .bento-gallery--final.bento-gallery--bento {
-        grid-template-columns: 100vw;
-        grid-template-rows: 14.75vh 14.75vh 14.75vh 14.75vh 100vh 20vh 20vh 20vh;
+        grid-template-columns: repeat(2, 50vw);
+        grid-template-rows: 20vh 20vh 20vh 20vh 20vh 100vh;
         gap: 1vh;
-        align-content: center;
+        align-content: end;
       }
 
 
@@ -1091,40 +1133,40 @@
     <div class="logo-marquee-track" aria-label="Client logos">
       <!-- ── Set 1 ── -->
       <span class="logo-marquee-item"><img src="clients/acca.png" srcset="clients/acca.png 1x, clients/acca@2x.png 2x" width="235" height="60" alt="ACCA"></span>
-      <span class="logo-marquee-item"><img src="clients/attis.png" srcset="clients/attis.png 1x, clients/attis@2x.png 2x" width="108" height="80" alt="Attis"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/attis.png" srcset="clients/attis.png 1x, clients/attis@2x.png 2x" width="108" height="80" alt="Attis"></span>
       <span class="logo-marquee-item"><img src="clients/binx.png" srcset="clients/binx.png 1x, clients/binx@2x.png 2x" width="211" height="80" alt="Binx"></span>
       <span class="logo-marquee-item"><img src="clients/cahonas.png" srcset="clients/cahonas.png 1x, clients/cahonas@2x.png 2x" width="300" height="40" alt="Cahonas"></span>
       <span class="logo-marquee-item"><img src="clients/caret.png" srcset="clients/caret.png 1x, clients/caret@2x.png 2x" width="248" height="60" alt="Caret"></span>
       <span class="logo-marquee-item"><img src="clients/chunk.png" srcset="clients/chunk.png 1x, clients/chunk@2x.png 2x" width="182" height="60" alt="Chunk"></span>
-      <span class="logo-marquee-item"><img src="clients/cigna.png" srcset="clients/cigna.png 1x, clients/cigna@2x.png 2x" width="230" height="80" alt="Cigna"></span>
-      <span class="logo-marquee-item"><img src="clients/glen-garioch.png" srcset="clients/glen-garioch.png 1x, clients/glen-garioch@2x.png 2x" width="212" height="80" alt="Glen Garioch"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/cigna.png" srcset="clients/cigna.png 1x, clients/cigna@2x.png 2x" width="230" height="80" alt="Cigna"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/glen-garioch.png" srcset="clients/glen-garioch.png 1x, clients/glen-garioch@2x.png 2x" width="212" height="80" alt="Glen Garioch"></span>
       <span class="logo-marquee-item"><img src="clients/macrobert.png" srcset="clients/macrobert.png 1x, clients/macrobert@2x.png 2x" width="494" height="60" alt="MacRobert"></span>
-      <span class="logo-marquee-item"><img src="clients/Native-logo.png" srcset="clients/Native-logo.png 1x, clients/Native-logo@2x.png 2x" width="766" height="35" alt="Native"></span>
+      <span class="logo-marquee-item"><img class="logo-native" src="clients/Native-logo.png" srcset="clients/Native-logo.png 1x, clients/Native-logo@2x.png 2x" width="766" height="35" alt="Native"></span>
       <span class="logo-marquee-item"><img src="clients/natwest.png" srcset="clients/natwest.png 1x, clients/natwest@2x.png 2x" width="201" height="48" alt="NatWest"></span>
-      <span class="logo-marquee-item"><img src="clients/nile.png" srcset="clients/nile.png 1x, clients/nile@2x.png 2x" width="80" height="80" alt="Nile"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/nile.png" srcset="clients/nile.png 1x, clients/nile@2x.png 2x" width="80" height="80" alt="Nile"></span>
       <span class="logo-marquee-item"><img src="clients/portabl.png" srcset="clients/portabl.png 1x, clients/portabl@2x.png 2x" width="218" height="40" alt="Portabl"></span>
-      <span class="logo-marquee-item"><img src="clients/pru.png" srcset="clients/pru.png 1x, clients/pru@2x.png 2x" width="188" height="80" alt="Prudential"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/pru.png" srcset="clients/pru.png 1x, clients/pru@2x.png 2x" width="188" height="80" alt="Prudential"></span>
       <span class="logo-marquee-item"><img src="clients/rsno.png" srcset="clients/rsno.png 1x, clients/rsno@2x.png 2x" width="160" height="50" alt="RSNO"></span>
-      <span class="logo-marquee-item"><img src="clients/save-the-children.png" srcset="clients/save-the-children.png 1x, clients/save-the-children@2x.png 2x" width="394" height="80" alt="Save the Children"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/save-the-children.png" srcset="clients/save-the-children.png 1x, clients/save-the-children@2x.png 2x" width="394" height="80" alt="Save the Children"></span>
       <span class="logo-marquee-item"><img src="clients/symbiosis.png" srcset="clients/symbiosis.png 1x, clients/symbiosis@2x.png 2x" width="316" height="80" alt="Symbiosis"></span>
       <span class="logo-marquee-item"><img src="clients/xdesign.png" srcset="clients/xdesign.png 1x, clients/xdesign@2x.png 2x" width="294" height="40" alt="xDesign"></span>
       <!-- ── Set 2 (duplicate for seamless loop) ── -->
       <span class="logo-marquee-item" aria-hidden="true"><img src="clients/acca.png" srcset="clients/acca.png 1x, clients/acca@2x.png 2x" width="235" height="60" alt="ACCA"></span>
-      <span class="logo-marquee-item" aria-hidden="true"><img src="clients/attis.png" srcset="clients/attis.png 1x, clients/attis@2x.png 2x" width="108" height="80" alt="Attis"></span>
+      <span class="logo-marquee-item" aria-hidden="true"><img class="logo-tall" src="clients/attis.png" srcset="clients/attis.png 1x, clients/attis@2x.png 2x" width="108" height="80" alt="Attis"></span>
       <span class="logo-marquee-item" aria-hidden="true"><img src="clients/binx.png" srcset="clients/binx.png 1x, clients/binx@2x.png 2x" width="211" height="80" alt="Binx"></span>
       <span class="logo-marquee-item" aria-hidden="true"><img src="clients/cahonas.png" srcset="clients/cahonas.png 1x, clients/cahonas@2x.png 2x" width="300" height="40" alt="Cahonas"></span>
       <span class="logo-marquee-item" aria-hidden="true"><img src="clients/caret.png" srcset="clients/caret.png 1x, clients/caret@2x.png 2x" width="248" height="60" alt="Caret"></span>
       <span class="logo-marquee-item" aria-hidden="true"><img src="clients/chunk.png" srcset="clients/chunk.png 1x, clients/chunk@2x.png 2x" width="182" height="60" alt="Chunk"></span>
-      <span class="logo-marquee-item" aria-hidden="true"><img src="clients/cigna.png" srcset="clients/cigna.png 1x, clients/cigna@2x.png 2x" width="230" height="80" alt="Cigna"></span>
-      <span class="logo-marquee-item" aria-hidden="true"><img src="clients/glen-garioch.png" srcset="clients/glen-garioch.png 1x, clients/glen-garioch@2x.png 2x" width="212" height="80" alt="Glen Garioch"></span>
+      <span class="logo-marquee-item" aria-hidden="true"><img class="logo-tall" src="clients/cigna.png" srcset="clients/cigna.png 1x, clients/cigna@2x.png 2x" width="230" height="80" alt="Cigna"></span>
+      <span class="logo-marquee-item" aria-hidden="true"><img class="logo-tall" src="clients/glen-garioch.png" srcset="clients/glen-garioch.png 1x, clients/glen-garioch@2x.png 2x" width="212" height="80" alt="Glen Garioch"></span>
       <span class="logo-marquee-item" aria-hidden="true"><img src="clients/macrobert.png" srcset="clients/macrobert.png 1x, clients/macrobert@2x.png 2x" width="494" height="60" alt="MacRobert"></span>
-      <span class="logo-marquee-item" aria-hidden="true"><img src="clients/Native-logo.png" srcset="clients/Native-logo.png 1x, clients/Native-logo@2x.png 2x" width="766" height="35" alt="Native"></span>
+      <span class="logo-marquee-item" aria-hidden="true"><img class="logo-native" src="clients/Native-logo.png" srcset="clients/Native-logo.png 1x, clients/Native-logo@2x.png 2x" width="766" height="35" alt="Native"></span>
       <span class="logo-marquee-item" aria-hidden="true"><img src="clients/natwest.png" srcset="clients/natwest.png 1x, clients/natwest@2x.png 2x" width="201" height="48" alt="NatWest"></span>
-      <span class="logo-marquee-item" aria-hidden="true"><img src="clients/nile.png" srcset="clients/nile.png 1x, clients/nile@2x.png 2x" width="80" height="80" alt="Nile"></span>
+      <span class="logo-marquee-item" aria-hidden="true"><img class="logo-tall" src="clients/nile.png" srcset="clients/nile.png 1x, clients/nile@2x.png 2x" width="80" height="80" alt="Nile"></span>
       <span class="logo-marquee-item" aria-hidden="true"><img src="clients/portabl.png" srcset="clients/portabl.png 1x, clients/portabl@2x.png 2x" width="218" height="40" alt="Portabl"></span>
-      <span class="logo-marquee-item" aria-hidden="true"><img src="clients/pru.png" srcset="clients/pru.png 1x, clients/pru@2x.png 2x" width="188" height="80" alt="Prudential"></span>
+      <span class="logo-marquee-item" aria-hidden="true"><img class="logo-tall" src="clients/pru.png" srcset="clients/pru.png 1x, clients/pru@2x.png 2x" width="188" height="80" alt="Prudential"></span>
       <span class="logo-marquee-item" aria-hidden="true"><img src="clients/rsno.png" srcset="clients/rsno.png 1x, clients/rsno@2x.png 2x" width="160" height="50" alt="RSNO"></span>
-      <span class="logo-marquee-item" aria-hidden="true"><img src="clients/save-the-children.png" srcset="clients/save-the-children.png 1x, clients/save-the-children@2x.png 2x" width="394" height="80" alt="Save the Children"></span>
+      <span class="logo-marquee-item" aria-hidden="true"><img class="logo-tall" src="clients/save-the-children.png" srcset="clients/save-the-children.png 1x, clients/save-the-children@2x.png 2x" width="394" height="80" alt="Save the Children"></span>
       <span class="logo-marquee-item" aria-hidden="true"><img src="clients/symbiosis.png" srcset="clients/symbiosis.png 1x, clients/symbiosis@2x.png 2x" width="316" height="80" alt="Symbiosis"></span>
       <span class="logo-marquee-item" aria-hidden="true"><img src="clients/xdesign.png" srcset="clients/xdesign.png 1x, clients/xdesign@2x.png 2x" width="294" height="40" alt="xDesign"></span>
     </div>
