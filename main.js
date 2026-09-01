@@ -1006,6 +1006,48 @@
   }
 
   /* =============================================
+     FOOTER BLUR — fixed progressive-blur strip, present on every
+     page, pinned to the bottom of the viewport. Fades to nothing as
+     the footer scrolls into view so it never blurs the footer
+     itself — see the .footer-blur CSS comment in styles.css for how
+     the blur layers themselves work.
+  ============================================= */
+  function initFooterBlur() {
+    const strip = document.querySelector('.footer-blur');
+    const footer = document.querySelector('footer');
+    if (!strip || !footer || typeof ScrollTrigger === 'undefined') return;
+
+    let st;
+    const build = () => {
+      st && st.kill();
+      const h = strip.getBoundingClientRect().height;
+      // Cap the fade distance to the footer's own height: the footer is
+      // the last thing on the page, so if it's shorter than the strip,
+      // there isn't h px of scroll room left after its top edge passes
+      // the trigger point — using the full h unconditionally would leave
+      // the fade unable to ever quite reach 0 once you hit the bottom of
+      // the page (progress gets clamped by the page's max scroll first).
+      const footerH = footer.getBoundingClientRect().height;
+      const fade = Math.min(h, footerH);
+      st = ScrollTrigger.create({
+        trigger: footer,
+        start: 'top bottom',
+        end: `top bottom-=${fade}`,
+        scrub: true,
+        onUpdate: self => { strip.style.opacity = 1 - self.progress; }
+      });
+    };
+
+    build();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(build, 200);
+    });
+  }
+
+  /* =============================================
      STAT BLOCKS — scroll-driven line reveal
   ============================================= */
   function initStatLines() {
@@ -1027,11 +1069,14 @@
     gsap.registerPlugin(Flip);
 
     const galleryItems = galleryElement.querySelectorAll('.bento-gallery-item');
+    const wrapElement = galleryElement.parentNode;
+    const isMobileBento = () => window.innerWidth <= 768;
     let flipCtx;
 
     const build = () => {
       flipCtx && flipCtx.revert();
       galleryElement.classList.remove('bento-gallery--final');
+      wrapElement.style.height = ''; // drop any previous mobile override, back to CSS default
 
       flipCtx = gsap.context(() => {
         // Temporarily add the final (full-bleed) class to capture the end state
@@ -1039,15 +1084,34 @@
         const flipState = Flip.getState(galleryItems);
         galleryElement.classList.remove('bento-gallery--final');
 
+        let trigger = galleryElement;
+        let start = 'center center';
+
+        // Mobile: the gallery scrolls normally instead of being capped to
+        // one viewport (see the CSS comment above .bento-gallery--bento in
+        // index.html), and item 8 — the last tile, with nothing after it —
+        // is the hero. .bento-gallery-wrap's CSS height is just 'auto' on
+        // mobile, so it's grown here to (natural collapsed content height)
+        // + (one viewport), reserving exactly the scroll room the zoom
+        // needs. The pin starts the instant item 8's own natural top edge
+        // reaches the top of the viewport, so that reserved room is
+        // consumed by the scrub rather than by extra blank scrolling.
+        if (isMobileBento()) {
+          const naturalHeight = galleryElement.getBoundingClientRect().height;
+          wrapElement.style.height = (naturalHeight + window.innerHeight) + 'px';
+          trigger = galleryElement.querySelector('.bento-gallery-item:last-child');
+          start = 'top top';
+        }
+
         const flip = Flip.to(flipState, { simple: true, ease: 'expoScale(1, 5)' });
 
         gsap.timeline({
           scrollTrigger: {
-            trigger: galleryElement,
-            start: 'center center',
+            trigger: trigger,
+            start: start,
             end: '+=100%',
             scrub: true,
-            pin: galleryElement.parentNode
+            pin: wrapElement
           }
         }).add(flip);
 
@@ -1164,6 +1228,7 @@
     initCtaGlow();
     initScrollVelocity();
     initSplitReveals();
+    initFooterBlur();
   }
 
   if (document.readyState === 'loading') {

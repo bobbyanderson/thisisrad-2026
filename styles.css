@@ -612,6 +612,64 @@ footer {
   color: var(--ink-faint);
 }
 
+/* ---- Footer progressive blur ----
+   A fixed strip pinned to the bottom of the viewport, present on
+   every page, that blurs whatever content is scrolling past
+   underneath it — no colour, no content, just blur. Five layers
+   stack increasing backdrop-filter blur amounts (0.6px up to 12px),
+   each masked to a different vertical band via mask-image, so
+   together they read as one smooth, continuously-deepening blur
+   rather than a single flat wall of it (a single element can't do a
+   spatially-varying backdrop-filter, so this layered-and-masked
+   stack is the standard way to fake one).
+   initFooterBlur() in main.js fades the whole strip's opacity down
+   to 0 as the footer scrolls into view (scrubbed against the
+   footer's own position), so the footer itself is never blurred —
+   the effect only ever sits over ordinary page content above it. */
+.footer-blur {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 160px;
+  pointer-events: none;
+  z-index: 5;
+}
+.fb-layer { position: absolute; inset: 0; }
+.fb1 {
+  backdrop-filter: blur(0.6px);
+  -webkit-backdrop-filter: blur(0.6px);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 0%, #000 92%, transparent 100%);
+}
+.fb2 {
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 55%, transparent 80%);
+  mask-image: linear-gradient(to top, #000 0%, #000 55%, transparent 80%);
+}
+.fb3 {
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 35%, transparent 60%);
+  mask-image: linear-gradient(to top, #000 0%, #000 35%, transparent 60%);
+}
+.fb4 {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 20%, transparent 42%);
+  mask-image: linear-gradient(to top, #000 0%, #000 20%, transparent 42%);
+}
+.fb5 {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 8%, transparent 25%);
+  mask-image: linear-gradient(to top, #000 0%, #000 8%, transparent 25%);
+}
+@media (max-width: 768px) {
+  .footer-blur { height: 110px; }
+}
+
 
 /* ---- Utility ---- */
 .text-muted   { color: var(--ink-muted); }
@@ -1178,3 +1236,1869 @@ footer {
   br.br-deco { display: none; }
 }
 
+
+
+/* ============================================================
+   about.html — page-specific styles (moved from inline <style>)
+   ============================================================ */
+
+    /* ---- About layout ---- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-16);
+      align-items: start;
+    }
+
+    .about-portrait {
+      position: sticky;
+      top: calc(var(--space-12) + 5rem);
+    }
+
+    .portrait-frame {
+      aspect-ratio: 3/4;
+      background: var(--bg-alt);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .portrait-placeholder {
+      text-align: center;
+    }
+
+    .portrait-placeholder p {
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .portrait-caption {
+      margin-top: var(--space-3);
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+    }
+
+    .about-content > * + * {
+      margin-top: var(--space-8);
+    }
+
+    .about-block-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-3);
+    }
+
+    .about-block h3 {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: var(--space-4);
+    }
+
+    .about-block p {
+      font-size: var(--size-base);
+      line-height: 1.8;
+      color: var(--ink-muted);
+    }
+
+    .about-block p + p {
+      margin-top: var(--space-3);
+    }
+
+    /* ---- Experience ---- */
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-top: 1px solid var(--rule);
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-4);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--rule);
+      align-items: start;
+    }
+
+    .exp-role {
+      font-size: var(--size-base);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    .exp-company {
+      font-size: var(--size-sm);
+      color: var(--ink-muted);
+      margin-top: 0.2rem;
+    }
+
+    .exp-year {
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+      padding-top: 0.25rem;
+      text-align: right;
+    }
+
+    /* ---- Values ---- */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+
+    .value-item {
+      padding: var(--space-6);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+    }
+
+    .value-item h4 {
+      font-size: var(--size-base);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-2);
+    }
+
+    .value-item p {
+      font-size: var(--size-sm);
+      color: var(--ink-muted);
+      line-height: 1.7;
+    }
+
+    /* ---- Companies ---- */
+    .companies-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .company-chip {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      border: 1px solid var(--rule);
+      padding: 0.4rem 0.85rem;
+      border-radius: 2rem;
+      color: var(--ink-muted);
+    }
+
+    /* ---- Contact ---- */
+    .contact-section {
+      background: var(--bg-alt);
+      border-top: 1px solid var(--rule);
+      padding: var(--space-24) 0;
+    }
+
+    .contact-inner {
+      max-width: 680px;
+    }
+
+    .contact-heading {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: var(--space-6);
+    }
+
+    .contact-body {
+      font-size: var(--size-md);
+      color: var(--ink-muted);
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: var(--space-8);
+    }
+
+    .contact-link {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 0.2rem;
+      transition: border-color 0.2s ease;
+      display: inline-block;
+    }
+
+    .contact-link:hover {
+      border-color: var(--ink);
+    }
+
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .about-portrait { position: static; }
+      .values-grid { grid-template-columns: 1fr; }
+      .partners-grid { grid-template-columns: 1fr !important; }
+      .practice-explainer { grid-template-columns: 1fr !important; }
+    }
+
+
+/* ============================================================
+   index.html — page-specific styles (moved from inline <style>)
+   ============================================================ */
+
+
+    /* =============================================
+       HERO
+    ============================================= */
+    .hero {
+      min-height: 110svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 0;
+      padding-bottom: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Hero horizontal rules */
+    .hero-grid-h {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-grid-line-h {
+      position: absolute;
+      left: 0; right: 0;
+      height: 1px;
+      background: var(--rule);
+      opacity: 0.4;
+      transform: scaleX(0);
+      transform-origin: left center;
+    }
+
+    /* Hero background SVG — fan of circuit/neuron lines, right-aligned,
+       with short accent-coloured pulses travelling along random lines
+       left-to-right to suggest signals passing through a network. See
+       initHeroPulses() in main.js. */
+    .hero-bg-svg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .hero-bg-svg svg {
+      position: absolute;
+      top: 2em;
+      left: 50%;
+      /* Rotate 90° CW: lines now run top→bottom, convergence point at top-centre.
+         Gradients and dashoffset animations stay in SVG coordinate space so they
+         automatically reorient — no other changes needed.
+         height:100% pre-rotation becomes the visual width; auto width (~0.95×height)
+         becomes the visual height, covering substantially all of the hero. */
+      transform: translateX(-50%) rotate(90deg);
+      height: 100%;
+      width: auto;
+    }
+    .hero-bg-lines {
+      stroke: url(#hero-line-fade);
+      stroke-width: 0.5;
+      fill: none;
+      opacity: 0.3;
+    }
+    .hero-bg-pulses {
+      fill: none;
+      stroke: url(#hero-pulse-fade);
+      stroke-linecap: round;
+      opacity: 0.6;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      position: relative;
+      isolation: isolate;
+      margin-bottom: 0;
+      opacity: 0;
+      transform: translateY(12px);
+      /* The pill's own fill moved to ::after (see below) — a CSS box's own
+         background always paints at the very bottom of its stacking
+         context, UNDER any pseudo-element regardless of z-index, so
+         leaving .label's background active here would sit uselessly
+         beneath everything else. Disabled to avoid double-painting. */
+      background: none;
+    }
+
+    /* Glow — the static rainbow band and the hover hotspot, both live
+       here as stacked background layers (first listed paints on top).
+       Same red→violet spectrum (hue 0→280) as the hero/CTA pulses and
+       bento gallery. z-index -2 so it sits BEHIND the opaque pill fill
+       (::after, z-index -1) — a plain z-index on a sibling pseudo won't
+       tuck it under this element's own background (see note above), so
+       the fill has to be its own layer in front of this one instead. */
+    .hero-eyebrow::before {
+      content: '';
+      position: absolute;
+      inset: -14px;
+      z-index: -2;
+      border-radius: inherit;
+      background:
+        radial-gradient(circle at var(--mx, 50%) var(--my, 50%), var(--spectrum-color, transparent) 0%, transparent 65%),
+        linear-gradient(to right,
+          hsl(0, 80%, 55%), hsl(47, 80%, 55%), hsl(93, 80%, 55%),
+          hsl(140, 80%, 55%), hsl(187, 80%, 55%), hsl(233, 80%, 55%), hsl(280, 80%, 55%));
+      filter: blur(16px);
+      opacity: 0.2;
+      transition: opacity 0.35s ease, inset 0.35s ease;
+      pointer-events: none;
+    }
+    /* --spectrum-color is only set while the mouse is actually moving over
+       the pill (initEyebrowGlow() in main.js clears it on mouseleave), so
+       the hotspot layer above only shows up on hover — this hover rule
+       just makes the whole glow (hotspot + band together) bloom bigger
+       and a touch brighter at the same time. */
+    .hero-eyebrow:hover::before {
+      opacity: 0.4;
+      inset: -22px;
+    }
+
+    /* Opaque pill fill — sits in front of the glow (z-index -1 vs. -2
+       above) and behind the text (normal in-flow content always paints
+       above negative z-index siblings), so the glow only ever shows
+       through the rim where it extends past this layer's edges. */
+    .hero-eyebrow::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      border-radius: inherit;
+      background: color-mix(in srgb, var(--bg) 50%, transparent);
+      pointer-events: none;
+    }
+
+    .hero-headline {
+      line-height:115%;
+      max-width: 100%;
+      margin-top: var(--space-4);
+      margin-bottom: var(--space-4);
+      perspective: 500px;
+      font-weight: 400;
+    }
+
+    /* "A design partner" / "for ambitious companies" — both lines sit
+       at the headline's full size, coloured differently to separate
+       the two halves of the sentence. The reveal itself happens
+       line-by-line via SplitText + GSAP in initHeroTextFlip()
+       (main.js), adapted from GSAP's "Animate Text" demo — see the
+       comment above that function for details. */
+    .hero-line { display: block; }
+    /* Light mode: standard ink, same as the rest of the headline — no
+       accent colour. Dark mode still turns this line white (see override
+       below); it reads fine against the near-black dark background, but
+       white would be nearly invisible against light mode's off-white bg. */
+    .hero-line--accent { color: var(--ink); }
+    .hero-line--ink { color: var(--ink); }
+    [data-theme="dark"] .hero-line--accent { color: #fff; }
+
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .hero-lower {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-6);
+      margin-top: 0;
+    }
+    .hero-sub {
+      font-size: var(--size-md);
+      line-height: 1.65;
+      font-weight: 400;
+      color: var(--ink-muted);
+      max-width: 60ch;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .hero-sub strong { color: var(--ink); font-weight: 600; }
+
+    .hero-cta {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .hero-cta-row { display: flex; justify-content: center; gap: var(--space-2); }
+
+    .hero-meta {
+      margin-top: var(--space-12);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+    }
+    .hero-scroll-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.1em;
+    }
+    .hero-scroll-line { width: 32px; height: 1px; background: var(--ink-faint); }
+    .hero-meta-stat { text-align: right; }
+    .hero-meta-stat .stat-num {
+      font-size: var(--size-xl);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .hero-meta-stat .stat-label {
+      font-size: var(--size-xs);
+      color: var(--ink-muted);
+      letter-spacing: 0.08em;
+      margin-top: 0.25rem;
+    }
+
+
+
+    /* =============================================
+       STATS — editorial large numbers
+    ============================================= */
+    .stats-section {
+      padding: var(--space-16) 0;
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+    .stat-block {
+      padding: var(--space-8) var(--space-8) var(--space-8) 0;
+      border-right: 1px solid var(--rule);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-block:last-child { border-right: none; padding-right: 0; padding-left: var(--space-8); }
+    .stat-block:nth-child(2) { padding-left: var(--space-8); }
+    .stat-big {
+      font-size: clamp(5rem, 10vw, 9rem);
+      font-weight: 300;
+      letter-spacing: -0.05em;
+      line-height: 0.9;
+      display: block;
+      color: var(--ink);
+    }
+    .stat-suffix {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: -0.04em;
+      color: var(--ink-faint);
+    }
+    .stat-desc {
+      margin-top: var(--space-4);
+      font-size: var(--size-sm);
+      color: var(--ink-muted);
+      line-height: 1.6;
+      max-width: 22ch;
+    }
+
+    /* =============================================
+       HOW I WORK
+    ============================================= */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+    }
+    .how-pillar {
+      padding: var(--space-8) var(--space-6);
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s ease;
+    }
+    .how-pillar:hover { background: var(--bg-alt); }
+    .how-pillar:nth-child(2n) { border-right: none; }
+    .how-pillar:nth-child(n+3) { border-bottom: none; }
+    .pillar-title { font-size: clamp(1.5rem, 2.5vw, 2.25rem); font-weight: 300; letter-spacing: -0.025em; margin-bottom: var(--space-3); }
+    .pillar-body { font-size: var(--size-sm); line-height: 1.75; color: var(--ink-muted); }
+    .pillar-deco-num {
+      position: absolute;
+      bottom: -0.1em;
+      right: 0.1em;
+      font-size: 8rem;
+      font-weight: 700;
+      letter-spacing: -0.06em;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--rule);
+      opacity: 0.5;
+      pointer-events: none;
+      line-height: 1;
+    }
+    .pillar-line {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left center;
+    }
+
+    /* =============================================
+       WHO WE WORK WITH — accordion
+    ============================================= */
+    .wwww-accordion {
+      border: 1px solid var(--rule);
+      max-width: 1024px;
+      margin: 0 auto;
+    }
+    .wwww-item {
+      border-bottom: 1px solid var(--rule);
+      position: relative;
+    }
+    .wwww-item:last-child { border-bottom: none; }
+    /* Accent left-edge bar on active item */
+    .wwww-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: top center;
+      transition: transform 0.35s ease;
+    }
+    .wwww-item.open::before { transform: scaleY(1); }
+    /* Trigger row — always visible */
+    .wwww-trigger {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+      width: 100%;
+      padding: var(--space-6) var(--space-6) var(--space-6) var(--space-8);
+      background: none;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .wwww-trigger:hover { background: var(--bg-alt); }
+    .wwww-item.open .wwww-trigger { background: var(--bg-alt); }
+.wwww-trigger-title {
+      flex: 1;
+      font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
+      color: var(--ink-muted);
+      transition: color 0.2s;
+    }
+    .wwww-item.open .wwww-trigger-title { color: var(--ink); }
+    /* Plus/minus icon */
+    .wwww-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      position: relative;
+      color: var(--ink-faint);
+    }
+    .wwww-icon::before,
+    .wwww-icon::after {
+      content: '';
+      position: absolute;
+      background: currentColor;
+      border-radius: 1px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .wwww-icon::before { width: 100%; height: 1.5px; top: 50%; left: 0; transform: translateY(-50%); }
+    .wwww-icon::after  { width: 1.5px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+    .wwww-item.open .wwww-icon::after { transform: translateX(-50%) rotate(90deg); opacity: 0; }
+    /* Collapsible body */
+    .wwww-body-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.4s ease;
+    }
+    .wwww-item.open .wwww-body-wrap { grid-template-rows: 1fr; }
+    .wwww-body-inner {
+      overflow: hidden;
+    }
+    .wwww-body-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-8);
+      padding: var(--space-4) var(--space-8);
+    }
+    .wwww-body-text {
+      font-size: var(--size-md);
+      line-height: 1.75;
+      color: var(--ink);
+    }
+    .wwww-fit-label {
+      display: block;
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: var(--space-2);
+    }
+    .wwww-fit-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .wwww-fit-list li {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--size-md);
+      color: var(--ink-muted);
+      padding: calc(var(--space-1) * 1.25) 0;
+      border-top: 1px solid var(--rule);
+    }
+    .wwww-fit-list li::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* =============================================
+       THOUGHTS TEASER
+    ============================================= */
+    .thought-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+    }
+    .thought-card {
+      padding: var(--space-6);
+      border-right: 1px solid var(--rule);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s ease;
+    }
+    .thought-card:last-child { border-right: none; }
+    .thought-card:hover { background: var(--bg-alt); }
+    .thought-tag { font-size: var(--size-xs); font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: var(--space-3); display: block; }
+    .thought-title { font-size: var(--size-md); font-weight: 400; line-height: 1.4; letter-spacing: -0.01em; margin-bottom: var(--space-2); }
+    .thought-excerpt { font-size: var(--size-sm); color: var(--ink-muted); line-height: 1.65; }
+
+    /* =============================================
+       CTA BAND
+    ============================================= */
+    .cta-band {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      padding: var(--space-24) 0;
+      overflow: hidden;
+      position: relative;
+      box-sizing: border-box;
+    }
+    .cta-bg-svg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .cta-bg-svg svg {
+      position: absolute;
+      bottom: 2em;
+      left: 50%;
+      /* Mirror of hero: rotate -90deg so lines fan from bottom-centre upward */
+      transform: translateX(-50%) rotate(-90deg);
+      height: 100%;
+      width: auto;
+    }
+    .cta-bg-lines {
+      stroke: url(#cta-line-fade);
+      stroke-width: 0.5;
+      fill: none;
+      opacity: 0.3;
+    }
+    .cta-bg-pulses {
+      fill: none;
+      stroke: url(#cta-pulse-fade);
+      stroke-linecap: round;
+      opacity: 0.6;
+    }
+    .cta-band > .container { position: relative; z-index: 1; width: 100%; }
+    .cta-band-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+      text-align: center;
+    }
+    .cta-heading {
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      max-width: 18ch;
+      margin: 0 auto;
+      color: var(--ink);
+    }
+    .btn-accent {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
+      transition: background 0.25s ease, color 0.25s ease, filter 0.35s ease;
+      /* Growing spectrum glow on hover — same mechanism as .nav-cta
+         (see styles.css) via initCtaGlow() in main.js. */
+      filter: drop-shadow(0 0 0 transparent) drop-shadow(0 0 0 transparent);
+    }
+    .btn-accent:hover {
+      filter:
+        drop-shadow(0 0 6px var(--spectrum-color, var(--accent)))
+        drop-shadow(0 0 20px var(--spectrum-color, var(--accent)));
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
+    }
+    .cta-heading .inner em { font-style: italic; color: var(--accent); }
+    .cta-copy { max-width: 60%; }
+
+    /* Bento gallery — scrubbed (GSAP Flip + ScrollTrigger) */
+    .bento-section { position: relative; overflow: hidden; }
+    .bento-gallery-wrap {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .bento-gallery {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      flex: none;
+    }
+    .bento-gallery-item {
+      flex: none;
+      position: relative;
+      background: var(--bg-alt);
+      overflow: hidden;
+    }
+    /* Border is drawn by the SVG overlay injected by initBentoPulses()
+       so it can be animated as a travelling accent-colour pulse. */
+    .bento-item-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .bento-gallery-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+    }
+    .bento-gallery-placeholder-num {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      letter-spacing: -0.05em;
+      color: var(--rule);
+      line-height: 1;
+    }
+    .bento-gallery-placeholder-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .bento-gallery--bento {
+      display: grid;
+      gap: 1vh;
+      grid-template-columns: repeat(3, 32.5vw);
+      grid-template-rows: repeat(4, 23vh);
+      justify-content: center;
+      align-content: start; /* was 'center' — caused ~2.5vh gap at hero/bento join */
+    }
+    .bento-gallery--final.bento-gallery--bento {
+      grid-template-columns: repeat(3, 100vw);
+      grid-template-rows: repeat(4, 49.5vh);
+      gap: 1vh;
+      align-content: center; /* restore centering so item 3 fills 0→100vh in the Flip end-state */
+    }
+    .bento-gallery--bento .bento-gallery-item:nth-child(1) { grid-area: 1 / 1 / 3 / 2; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(2) { grid-area: 1 / 2 / 2 / 3; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(3) { grid-area: 2 / 2 / 4 / 3; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(4) { grid-area: 1 / 3 / 3 / 3; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(5) { grid-area: 3 / 1 / 3 / 2; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(6) { grid-area: 3 / 3 / 5 / 4; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(7) { grid-area: 4 / 1 / 5 / 2; }
+    .bento-gallery--bento .bento-gallery-item:nth-child(8) { grid-area: 4 / 2 / 5 / 3; }
+
+    /* =============================================
+       GLOBE — HOMEPAGE (bold, full-bleed)
+    ============================================= */
+    .globe-hp {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+      background: var(--bg-alt);
+    }
+    .globe-hp-inner {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+      min-height: 640px;
+      align-items: center;
+    }
+    .globe-hp-text {
+      padding: var(--space-16) var(--space-8) var(--space-16) 0;
+      border-right: 1px solid var(--rule);
+      min-width: 0;
+    }
+    .globe-hp-headline {
+      font-size: clamp(2rem, 4.5vw, 3.5em);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      margin-bottom: var(--space-6);
+    }
+    .globe-hp-sub {
+      font-size: var(--size-md);
+      font-weight: 300;
+      color: var(--ink-muted);
+      line-height: 1.65;
+      max-width: 34ch;
+    }
+    .globe-hp-canvas-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-6);
+      min-width: 0;
+    }
+    .globe-hp-canvas-wrap canvas { display: block; max-width: 100%; }
+    @media (max-width: 900px) {
+      .globe-hp-inner { grid-template-columns: 1fr; min-height: auto; }
+      .globe-hp-text { padding: var(--space-8) 0; border-right: none; border-bottom: 1px solid var(--rule); }
+      /* Globe is intentionally oversized on mobile for legibility — let it
+         bleed past the container and clip at the viewport edge, but stay
+         centred and capped so it doesn't run away on larger phones/tablets. */
+      .globe-hp-canvas-wrap { overflow: visible; }
+      .globe-hp-canvas-wrap canvas { max-width: none; flex-shrink: 0; }
+    }
+
+    /* ── Logo marquee ── */
+    .logo-marquee-label {
+      text-align: center;
+      /* Matches .globe-hp-headline's size/weight so the two section
+         headers read as one consistent style, on both desktop and
+         mobile — the clamp() already scales fluidly, so no separate
+         mobile override is needed (same as .globe-hp-headline). */
+      font-size: clamp(2rem, 4.5vw, 3.5em);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.05;
+      color: var(--ink);
+      margin: 0 0 var(--space-12);
+      padding: 16px 0;
+    }
+    .wwww-subhead {
+      text-align: center;
+      font-size: clamp(1.75rem, 3vw, 2.75rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      color: var(--ink);
+      max-width: 25ch;
+      margin: 0 auto;
+      /* Top bumped up from space-20 to space-24 to open up the gap
+         between the logo grid above and this line — same +space-4 bump
+         applied to the mobile override below. */
+      padding: var(--space-24) var(--space-6) var(--space-20);
+    }
+    .logo-marquee-outer {
+      width: 100%;
+      position: relative;
+    }
+    /* Static grid, always on screen — no scroll/loop, so no edge fade
+       masks or duplicated "aria-hidden" second set of logos needed
+       (both removed along with the old marquee animation). 6 columns x
+       3 rows exactly fits the 18 logos on desktop; 2 columns on mobile
+       (see the .logo-marquee-track override inside the 768px query). */
+    .logo-marquee-track {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      max-width: 1320px;
+      margin: 0 auto;
+      /* Matches .container's side padding — the old marquee didn't need
+         this (edge-to-edge scrolling under a fade mask was the point),
+         but static logos sitting flush against the viewport edge just
+         look cramped, so line them up with the rest of the page. */
+      align-items: center;
+      /* stretch (the grid default), not center: each item needs to
+         actually fill its column so max-width:100% on the logo inside
+         it has a real, correctly-sized box to cap against — see the
+         .logo-marquee-item comment below. justify-content:center on
+         each item (a flex container) re-centres the logo within that
+         stretched space, so the on-screen result still reads the same
+         as a centered logo, it's just properly contained now. */
+      gap: var(--space-8) var(--space-6);
+      padding: 4px var(--space-6);
+    }
+    .logo-marquee-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 0.25s;
+      color: var(--ink);
+      /* Grid items default to min-width:auto, which for a wide/unsized
+         logo (e.g. Native's 766px-natural image below) can floor the
+         whole column at that image's intrinsic width — blowing the grid
+         out past the viewport. Wasn't an issue for the old horizontally-
+         scrolling marquee (unbounded width was the point); is one now
+         that logos sit in fixed-width grid columns, so overridden here. */
+      min-width: 0;
+    }
+    .logo-marquee-item:hover { opacity: 0.28; }
+    .logo-marquee-item svg,
+    .logo-marquee-item img {
+      /* min() of the old flat 240px cap and 100% of the (now correctly
+         stretched) column — so a logo still maxes out at 240px on a
+         wide column, but shrinks to fit on any column narrower than
+         that (both grid breakpoints here have columns under 240px). */
+      max-width: min(240px, 100%);
+      max-height: 40px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+    /* Logo files are solid-white marks on transparent PNGs (built for a
+       dark surface) — invert them to ink-black by default (light mode)
+       and undo the invert in dark mode so they stay white. */
+    .logo-marquee-item img { filter: invert(1); }
+    [data-theme="dark"] .logo-marquee-item img { filter: none; }
+
+    /* Native Instruments — a much wider/shorter mark than the other
+       logos (766x35 natural), so the shared max-height:40px cap left it
+       barely visible once max-width:240px kicked in to keep it in
+       check. Sized on its own terms instead: fixed height, width free
+       to run wider than the other logos, ratio preserved via auto —
+       but still capped at 100% of its grid column (rather than none)
+       so it shrinks with object-fit:contain instead of overflowing a
+       narrow column, e.g. on the 2-column mobile grid. */
+    .logo-marquee-item img.logo-native {
+      max-width: 100%;
+      max-height: none;
+      height: 32px;
+      width: auto;
+    }
+
+    /* Attis, Cigna, Glen Garioch, Nile, Prudential, Save the Children —
+       boosted taller than the shared 40px cap; max-width lifted (but,
+       as above, still capped at 100% of the column) so ratio stays
+       exact (Save the Children's natural ratio would otherwise just
+       clip against the 240px cap at this height). */
+    .logo-marquee-item img.logo-tall {
+      max-width: 100%;
+      max-height: none;
+      height: 50px;
+      width: auto;
+    }
+
+    /* Extra breathing room between homepage sections */
+    .bento-section { margin-top: 0; }
+    /* Was `body > section:nth-of-type(2)` — a positional selector that
+       only worked while this rule lived in index.html's own inline
+       <style> block. Now that all pages share one styles.css, a bare
+       positional/tag selector like that would leak onto every other
+       page's 2nd section too, so it's pinned to this page's actual
+       section class instead (added to the markup alongside this fix). */
+    .logo-marquee-section { margin-top: 120px; } /* Trusted by teams including */
+    .work-section { margin-top: 120px; } /* Selected Work */
+    .globe-hp { margin-top: 120px; }
+    .cta-band { margin-top: 0; }
+  
+    /* =============================================
+       RESPONSIVE — consolidated overrides
+       (all max-width media queries for a given breakpoint
+       live in one block here instead of being scattered
+       next to each component)
+    ============================================= */
+
+    @media (max-width: 768px) {
+      .hero-lower { gap: var(--space-6); }
+      .hero-cta-row { flex-wrap: wrap; }
+
+
+      /* Bento gallery — a 2-column mobile layout: two square tiles
+         side by side, then one full-width "large" tile, repeating,
+         with the very last tile (item 8) as the hero that scroll-
+         scrubs to fill the screen.
+
+           Row 1: [01] [02]   <- squares
+           Row 2: [   03   ]  <- large
+           Row 3: [04] [05]   <- squares
+           Row 4: [   06   ]  <- large
+           Row 5: [07]        <- square, alone
+           Row 6: [   08   ]  <- large, HERO
+
+         Square tiles use aspect-ratio:1 so they always fill their
+         full column width (true squares, no dead space); large
+         tiles get an explicit, taller row height (24vh) and stretch
+         to fill the full row width.
+
+         Unlike the desktop/tablet bento (which stays capped to one
+         100vh viewport before the scrub), this collapsed mobile
+         grid is allowed to be taller than one screen — true
+         full-width squares simply don't fit 6 rows into 100vh — so
+         .bento-gallery-wrap is 'auto' height here and you scroll
+         through it normally, same as any other section.
+
+         Because of that, the scroll-scrub hero can't reuse the
+         desktop trick either (pin the wrap at exactly 100vh, centre
+         the trigger on the whole gallery). Instead, initBentoGallery()
+         in main.js: (1) measures this collapsed grid's natural
+         height once rendered, (2) grows .bento-gallery-wrap to that
+         height plus one extra viewport — reserving exactly the
+         scroll room the zoom needs — and (3) triggers the pin the
+         instant item 8's own natural top edge reaches the top of
+         the viewport ('top top', rather than 'center center' on the
+         whole gallery). Rows 1–5 (items 1–7) keep identical track
+         sizes between the collapsed and --final grid so item 8's
+         position doesn't shift between the two measurements; only
+         its own row grows from 24vh to 100vh. */
+      .bento-gallery-wrap,
+      .bento-gallery {
+        height: auto; /* main.js sets .bento-gallery-wrap's real pixel height once it measures the collapsed grid */
+      }
+      .bento-gallery-wrap {
+        /* The base rule's align-items:center vertically centres the grid
+           within the wrap — fine when wrap is exactly 100vh (desktop),
+           but once main.js grows the wrap taller than the grid's own
+           content here, centering would re-offset the grid downward by
+           half the extra (reserved-for-the-zoom) space, throwing off the
+           'top top' pin trigger math below. Pin the grid to the wrap's
+           top edge instead. */
+        align-items: flex-start;
+      }
+      .bento-gallery--bento {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto 24vh auto 24vh auto 24vh;
+        gap: 1vh;
+        align-content: start;
+      }
+      .bento-gallery--bento .bento-gallery-item:nth-child(1) { grid-area: 1 / 1 / 2 / 2; aspect-ratio: 1; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(2) { grid-area: 1 / 2 / 2 / 3; aspect-ratio: 1; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(3) { grid-area: 2 / 1 / 3 / 3; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(4) { grid-area: 3 / 1 / 4 / 2; aspect-ratio: 1; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(5) { grid-area: 3 / 2 / 4 / 3; aspect-ratio: 1; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(6) { grid-area: 4 / 1 / 5 / 3; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(7) { grid-area: 5 / 1 / 6 / 2; aspect-ratio: 1; }
+      .bento-gallery--bento .bento-gallery-item:nth-child(8) { grid-area: 6 / 1 / 7 / 3; }
+
+      .bento-gallery--final.bento-gallery--bento {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto 24vh auto 24vh auto 100vh;
+        gap: 1vh;
+        align-content: start;
+      }
+
+
+      .stats-grid { grid-template-columns: 1fr; }
+      .stat-block { border-right: none; border-bottom: 1px solid var(--rule); padding: var(--space-6) 0 !important; }
+      .stat-block:last-child { border-bottom: none; }
+
+
+      .how-grid { grid-template-columns: 1fr; }
+      .how-pillar,
+      .how-pillar:nth-child(2n),
+      .how-pillar:nth-child(n+3) {
+        padding: var(--space-4);
+        border-right: none;
+        border-bottom: 1px solid var(--rule);
+      }
+      .how-pillar:last-child { border-bottom: none; }
+
+
+      .wwww-trigger { padding: var(--space-4); gap: var(--space-3); }
+      .wwww-body-content { grid-template-columns: 1fr; gap: var(--space-4); padding: var(--space-4); }
+      .wwww-trigger-title { font-size: 1.2rem; }
+      .wwww-body-text { font-size: var(--size-sm); }
+      .wwww-fit-list li { font-size: var(--size-sm); }
+      .globe-hp-sub { font-size: var(--size-sm); }
+
+
+      .thought-row { grid-template-columns: 1fr; }
+      .thought-card { border-right: none; border-bottom: 1px solid var(--rule); }
+      .thought-card:last-child { border-bottom: none; }
+
+
+      .cta-band-inner { grid-template-columns: 1fr; }
+      .cta-copy { max-width: none; }
+      .cta-band .btn-accent { width: 100%; justify-content: center; }
+
+
+      /* Extra top padding here (space-20 vs the desktop space-16) widens
+         the gap between the logo grid above and "Design support for
+         wherever you are in your journey." below on mobile. */
+      .wwww-subhead { padding: var(--space-20) var(--space-3) var(--space-16); }
+      .logo-marquee-track { grid-template-columns: repeat(2, 1fr); gap: var(--space-6) var(--space-4); }
+      /* Logos were filling almost the whole width of their 2-col cells at
+         the shared 40px/50px/32px caps — sized down a little on mobile so
+         they don't crowd their grid cell. */
+      .logo-marquee-item svg,
+      .logo-marquee-item img { max-height: 30px; }
+      .logo-marquee-item img.logo-native { height: 24px; }
+      .logo-marquee-item img.logo-tall { height: 38px; }
+
+
+      .logo-marquee-section,
+      .work-section,
+      .globe-hp { margin-top: 48px; }
+      .cta-band { margin-top: 0; }
+
+    }
+
+    @media (max-width: 560px) {
+      /* Nudges the whole hero block down 40px — transform rather than
+         margin/padding, so it doesn't fight the flex justify-content:
+         center on .hero (which would only pass through half of any
+         added margin/padding) and composes cleanly with the GSAP
+         scroll-linked parallax already applied to this same element
+         (initHeroTextFlip() in main.js animates yPercent on scroll;
+         GSAP layers that onto whatever transform is already present). */
+      .hero-content { transform: translateY(40px); }
+
+      .hero-headline.display-1 { font-size: 1.75em; font-weight: 400; line-height: 100%; }
+      .hero-sub { font-size: var(--size-sm); }
+      .hero-cta .body-sm { font-size: var(--size-sm); }
+      /* .btn/.nav-cta padding is global (used by buttons across every
+         page) — scoped here so only the hero's own CTAs tighten up. */
+      .hero-cta .btn,
+      .hero-cta .nav-cta { padding: 0.625rem 1rem; }
+
+
+      .hero-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-4);
+      }
+      .hero-meta-stats {
+        width: 100%;
+        flex-direction: column;
+        gap: var(--space-3) !important;
+      }
+      .hero-meta-stat { text-align: left; }
+
+    }
+
+
+
+/* ============================================================
+   process.html — page-specific styles (moved from inline <style>)
+   ============================================================ */
+
+    /* ---- Process phases ---- */
+    .phases {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .phase {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--space-8);
+      padding: var(--space-8) 0;
+      border-bottom: 1px solid var(--rule);
+      align-items: start;
+    }
+
+    .phase:first-child {
+      border-top: 1px solid var(--rule);
+    }
+
+    .phase-num-col {
+      padding-top: 0.25rem;
+    }
+
+    .phase-num {
+      font-size: var(--size-4xl);
+      font-weight: 300;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      color: var(--rule);
+      display: block;
+    }
+
+    .phase-name {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      display: block;
+      margin-top: var(--space-1);
+    }
+
+    .phase-content {}
+
+    .phase-title {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: var(--space-3);
+    }
+
+    .phase-body {
+      font-size: var(--size-base);
+      line-height: 1.8;
+      color: var(--ink-muted);
+      max-width: 60ch;
+    }
+
+    .phase-tools {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-top: var(--space-4);
+    }
+
+    .phase-tool {
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+      border: 1px solid var(--rule);
+      padding: 0.25rem 0.65rem;
+      border-radius: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .phase {
+        grid-template-columns: 1fr;
+        gap: var(--space-3);
+      }
+      .phase-num { font-size: var(--size-2xl); }
+    }
+
+    /* ---- What I offer ---- */
+    .offer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .offer-item {
+      padding: var(--space-6);
+      border-right: 1px solid var(--rule);
+    }
+
+    .offer-item:last-child { border-right: none; }
+
+    .offer-title {
+      font-size: var(--size-base);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin-bottom: var(--space-3);
+    }
+
+    .offer-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .offer-list li {
+      font-size: var(--size-sm);
+      color: var(--ink-muted);
+      padding-left: var(--space-3);
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .offer-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--ink-faint);
+      font-size: 0.7em;
+      top: 0.35em;
+    }
+
+    /* ---- Working with me ---- */
+    .working-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+      align-items: start;
+    }
+
+    .check-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .check-list li {
+      font-size: var(--size-sm);
+      line-height: 1.7;
+      color: var(--ink-muted);
+      padding-left: var(--space-6);
+      position: relative;
+    }
+
+    .check-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--ink);
+      font-size: 0.85em;
+    }
+
+    @media (max-width: 768px) {
+      .offer-grid { grid-template-columns: 1fr; }
+      .offer-item { border-right: none; border-bottom: 1px solid var(--rule); }
+      .offer-item:last-child { border-bottom: none; }
+      .working-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ---- Globe section ---- */
+    .globe-section {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden;
+      position: relative;
+    }
+    .globe-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 520px;
+      align-items: center;
+    }
+    .globe-text {
+      padding: var(--space-16) var(--space-12) var(--space-16) 0;
+      border-right: 1px solid var(--rule);
+      min-width: 0;
+    }
+    .globe-canvas-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-8);
+      min-width: 0;
+    }
+    .globe-canvas-wrap canvas { display: block; max-width: 100%; }
+    /* Desktop: globe is sized off the left column's height and bleeds
+       off the right edge of the viewport, leaving ~2/3 visible. */
+    @media (min-width: 769px) {
+      .globe-canvas-wrap {
+        position: absolute;
+        top: 50%;
+        right: calc(var(--g-size, 480px) * -1 / 3);
+        width: var(--g-size, 480px);
+        height: var(--g-size, 480px);
+        padding: 0;
+        transform: translateY(-50%);
+      }
+    }
+    .globe-city-list {
+      margin-top: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .globe-city {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-3);
+      padding: var(--space-2) 0;
+      border-bottom: 1px solid var(--rule);
+      font-size: var(--size-sm);
+    }
+    .globe-city:last-child { border-bottom: none; }
+    .globe-city-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--ink);
+      flex-shrink: 0;
+      position: relative;
+      top: 1px;
+    }
+    .globe-city-dot.home {
+      width: 8px; height: 8px;
+      box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--ink);
+    }
+    .globe-city-name { font-weight: 400; color: var(--ink); min-width: 120px; }
+    .globe-city-client { color: var(--ink-muted); }
+    @media (max-width: 768px) {
+      .globe-inner { grid-template-columns: 1fr; }
+      .globe-text { padding: var(--space-8) 0; border-right: none; border-bottom: 1px solid var(--rule); }
+      /* Globe is intentionally oversized on mobile for legibility — let it
+         bleed past the container and clip at the viewport edge, but stay
+         centred and capped so it doesn't run away on larger phones/tablets. */
+      .globe-canvas-wrap { overflow: visible; }
+      .globe-canvas-wrap canvas { max-width: none; flex-shrink: 0; }
+      /* City rows: location on its own line, clients as a wrapping list below. */
+      .globe-city { flex-wrap: wrap; gap: 2px var(--space-3); padding: var(--space-3) 0; }
+      .globe-city-name { min-width: 0; }
+      .globe-city-client { flex-basis: 100%; padding-left: 30px; }
+    }
+
+
+/* ============================================================
+   thoughts.html — page-specific styles (moved from inline <style>)
+   ============================================================ */
+
+    /* ---- Thoughts layout ---- */
+    .thoughts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: var(--space-6);
+    }
+
+    .thought-article {
+      padding: var(--space-8);
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: background 0.2s ease;
+    }
+
+    .thought-article:hover {
+      background: var(--bg-alt);
+    }
+
+    .thought-article:nth-child(even) {
+      border-right: none;
+    }
+
+    .thought-article:nth-last-child(-n+2) {
+      border-bottom: none;
+    }
+
+    .thought-article-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-4);
+    }
+
+    .thought-category {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .thought-date {
+      font-size: var(--size-xs);
+      color: var(--ink-faint);
+      letter-spacing: 0.05em;
+    }
+
+    .thought-article-title {
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.3;
+      margin-bottom: var(--space-3);
+    }
+
+    .thought-article-excerpt {
+      font-size: var(--size-sm);
+      line-height: 1.75;
+      color: var(--ink-muted);
+    }
+
+    .thought-read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      margin-top: var(--space-4);
+      transition: color 0.2s ease;
+    }
+
+    .thought-article:hover .thought-read-more {
+      color: var(--ink);
+    }
+
+    /* ---- Featured thought ---- */
+    .featured-thought {
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: var(--space-8);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .featured-thought-body {
+      padding: var(--space-12) var(--space-8);
+    }
+
+    .featured-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: var(--space-4);
+      display: block;
+    }
+
+    .featured-title {
+      font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: var(--space-4);
+    }
+
+    .featured-excerpt {
+      font-size: var(--size-base);
+      line-height: 1.8;
+      color: var(--ink-muted);
+    }
+
+    .featured-thought-visual {
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-8);
+      border-left: 1px solid var(--rule);
+    }
+
+    .featured-quote {
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.4;
+      color: rgba(244,242,239,0.7);
+      font-style: italic;
+      text-align: center;
+    }
+
+    /* ---- Topics filter ---- */
+    .topics-bar {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-8);
+    }
+
+    @media (max-width: 768px) {
+      .thoughts-grid { grid-template-columns: 1fr; }
+      .thought-article:nth-child(even) { border-right: 1px solid var(--rule); }
+      .thought-article:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+      .thought-article:last-child { border-bottom: none; }
+      .featured-thought { grid-template-columns: 1fr; }
+      .featured-thought-visual { border-left: none; border-top: 1px solid var(--rule); min-height: 200px; }
+    }
+
+
+/* ============================================================
+   work.html — page-specific styles (moved from inline <style>)
+   ============================================================ */
+
+    /* ---- Gallery ---- */
+    .gallery-section {
+      padding: 0;
+      overflow: hidden;
+      border-bottom: 1px solid var(--rule);
+    }
+    .gallery-header {
+      position: sticky;
+      top: 64px; /* sits just below fixed nav */
+      z-index: 10;
+      background: var(--bg);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .gallery-wrap {
+      overflow: hidden;
+    }
+    .gallery-track {
+      display: flex;
+      will-change: transform;
+    }
+    .gallery-item {
+      flex: 0 0 auto;
+      width: clamp(300px, 40vw, 580px);
+      aspect-ratio: 4/3;
+      border-right: 1px solid var(--rule);
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gallery-item:first-child { border-left: 1px solid var(--rule); }
+    .gallery-item img,
+    .gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+    .gallery-item:hover img,
+    .gallery-item:hover video { transform: scale(1.04); }
+    .gallery-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      width: 100%;
+      height: 100%;
+    }
+    .gallery-placeholder-num {
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 300;
+      letter-spacing: -0.05em;
+      color: var(--rule);
+      line-height: 1;
+    }
+    .gallery-placeholder-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-4);
+    }
+    .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+    .gallery-item-caption {
+      font-size: var(--size-xs);
+      color: white;
+      letter-spacing: 0.08em;
+    }
+
+    /* ---- Case study card ---- */
+    .case-study {
+      margin-bottom: var(--space-8);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--white);
+    }
+
+    .case-study-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 360px;
+    }
+
+    .case-study-cover {
+      background: var(--bg-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--rule);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .case-cover-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+    }
+
+    .case-cover-label {
+      font-size: var(--size-xs);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .case-study-meta {
+      padding: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .case-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-1);
+      margin-bottom: var(--space-4);
+    }
+
+    .case-title {
+      font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: var(--space-3);
+    }
+
+    .case-summary {
+      font-size: var(--size-sm);
+      line-height: 1.75;
+      color: var(--ink-muted);
+    }
+
+    .case-study-body {
+      padding: var(--space-8);
+      border-top: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-8);
+    }
+
+    .case-section-label {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      display: block;
+      margin-bottom: var(--space-2);
+    }
+
+    .case-section-content {
+      font-size: var(--size-sm);
+      line-height: 1.75;
+      color: var(--ink-muted);
+    }
+
+    .case-study-footer {
+      padding: var(--space-4) var(--space-8);
+      border-top: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-alt);
+    }
+
+    .outcome-chips {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .outcome-chip {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      border: 1px solid var(--rule);
+      padding: 0.3rem 0.75rem;
+      border-radius: 2rem;
+      color: var(--ink);
+      background: var(--white);
+    }
+
+    .coming-soon-badge {
+      font-size: var(--size-xs);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      border: 1px dashed var(--rule);
+      padding: 0.35rem 0.8rem;
+      border-radius: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .case-study-header { grid-template-columns: 1fr; }
+      .case-study-cover { border-right: none; border-bottom: 1px solid var(--rule); min-height: 220px; }
+      .case-study-body { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .case-study-body { grid-template-columns: 1fr; }
+      .case-study-meta { padding: var(--space-6); }
+      .case-study-body { padding: var(--space-6); }
+      .case-study-footer { padding: var(--space-4) var(--space-6); flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+    }
+
+    /* ---- Clickable case study card ---- */
+    .case-study {
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+    .case-study:hover { border-color: var(--ink-muted); }
+    .case-study .case-study-cover img { transition: transform 0.6s ease; }
+    .case-study:hover .case-study-cover img { transform: scale(1.04); }

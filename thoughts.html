@@ -7,165 +7,6 @@
   <meta name="description" content="Perspectives on product design, UX and building digital products properly.">
   <link rel="stylesheet" href="styles.css">
   <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('rad-theme') || 'dark')</script>
-  <style>
-    /* ---- Thoughts layout ---- */
-    .thoughts-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      border: 1px solid var(--rule);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: var(--space-6);
-    }
-
-    .thought-article {
-      padding: var(--space-8);
-      border-right: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      transition: background 0.2s ease;
-    }
-
-    .thought-article:hover {
-      background: var(--bg-alt);
-    }
-
-    .thought-article:nth-child(even) {
-      border-right: none;
-    }
-
-    .thought-article:nth-last-child(-n+2) {
-      border-bottom: none;
-    }
-
-    .thought-article-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: var(--space-4);
-    }
-
-    .thought-category {
-      font-size: var(--size-xs);
-      font-weight: 500;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-    }
-
-    .thought-date {
-      font-size: var(--size-xs);
-      color: var(--ink-faint);
-      letter-spacing: 0.05em;
-    }
-
-    .thought-article-title {
-      font-size: clamp(1.1rem, 2vw, 1.5rem);
-      font-weight: 400;
-      letter-spacing: -0.015em;
-      line-height: 1.3;
-      margin-bottom: var(--space-3);
-    }
-
-    .thought-article-excerpt {
-      font-size: var(--size-sm);
-      line-height: 1.75;
-      color: var(--ink-muted);
-    }
-
-    .thought-read-more {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: var(--size-xs);
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      color: var(--ink-muted);
-      margin-top: var(--space-4);
-      transition: color 0.2s ease;
-    }
-
-    .thought-article:hover .thought-read-more {
-      color: var(--ink);
-    }
-
-    /* ---- Featured thought ---- */
-    .featured-thought {
-      border: 1px solid var(--rule);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: var(--space-8);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .featured-thought-body {
-      padding: var(--space-12) var(--space-8);
-    }
-
-    .featured-label {
-      font-size: var(--size-xs);
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: var(--space-4);
-      display: block;
-    }
-
-    .featured-title {
-      font-size: clamp(1.5rem, 2.5vw, 2.25rem);
-      font-weight: 300;
-      letter-spacing: -0.025em;
-      line-height: 1.2;
-      margin-bottom: var(--space-4);
-    }
-
-    .featured-excerpt {
-      font-size: var(--size-base);
-      line-height: 1.8;
-      color: var(--ink-muted);
-    }
-
-    .featured-thought-visual {
-      background: var(--ink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: var(--space-8);
-      border-left: 1px solid var(--rule);
-    }
-
-    .featured-quote {
-      font-size: clamp(1.25rem, 2vw, 1.75rem);
-      font-weight: 300;
-      letter-spacing: -0.02em;
-      line-height: 1.4;
-      color: rgba(244,242,239,0.7);
-      font-style: italic;
-      text-align: center;
-    }
-
-    /* ---- Topics filter ---- */
-    .topics-bar {
-      display: flex;
-      gap: var(--space-2);
-      flex-wrap: wrap;
-      margin-bottom: var(--space-8);
-    }
-
-    @media (max-width: 768px) {
-      .thoughts-grid { grid-template-columns: 1fr; }
-      .thought-article:nth-child(even) { border-right: 1px solid var(--rule); }
-      .thought-article:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
-      .thought-article:last-child { border-bottom: none; }
-      .featured-thought { grid-template-columns: 1fr; }
-      .featured-thought-visual { border-left: none; border-top: 1px solid var(--rule); min-height: 200px; }
-    }
-  </style>
 </head>
 <body>
 
@@ -318,6 +159,14 @@
 
   </div>
 </section>
+
+<div class="footer-blur" aria-hidden="true">
+  <div class="fb-layer fb1"></div>
+  <div class="fb-layer fb2"></div>
+  <div class="fb-layer fb3"></div>
+  <div class="fb-layer fb4"></div>
+  <div class="fb-layer fb5"></div>
+</div>
 
 <footer>
   <div class="container">
