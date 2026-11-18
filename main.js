@@ -1202,6 +1202,170 @@
   }
 
   /* =============================================
+     ONE-PAGE HOMEPAGE — smooth in-page anchors
+     Any <a href="#id"> scrolls smoothly to its target. Targets can set
+     data-scroll-offset (px) — default clears the fixed nav.
+  ============================================= */
+  function initSmoothAnchors() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      link.addEventListener('click', e => {
+        let y;
+        if (href === '#top') {
+          y = 0;
+        } else {
+          const target = document.querySelector(href);
+          if (!target) return;
+          const offset = target.dataset.scrollOffset != null ? Number(target.dataset.scrollOffset) : 96;
+          y = target.getBoundingClientRect().top + window.scrollY - offset;
+        }
+        e.preventDefault();
+        window.scrollTo({ top: Math.max(0, y), behavior: reduced ? 'auto' : 'smooth' });
+      });
+    });
+  }
+
+  /* =============================================
+     SELECTED PROJECTS — scroll-spy for the sticky index
+  ============================================= */
+  function initProjectsIndex() {
+    const links = Array.from(document.querySelectorAll('.projects-index-link'));
+    if (!links.length || typeof ScrollTrigger === 'undefined') return;
+
+    const setActive = id => links.forEach(l => l.classList.toggle('is-active', l.dataset.project === id));
+
+    links.forEach(link => {
+      const project = document.getElementById(link.dataset.project);
+      if (!project) return;
+      link.addEventListener('click', () => {
+        link.blur();
+        setActive(link.dataset.project);
+      });
+      ScrollTrigger.create({
+        trigger: project,
+        start: 'top 55%',
+        end: 'bottom 55%',
+        onToggle: self => { if (self.isActive) setActive(link.dataset.project); },
+      });
+    });
+  }
+
+  /* =============================================
+     SERVICES — pinned horizontal scroll (desktop),
+     native swipe + scroll-snap (mobile)
+  ============================================= */
+  function initServicesScroll() {
+    const section = document.querySelector('.hp-services');
+    if (!section || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const pin      = section.querySelector('.hp-services-pin');
+    const viewport = section.querySelector('.hp-services-viewport');
+    const track    = section.querySelector('.hp-services-track');
+    const bar      = section.querySelector('.hp-services-progress span');
+    const mm = gsap.matchMedia();
+
+    mm.add('(min-width: 769px)', () => {
+      // Keep scrolling until the last card has travelled all the way to
+      // where the first card started (the container's left edge), then
+      // unpin and let the rest of the page scroll in.
+      const firstCard = track.firstElementChild;
+      const lastCard  = track.lastElementChild;
+      const dist = () => Math.max(
+        0,
+        track.offsetWidth - window.innerWidth,
+        lastCard && firstCard ? lastCard.offsetLeft - firstCard.offsetLeft : 0
+      );
+      gsap.to(track, {
+        x: () => -dist(),
+        ease: 'none',
+        scrollTrigger: {
+          // Pin once the cards themselves are 20% down the viewport, so
+          // the full card height sits on screen (incl. laptop heights).
+          trigger: viewport,
+          start: 'top 20%',
+          end: () => '+=' + dist(),
+          pin: pin,
+          scrub: 0.6,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: self => { if (bar) bar.style.transform = `scaleX(${self.progress})`; },
+        },
+      });
+      return () => { if (bar) bar.style.transform = ''; gsap.set(track, { clearProps: 'transform' }); };
+    });
+
+    mm.add('(max-width: 768px)', () => {
+      const onScroll = () => {
+        const max = viewport.scrollWidth - viewport.clientWidth;
+        if (bar) bar.style.transform = `scaleX(${max > 0 ? viewport.scrollLeft / max : 0})`;
+      };
+      viewport.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      return () => viewport.removeEventListener('scroll', onScroll);
+    });
+
+    // Images/fonts loading after init shift section heights — re-measure.
+    window.addEventListener('load', () => ScrollTrigger.refresh());
+  }
+
+  /* =============================================
+     CONTACT FORM
+     Set data-endpoint on the <form> to a form service URL (e.g.
+     Formspree: https://formspree.io/f/xxxxxx) to post submissions.
+     With no endpoint, submitting opens a pre-filled email instead.
+  ============================================= */
+  function initContactForm() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+    const status = form.querySelector('.cf-status');
+    const say = msg => { if (status) status.textContent = msg; };
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const data = new FormData(form);
+      const endpoint = (form.dataset.endpoint || '').trim();
+
+      if (endpoint) {
+        const btn = form.querySelector('[type="submit"]');
+        if (btn) btn.disabled = true;
+        say('Sending…');
+        try {
+          const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+          if (!res.ok) throw new Error(res.status);
+          form.reset();
+          say("Thanks — your message is on its way. I'll be in touch within two working days.");
+        } catch (err) {
+          say('Something went wrong sending that. Please email hello@thisisrad.co instead.');
+        } finally {
+          if (btn) btn.disabled = false;
+        }
+        return;
+      }
+
+      const needs = data.getAll('needs').join(', ');
+      const lines = [
+        `Name: ${data.get('name') || ''}`,
+        `Email: ${data.get('email') || ''}`,
+        `Company: ${data.get('company') || ''}`,
+        `Website: ${data.get('website') || ''}`,
+        `Looking for: ${needs}`,
+        `Budget: ${data.get('budget') || ''}`,
+        `Timeline: ${data.get('timeline') || ''}`,
+        '',
+        data.get('message') || '',
+      ];
+      const subject = `New project enquiry — ${data.get('company') || data.get('name') || ''}`;
+      window.location.href = `mailto:hello@thisisrad.co?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+      say('Opening your email app with your details filled in…');
+    });
+  }
+
+  /* =============================================
      INIT
   ============================================= */
   function init() {
@@ -1229,6 +1393,10 @@
     initScrollVelocity();
     initSplitReveals();
     initFooterBlur();
+    initSmoothAnchors();
+    initProjectsIndex();
+    initServicesScroll();
+    initContactForm();
   }
 
   if (document.readyState === 'loading') {

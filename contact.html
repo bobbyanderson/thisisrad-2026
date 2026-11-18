@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start your project — This is RAD</title>
+  <meta name="description" content="Digital product design for ambitious teams building thoughtful products.">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('rad-theme') || 'dark')</script>
+</head>
+<body>
+
+<!-- Page loader -->
+<div id="page-loader">
+  <img class="loader-mark" src="logo.svg" alt="This is RAD">
+</div>
+
+<!-- Page transition overlay -->
+<div id="pt-wrap" aria-hidden="true"></div>
+
+<!-- Cursor -->
+<div id="cursor"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="This is RAD">
+          <path d="M35.1289 36.9176H13.3203V15.1198L35.1289 36.9176ZM15.1201 35.1178H30.7822L15.1201 19.4635V35.1178ZM16.1045 12.3854C20.3126 8.17724 27.1815 8.19872 31.3896 12.4069C35.5977 16.6149 35.5976 23.4614 31.3896 27.6696L29.7539 29.3053C14.1424 13.6938 30.0813 29.6317 14.4697 14.0201L16.1045 12.3854Z" fill="#343A40"/>
+          <mask id="mask0_2161_111" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="17" width="19" height="19">
+            <path d="M14.1599 36V17.52L32.1599 36H14.1599Z" fill="#C4C4C4"/>
+          </mask>
+          <g mask="url(#mask0_2161_111)">
+            <path class="logo-dot" d="M26.0399 32.52C26.0399 33.1827 25.5026 33.72 24.8399 33.72C24.1772 33.72 23.6399 33.1827 23.6399 32.52C23.6399 31.8573 24.1772 31.32 24.8399 31.32C25.5026 31.32 26.0399 31.8573 26.0399 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 28.92C22.44 29.5828 21.9028 30.12 21.24 30.12C20.5773 30.12 20.04 29.5828 20.04 28.92C20.04 28.2573 20.5773 27.72 21.24 27.72C21.9028 27.72 22.44 28.2573 22.44 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 25.32C18.8399 25.9827 18.3027 26.52 17.6399 26.52C16.9772 26.52 16.4399 25.9827 16.4399 25.32C16.4399 24.6573 16.9772 24.12 17.6399 24.12C18.3027 24.12 18.8399 24.6573 18.8399 25.32Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 32.52C22.44 33.1827 21.9028 33.72 21.24 33.72C20.5773 33.72 20.04 33.1827 20.04 32.52C20.04 31.8573 20.5773 31.32 21.24 31.32C21.9028 31.32 22.44 31.8573 22.44 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 28.92C18.8399 29.5828 18.3027 30.12 17.6399 30.12C16.9772 30.12 16.4399 29.5828 16.4399 28.92C16.4399 28.2573 16.9772 27.72 17.6399 27.72C18.3027 27.72 18.8399 28.2573 18.8399 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 32.52C18.8399 33.1827 18.3027 33.72 17.6399 33.72C16.9772 33.72 16.4399 33.1827 16.4399 32.52C16.4399 31.8573 16.9772 31.32 17.6399 31.32C18.3027 31.32 18.8399 31.8573 18.8399 32.52Z" fill="#343A40"/>
+          </g>
+        </svg>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li class="nav-link-mobile"><a href="https://calendly.com/hello-thisisrad/30min" class="nav-cta btn-arrow" target="_blank" rel="noopener noreferrer">Book a call</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:var(--space-3)">
+        <button id="theme-toggle" aria-label="Switch to dark mode"><span class="toggle-icon">◐</span></button>
+        <a href="https://calendly.com/hello-thisisrad/30min" class="nav-cta btn-arrow" target="_blank" rel="noopener noreferrer">Book a call</a>
+        <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="contact-page">
+  <div class="container">
+    <div class="contact-page-grid">
+
+      <div class="contact-page-intro">
+        <p class="label">Start your project</p>
+        <h1>Let's work together.</h1>
+        <p>Tell me a little about what you're building and where you're hoping to take it. I'll come back to you within two working days.</p>
+        <a href="https://calendly.com/hello-thisisrad/30min" class="nav-cta btn-arrow" target="_blank" rel="noopener noreferrer">Prefer to talk? Book a call</a>
+        <div class="contact-alt">
+          <span class="label">Or reach out directly</span>
+          <a href="mailto:hello@thisisrad.co">hello@thisisrad.co</a>
+          <a href="https://www.linkedin.com/in/b0bbyanders0n/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+        </div>
+      </div>
+
+      <!-- Set data-endpoint to your form service URL (e.g. https://formspree.io/f/xxxxxx).
+           Left empty, submitting opens a pre-filled email to hello@thisisrad.co. -->
+      <form id="contact-form" class="contact-form" data-endpoint="" novalidate>
+        <div class="cf-field">
+          <label for="cf-name">Name *</label>
+          <input id="cf-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="cf-field">
+          <label for="cf-email">Email *</label>
+          <input id="cf-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="cf-field">
+          <label for="cf-company">Company</label>
+          <input id="cf-company" name="company" type="text" autocomplete="organization">
+        </div>
+        <div class="cf-field">
+          <label for="cf-website">Website</label>
+          <input id="cf-website" name="website" type="url" placeholder="https://">
+        </div>
+
+        <fieldset class="cf-field cf-field--full">
+          <legend>What do you need?</legend>
+          <div class="cf-chips">
+            <label class="cf-chip"><input type="checkbox" name="needs" value="Brand"><span>Brand</span></label>
+            <label class="cf-chip"><input type="checkbox" name="needs" value="Website"><span>Website</span></label>
+            <label class="cf-chip"><input type="checkbox" name="needs" value="Digital product"><span>Digital product</span></label>
+            <label class="cf-chip"><input type="checkbox" name="needs" value="Design system"><span>Design system</span></label>
+            <label class="cf-chip"><input type="checkbox" name="needs" value="Ongoing support"><span>Ongoing support</span></label>
+            <label class="cf-chip"><input type="checkbox" name="needs" value="Advisory / review"><span>Advisory / review</span></label>
+          </div>
+        </fieldset>
+
+        <div class="cf-field">
+          <label for="cf-budget">Budget</label>
+          <select id="cf-budget" name="budget">
+            <option value="">Select a range</option>
+            <option>Under £5k</option>
+            <option>£5k – £15k</option>
+            <option>£15k – £30k</option>
+            <option>£30k+</option>
+            <option>Monthly retainer</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="cf-field">
+          <label for="cf-timeline">Timeline</label>
+          <select id="cf-timeline" name="timeline">
+            <option value="">Select a timeline</option>
+            <option>As soon as possible</option>
+            <option>Within 1–3 months</option>
+            <option>3+ months</option>
+            <option>Flexible</option>
+          </select>
+        </div>
+
+        <div class="cf-field cf-field--full">
+          <label for="cf-message">Tell me about the project *</label>
+          <textarea id="cf-message" name="message" required placeholder="What are you building, what's the challenge, and what would success look like?"></textarea>
+        </div>
+
+        <div class="cf-submit">
+          <button type="submit" class="btn btn-arrow btn-accent">Send enquiry</button>
+          <span class="cf-note">* Required</span>
+        </div>
+        <p class="cf-status" role="status" aria-live="polite"></p>
+      </form>
+
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<div class="footer-blur" aria-hidden="true">
+  <div class="fb-layer fb1"></div>
+  <div class="fb-layer fb2"></div>
+  <div class="fb-layer fb3"></div>
+  <div class="fb-layer fb4"></div>
+  <div class="fb-layer fb5"></div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 This is RAD</span>
+      <ul class="footer-links">
+        <li><a href="mailto:hello@thisisrad.co">Email</a></li>
+        <li><a href="https://www.linkedin.com/in/b0bbyanders0n/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/EasePack.min.js"></script>
+<!-- SplitText — powers the hero headline's character flip-in (initHeroTextFlip in main.js) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/SplitText.min.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>

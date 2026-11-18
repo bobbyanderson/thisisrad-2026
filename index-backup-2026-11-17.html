@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bobby Anderson — Product Designer</title>
+  <meta name="description" content="Digital product design for ambitious teams building thoughtful products.">
+  <link rel="stylesheet" href="styles-backup-2026-11-17.css">
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('rad-theme') || 'dark')</script>
+</head>
+<body>
+
+<!-- Page loader -->
+<div id="page-loader">
+  <img class="loader-mark" src="logo.svg" alt="This is RAD">
+</div>
+
+<!-- Page transition overlay -->
+<div id="pt-wrap" aria-hidden="true"></div>
+
+<!-- Cursor -->
+<div id="cursor"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="This is RAD">
+          <path d="M35.1289 36.9176H13.3203V15.1198L35.1289 36.9176ZM15.1201 35.1178H30.7822L15.1201 19.4635V35.1178ZM16.1045 12.3854C20.3126 8.17724 27.1815 8.19872 31.3896 12.4069C35.5977 16.6149 35.5976 23.4614 31.3896 27.6696L29.7539 29.3053C14.1424 13.6938 30.0813 29.6317 14.4697 14.0201L16.1045 12.3854Z" fill="#343A40"/>
+          <mask id="mask0_2161_111" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="17" width="19" height="19">
+            <path d="M14.1599 36V17.52L32.1599 36H14.1599Z" fill="#C4C4C4"/>
+          </mask>
+          <g mask="url(#mask0_2161_111)">
+            <path class="logo-dot" d="M26.0399 32.52C26.0399 33.1827 25.5026 33.72 24.8399 33.72C24.1772 33.72 23.6399 33.1827 23.6399 32.52C23.6399 31.8573 24.1772 31.32 24.8399 31.32C25.5026 31.32 26.0399 31.8573 26.0399 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 28.92C22.44 29.5828 21.9028 30.12 21.24 30.12C20.5773 30.12 20.04 29.5828 20.04 28.92C20.04 28.2573 20.5773 27.72 21.24 27.72C21.9028 27.72 22.44 28.2573 22.44 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 25.32C18.8399 25.9827 18.3027 26.52 17.6399 26.52C16.9772 26.52 16.4399 25.9827 16.4399 25.32C16.4399 24.6573 16.9772 24.12 17.6399 24.12C18.3027 24.12 18.8399 24.6573 18.8399 25.32Z" fill="#343A40"/>
+            <path class="logo-dot" d="M22.44 32.52C22.44 33.1827 21.9028 33.72 21.24 33.72C20.5773 33.72 20.04 33.1827 20.04 32.52C20.04 31.8573 20.5773 31.32 21.24 31.32C21.9028 31.32 22.44 31.8573 22.44 32.52Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 28.92C18.8399 29.5828 18.3027 30.12 17.6399 30.12C16.9772 30.12 16.4399 29.5828 16.4399 28.92C16.4399 28.2573 16.9772 27.72 17.6399 27.72C18.3027 27.72 18.8399 28.2573 18.8399 28.92Z" fill="#343A40"/>
+            <path class="logo-dot" d="M18.8399 32.52C18.8399 33.1827 18.3027 33.72 17.6399 33.72C16.9772 33.72 16.4399 33.1827 16.4399 32.52C16.4399 31.8573 16.9772 31.32 17.6399 31.32C18.3027 31.32 18.8399 31.8573 18.8399 32.52Z" fill="#343A40"/>
+          </g>
+        </svg>
+      </a>
+      <ul class="nav-links">
+        <li class="nav-link-mobile"><a href="index.html" class="active">Home</a></li>
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+        <li class="nav-link-mobile"><a href="https://calendly.com/hello-thisisrad/30min" class="nav-cta btn-arrow" target="_blank" rel="noopener noreferrer">Book a call</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:var(--space-3)">
+        <button id="theme-toggle" aria-label="Switch to dark mode"><span class="toggle-icon">◐</span></button>
+        <a href="https://calendly.com/hello-thisisrad/30min" class="nav-cta btn-arrow" target="_blank" rel="noopener noreferrer">Book a call</a>
+        <button class="nav-menu-btn" aria-label="Menu"><span></span><span></span></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- =============================================
+     HERO
+============================================= -->
+<section class="hero">
+
+  <div class="hero-bg-svg" aria-hidden="true">
+    <svg viewBox="0 0 765 808" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hero-line-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="765" y2="0">
+          <stop offset="0%" style="stop-color:var(--hero-line); stop-opacity:0"/>
+          <stop offset="100%" style="stop-color:var(--hero-line); stop-opacity:1"/>
+        </linearGradient>
+        <linearGradient id="hero-pulse-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="765" y2="0">
+          <stop offset="0%" style="stop-color:var(--accent); stop-opacity:0"/>
+          <stop offset="35%" style="stop-color:var(--accent); stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:var(--accent); stop-opacity:1"/>
+        </linearGradient>
+      </defs>
+      <g class="hero-bg-lines">
+        <path d="M0 388.25C458.5 388.25 379 0.25 766 0.25"/>
+        <path d="M0 389.25C458.5 389.25 379 25.25 766 25.25"/>
+        <path d="M0 390.25C458.5 390.25 379 50.25 766 50.25"/>
+        <path d="M0 391.25C458.5 391.25 379 75.25 766 75.25"/>
+        <path d="M0 392.25C458.5 392.25 379 100.25 766 100.25"/>
+        <path d="M0 393.25C458.5 393.25 379 125.25 766 125.25"/>
+        <path d="M0 394.25C458.5 394.25 379 150.25 766 150.25"/>
+        <path d="M0 395.25C458.5 395.25 379 175.25 766 175.25"/>
+        <path d="M0 396.25C458.5 396.25 379 200.25 766 200.25"/>
+        <path d="M0 397.25C458.5 397.25 379 225.25 766 225.25"/>
+        <path d="M0 398.25C458.5 398.25 379 250.25 766 250.25"/>
+        <path d="M0 399.25C458.5 399.25 379 275.25 766 275.25"/>
+        <path d="M0 400.25C458.5 400.25 379 300.25 766 300.25"/>
+        <path d="M0 401.25C458.5 401.25 379 325.25 766 325.25"/>
+        <path d="M0 402.25C458.5 402.25 379 350.25 766 350.25"/>
+        <path d="M0 403.25C458.5 403.25 379 375.25 766 375.25"/>
+        <path d="M0 418.25C458.5 418.25 379 782.25 766 782.25"/>
+        <path d="M0 417.25C458.5 417.25 379 757.25 766 757.25"/>
+        <path d="M0 416.25C458.5 416.25 379 732.25 766 732.25"/>
+        <path d="M0 415.25C458.5 415.25 379 707.25 766 707.25"/>
+        <path d="M0 414.25C458.5 414.25 379 682.25 766 682.25"/>
+        <path d="M0 413.25C458.5 413.25 379 657.25 766 657.25"/>
+        <path d="M0 412.25C458.5 412.25 379 632.25 766 632.25"/>
+        <path d="M0 411.25C458.5 411.25 379 607.25 766 607.25"/>
+        <path d="M0 410.25C458.5 410.25 379 582.25 766 582.25"/>
+        <path d="M0 409.25C458.5 409.25 379 557.25 766 557.25"/>
+        <path d="M0 408.25C458.5 408.25 379 532.25 766 532.25"/>
+        <path d="M0 407.25C458.5 407.25 379 507.25 766 507.25"/>
+        <path d="M0 406.25C458.5 406.25 379 482.25 766 482.25"/>
+        <path d="M0 405.25C458.5 405.25 379 457.25 766 457.25"/>
+        <path d="M0 404.25C458.5 404.25 379 432.25 766 432.25"/>
+        <path d="M0 419.25C458.5 419.25 379 807.25 766 807.25"/>
+        <path d="M0 403.25C462.495 403.25 374.628 403.25 765 403.25"/>
+      </g>
+      <g class="hero-bg-pulses"></g>
+    </svg>
+  </div>
+
+  <div class="container">
+    <div class="hero-content">
+
+      <p class="hero-eyebrow label">Become the benchmark</p>
+
+      <h1 class="hero-headline display-1">
+        <span class="hero-line hero-line--accent">A design partner</span>
+        <span class="hero-line hero-line--ink">for&nbsp;ambitious companies</span>
+      </h1>
+
+      <div class="hero-lower">
+        <div class="hero-sub">
+          <p>RAD partners with <strong>startups and technology companies</strong> to create <strong>brands, websites and digital products</strong>.</p>
+        </div>
+        <div class="hero-cta">
+          <div class="hero-cta-row">
+            <a href="services.html" class="btn btn-arrow">Our services</a>
+            <a href="https://calendly.com/hello-thisisrad/30min" class="nav-cta btn-arrow" target="_blank" rel="noopener noreferrer">Book a call</a>
+          </div>
+          <p class="body-sm text-muted" style="text-align:center">Based in the UK · Available for new projects</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     BENTO GALLERY — scrubbed (GSAP Flip + ScrollTrigger)
+     Drop real images into each .bento-gallery-placeholder in place of
+     the numbered placeholder, e.g.:
+     <img src="your-image.jpg" alt="" style="width:100%;height:100%;object-fit:cover">
+============================================= -->
+<div class="bento-section">
+  <div class="bento-gallery-wrap">
+    <div class="bento-gallery bento-gallery--bento" id="bento-gallery">
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">01</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">02</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">03</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">04</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">05</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">06</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">07</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+      <div class="bento-gallery-item">
+        <div class="bento-gallery-placeholder">
+          <span class="bento-gallery-placeholder-num">08</span>
+          <span class="bento-gallery-placeholder-label">Add image</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     WHO WE WORK WITH
+============================================= -->
+<section class="logo-marquee-section">
+
+  <h2 class="logo-marquee-label reveal-fade">Trusted by teams including</h2>
+
+  <div class="logo-marquee-outer reveal-fade">
+    <div class="logo-marquee-track" aria-label="Client logos">
+      <span class="logo-marquee-item"><img src="clients/acca.png" srcset="clients/acca.png 1x, clients/acca@2x.png 2x" width="235" height="60" alt="ACCA"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/attis.png" srcset="clients/attis.png 1x, clients/attis@2x.png 2x" width="108" height="80" alt="Attis"></span>
+      <span class="logo-marquee-item"><img src="clients/binx.png" srcset="clients/binx.png 1x, clients/binx@2x.png 2x" width="211" height="80" alt="Binx"></span>
+      <span class="logo-marquee-item"><img src="clients/cahonas.png" srcset="clients/cahonas.png 1x, clients/cahonas@2x.png 2x" width="300" height="40" alt="Cahonas"></span>
+      <span class="logo-marquee-item"><img src="clients/caret.png" srcset="clients/caret.png 1x, clients/caret@2x.png 2x" width="248" height="60" alt="Caret"></span>
+      <span class="logo-marquee-item"><img src="clients/chunk.png" srcset="clients/chunk.png 1x, clients/chunk@2x.png 2x" width="182" height="60" alt="Chunk"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/cigna.png" srcset="clients/cigna.png 1x, clients/cigna@2x.png 2x" width="230" height="80" alt="Cigna"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/glen-garioch.png" srcset="clients/glen-garioch.png 1x, clients/glen-garioch@2x.png 2x" width="212" height="80" alt="Glen Garioch"></span>
+      <span class="logo-marquee-item"><img src="clients/macrobert.png" srcset="clients/macrobert.png 1x, clients/macrobert@2x.png 2x" width="494" height="60" alt="MacRobert"></span>
+      <span class="logo-marquee-item"><img class="logo-native" src="clients/Native-logo.png" srcset="clients/Native-logo.png 1x, clients/Native-logo@2x.png 2x" width="766" height="35" alt="Native"></span>
+      <span class="logo-marquee-item"><img src="clients/natwest.png" srcset="clients/natwest.png 1x, clients/natwest@2x.png 2x" width="201" height="48" alt="NatWest"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/nile.png" srcset="clients/nile.png 1x, clients/nile@2x.png 2x" width="80" height="80" alt="Nile"></span>
+      <span class="logo-marquee-item"><img src="clients/portabl.png" srcset="clients/portabl.png 1x, clients/portabl@2x.png 2x" width="218" height="40" alt="Portabl"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/pru.png" srcset="clients/pru.png 1x, clients/pru@2x.png 2x" width="188" height="80" alt="Prudential"></span>
+      <span class="logo-marquee-item"><img src="clients/rsno.png" srcset="clients/rsno.png 1x, clients/rsno@2x.png 2x" width="160" height="50" alt="RSNO"></span>
+      <span class="logo-marquee-item"><img class="logo-tall" src="clients/save-the-children.png" srcset="clients/save-the-children.png 1x, clients/save-the-children@2x.png 2x" width="394" height="80" alt="Save the Children"></span>
+      <span class="logo-marquee-item"><img src="clients/symbiosis.png" srcset="clients/symbiosis.png 1x, clients/symbiosis@2x.png 2x" width="316" height="80" alt="Symbiosis"></span>
+      <span class="logo-marquee-item"><img src="clients/xdesign.png" srcset="clients/xdesign.png 1x, clients/xdesign@2x.png 2x" width="294" height="40" alt="xDesign"></span>
+    </div>
+  </div>
+
+  <p class="wwww-subhead reveal-fade">Design support for wherever you are in your journey.</p>
+
+  <div class="container">
+    <div class="wwww-accordion reveal-up">
+
+      <div class="wwww-item open">
+        <button class="wwww-trigger" aria-expanded="true">
+          <span class="wwww-trigger-title">Starting something new</span>
+          <span class="wwww-icon" aria-hidden="true"></span>
+        </button>
+        <div class="wwww-body-wrap">
+          <div class="wwww-body-inner">
+            <div class="wwww-body-content">
+              <p class="wwww-body-text">For teams turning an idea into a brand, product or experience.</p>
+              <div>
+                <span class="wwww-fit-label">Best fit</span>
+                <ul class="wwww-fit-list">
+                  <li>Early-stage startups</li>
+                  <li>New products</li>
+                  <li>MVPs</li>
+                  <li>Fundraising preparation</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wwww-item">
+        <button class="wwww-trigger" aria-expanded="false">
+          <span class="wwww-trigger-title">Improving what exists</span>
+          <span class="wwww-icon" aria-hidden="true"></span>
+        </button>
+        <div class="wwww-body-wrap">
+          <div class="wwww-body-inner">
+            <div class="wwww-body-content">
+              <p class="wwww-body-text">For companies whose product or customer experience needs to catch up with their ambition.</p>
+              <div>
+                <span class="wwww-fit-label">Best fit</span>
+                <ul class="wwww-fit-list">
+                  <li>SaaS platforms</li>
+                  <li>Web applications</li>
+                  <li>Internal tools</li>
+                  <li>Product redesigns</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wwww-item">
+        <button class="wwww-trigger" aria-expanded="false">
+          <span class="wwww-trigger-title">Scaling with confidence</span>
+          <span class="wwww-icon" aria-hidden="true"></span>
+        </button>
+        <div class="wwww-body-wrap">
+          <div class="wwww-body-inner">
+            <div class="wwww-body-content">
+              <p class="wwww-body-text">For teams needing systems, consistency and senior design thinking.</p>
+              <div>
+                <span class="wwww-fit-label">Best fit</span>
+                <ul class="wwww-fit-list">
+                  <li>Design systems</li>
+                  <li>Product improvements</li>
+                  <li>Scaling interfaces</li>
+                  <li>New features</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wwww-item">
+        <button class="wwww-trigger" aria-expanded="false">
+          <span class="wwww-trigger-title">Extending your team</span>
+          <span class="wwww-icon" aria-hidden="true"></span>
+        </button>
+        <div class="wwww-body-wrap">
+          <div class="wwww-body-inner">
+            <div class="wwww-body-content">
+              <p class="wwww-body-text">For companies looking for additional design leadership and expertise.</p>
+              <div>
+                <span class="wwww-fit-label">Best fit</span>
+                <ul class="wwww-fit-list">
+                  <li>Marketing websites</li>
+                  <li>Customer portals</li>
+                  <li>Digital transformation</li>
+                  <li>New digital products</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     GLOBE — bold homepage version
+============================================= -->
+<div class="globe-hp">
+  <div class="container">
+    <div class="globe-hp-inner">
+
+      <div class="globe-hp-text reveal-fade">
+        <p class="label" style="margin-bottom:var(--space-4)">Remote-first · Worldwide</p>
+        <h2 class="globe-hp-headline">Good partnerships know no borders.</h2>
+        <p class="globe-hp-sub">RAD partners with ambitious teams around the world, bringing senior design thinking into products, brands and businesses without geography getting in the way.</p>
+      </div>
+
+      <div class="globe-hp-canvas-wrap">
+        <canvas id="globe-canvas-hp"></canvas>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     CTA
+============================================= -->
+<div class="cta-band">
+
+  <div class="cta-bg-svg" aria-hidden="true">
+    <svg viewBox="0 0 765 808" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="cta-line-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="765" y2="0">
+          <stop offset="0%" style="stop-color:var(--hero-line); stop-opacity:0"/>
+          <stop offset="100%" style="stop-color:var(--hero-line); stop-opacity:1"/>
+        </linearGradient>
+        <linearGradient id="cta-pulse-fade" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="765" y2="0">
+          <stop offset="0%" style="stop-color:var(--accent); stop-opacity:0"/>
+          <stop offset="35%" style="stop-color:var(--accent); stop-opacity:1"/>
+          <stop offset="100%" style="stop-color:var(--accent); stop-opacity:1"/>
+        </linearGradient>
+      </defs>
+      <g class="cta-bg-lines">
+        <path d="M0 388.25C458.5 388.25 379 0.25 766 0.25"/>
+        <path d="M0 389.25C458.5 389.25 379 25.25 766 25.25"/>
+        <path d="M0 390.25C458.5 390.25 379 50.25 766 50.25"/>
+        <path d="M0 391.25C458.5 391.25 379 75.25 766 75.25"/>
+        <path d="M0 392.25C458.5 392.25 379 100.25 766 100.25"/>
+        <path d="M0 393.25C458.5 393.25 379 125.25 766 125.25"/>
+        <path d="M0 394.25C458.5 394.25 379 150.25 766 150.25"/>
+        <path d="M0 395.25C458.5 395.25 379 175.25 766 175.25"/>
+        <path d="M0 396.25C458.5 396.25 379 200.25 766 200.25"/>
+        <path d="M0 397.25C458.5 397.25 379 225.25 766 225.25"/>
+        <path d="M0 398.25C458.5 398.25 379 250.25 766 250.25"/>
+        <path d="M0 399.25C458.5 399.25 379 275.25 766 275.25"/>
+        <path d="M0 400.25C458.5 400.25 379 300.25 766 300.25"/>
+        <path d="M0 401.25C458.5 401.25 379 325.25 766 325.25"/>
+        <path d="M0 402.25C458.5 402.25 379 350.25 766 350.25"/>
+        <path d="M0 403.25C458.5 403.25 379 375.25 766 375.25"/>
+        <path d="M0 418.25C458.5 418.25 379 782.25 766 782.25"/>
+        <path d="M0 417.25C458.5 417.25 379 757.25 766 757.25"/>
+        <path d="M0 416.25C458.5 416.25 379 732.25 766 732.25"/>
+        <path d="M0 415.25C458.5 415.25 379 707.25 766 707.25"/>
+        <path d="M0 414.25C458.5 414.25 379 682.25 766 682.25"/>
+        <path d="M0 413.25C458.5 413.25 379 657.25 766 657.25"/>
+        <path d="M0 412.25C458.5 412.25 379 632.25 766 632.25"/>
+        <path d="M0 411.25C458.5 411.25 379 607.25 766 607.25"/>
+        <path d="M0 410.25C458.5 410.25 379 582.25 766 582.25"/>
+        <path d="M0 409.25C458.5 409.25 379 557.25 766 557.25"/>
+        <path d="M0 408.25C458.5 408.25 379 532.25 766 532.25"/>
+        <path d="M0 407.25C458.5 407.25 379 507.25 766 507.25"/>
+        <path d="M0 406.25C458.5 406.25 379 482.25 766 482.25"/>
+        <path d="M0 405.25C458.5 405.25 379 457.25 766 457.25"/>
+        <path d="M0 404.25C458.5 404.25 379 432.25 766 432.25"/>
+        <path d="M0 419.25C458.5 419.25 379 807.25 766 807.25"/>
+        <path d="M0 403.25C462.495 403.25 374.628 403.25 765 403.25"/>
+      </g>
+      <g class="cta-bg-pulses"></g>
+    </svg>
+  </div>
+
+  <div class="container">
+    <div class="cta-band-inner">
+      <h2 class="cta-heading">
+        <span class="reveal-line"><span class="inner">Ready when you are.</span></span>
+      </h2>
+      <div class="reveal-fade">
+        <p class="body-lg cta-copy" style="margin:0 auto var(--space-4);color:var(--ink)">If you think RAD might be the right fit for your team, we'd love to hear about your project and where you're hoping to take it.</p>
+        <a href="about.html#contact" class="btn btn-arrow btn-accent">Start your project</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="footer-blur" aria-hidden="true">
+  <div class="fb-layer fb1"></div>
+  <div class="fb-layer fb2"></div>
+  <div class="fb-layer fb3"></div>
+  <div class="fb-layer fb4"></div>
+  <div class="fb-layer fb5"></div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-copy">© 2026 This is RAD</span>
+      <ul class="footer-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="process.html">Process</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="mailto:hello@thisisrad.co">Email</a></li>
+        <li><a href="https://linkedin.com" target="_blank">LinkedIn ↗</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/Flip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/EasePack.min.js"></script>
+<!-- SplitText — powers the hero headline's character flip-in (initHeroTextFlip in main.js) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script src="main-backup-2026-11-17.js"></script>
+
+<script>
+/* ---- Homepage globe ---- */
+(async function () {
+  const canvas = document.getElementById('globe-canvas-hp');
+  if (!canvas) return;
+
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const ctx = canvas.getContext('2d');
+  let size, cx, cy, radius;
+  let rotLon = 0;
+
+  const CITIES = [
+    { name: 'Scotland',      lat: 55.95,  lon: -3.19,  home: true },
+    { name: 'London',        lat: 51.51,  lon: -0.13  },
+    { name: 'New York',      lat: 40.71,  lon: -74.01 },
+    { name: 'Shanghai',      lat: 31.23,  lon: 121.47 },
+    { name: 'San Francisco', lat: 37.77,  lon: -122.42},
+    { name: 'Berlin',        lat: 52.52,  lon: 13.41  },
+    { name: 'Sydney',        lat: -33.87, lon: 151.21 },
+    { name: 'Melbourne',     lat: -37.81, lon: 144.96 },
+    { name: 'Tokyo',         lat: 35.68,  lon: 139.69 },
+  ];
+
+  function resize() {
+    const wrap = canvas.parentElement;
+    const isDesktop = window.innerWidth > 900;
+    size = isDesktop
+      ? Math.min(wrap.offsetWidth - 32, 600)
+      : Math.min(Math.min(wrap.offsetWidth, 480) * 2.5, 600);
+    canvas.width  = size * dpr;
+    canvas.height = size * dpr;
+    canvas.style.width  = size + 'px';
+    canvas.style.height = size + 'px';
+    ctx.scale(dpr, dpr);
+    cx = size / 2; cy = size / 2;
+    radius = size * (isDesktop ? 0.44 : 0.4);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let land = null, graticuleFeature = null;
+  try {
+    const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json').then(r => r.json());
+    land = topojson.feature(world, world.objects.land);
+    graticuleFeature = d3.geoGraticule()();
+  } catch(e) {}
+
+  const TILT = 10 * Math.PI / 180;
+  function visibility(lat, lon) {
+    const phi = lat * Math.PI / 180;
+    const lam = (lon + rotLon) * Math.PI / 180;
+    return Math.sin(phi) * Math.sin(TILT) + Math.cos(phi) * Math.cos(TILT) * Math.cos(lam);
+  }
+  function smoothFade(vis) {
+    const t = Math.max(0, Math.min(1, vis * 2.2));
+    return t * t * (3 - 2 * t);
+  }
+
+  // Point on a quadratic bezier at t
+  function bezierPt(p0, ctrl, p2, t) {
+    const mt = 1 - t;
+    return [
+      mt*mt*p0[0] + 2*mt*t*ctrl[0] + t*t*p2[0],
+      mt*mt*p0[1] + 2*mt*t*ctrl[1] + t*t*p2[1],
+    ];
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, size, size);
+    const dark   = document.documentElement.getAttribute('data-theme') === 'dark';
+    const ink    = dark ? '240,237,232' : '12,12,10';
+    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+
+    const proj    = d3.geoOrthographic().scale(radius).translate([cx, cy]).rotate([rotLon, -10]);
+    const geoPath = d3.geoPath().projection(proj).context(ctx);
+
+    // Sphere
+    const og = ctx.createRadialGradient(cx - radius * 0.3, cy - radius * 0.3, 0, cx, cy, radius);
+    og.addColorStop(0, dark ? '#1e1e1b' : '#f5f3f0');
+    og.addColorStop(1, dark ? '#0e0e0c' : '#e8e5e0');
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fillStyle = og; ctx.fill();
+
+    // Graticule
+    if (graticuleFeature) {
+      ctx.beginPath(); geoPath(graticuleFeature);
+      ctx.strokeStyle = dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
+      ctx.lineWidth = 0.5; ctx.stroke();
+    }
+    // Land
+    if (land) {
+      ctx.beginPath(); geoPath(land);
+      ctx.fillStyle   = dark ? 'rgba(240,237,232,0.15)' : 'rgba(12,12,10,0.11)'; ctx.fill();
+      ctx.strokeStyle = dark ? 'rgba(240,237,232,0.28)' : 'rgba(12,12,10,0.2)';
+      ctx.lineWidth = 0.75; ctx.stroke();
+    }
+    // Border
+    ctx.beginPath(); ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = dark ? '#2a2926' : '#d8d5cf'; ctx.lineWidth = 1.5; ctx.stroke();
+
+    const now  = Date.now();
+    const home = CITIES[0];
+    const hFade = smoothFade(visibility(home.lat, home.lon));
+    const hp    = hFade > 0.02 ? proj([home.lon, home.lat]) : null;
+
+    // Arcs + traveling pulses
+    if (hp) {
+      CITIES.slice(1).forEach((city, i) => {
+        const cFade = smoothFade(visibility(city.lat, city.lon));
+        if (cFade < 0.05) return;
+        const cp = proj([city.lon, city.lat]);
+        if (!cp) return;
+
+        const visAlpha = Math.min(hFade, cFade);
+        const dist  = Math.hypot(cp[0] - hp[0], cp[1] - hp[1]);
+        const ctrl  = [(hp[0]+cp[0])/2, (hp[1]+cp[1])/2 - dist * 0.2];
+
+        // Arc line
+        ctx.save();
+        ctx.globalAlpha = visAlpha * 0.22;
+        ctx.beginPath();
+        ctx.moveTo(hp[0], hp[1]);
+        ctx.quadraticCurveTo(ctrl[0], ctrl[1], cp[0], cp[1]);
+        ctx.strokeStyle = accent;
+        ctx.lineWidth   = 1;
+        ctx.stroke();
+        ctx.restore();
+
+        // Traveling pulse — each city offset so they don't all sync
+        const pulseT = ((now / 2400) + i / (CITIES.length - 1)) % 1;
+        // Bell-curve opacity: fades in and out as pulse travels
+        const bellOpacity = Math.sin(pulseT * Math.PI);
+        const [bx, by] = bezierPt(hp, ctrl, cp, pulseT);
+
+        ctx.save();
+        ctx.globalAlpha = visAlpha * bellOpacity * 0.95;
+        ctx.shadowBlur  = 10;
+        ctx.shadowColor = accent;
+        ctx.fillStyle   = accent;
+        ctx.beginPath(); ctx.arc(bx, by, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+    }
+
+    // City dots
+    CITIES.forEach(city => {
+      const fade = smoothFade(visibility(city.lat, city.lon));
+      if (fade < 0.01) return;
+      const pos = proj([city.lon, city.lat]);
+      if (!pos) return;
+      const [px, py] = pos;
+
+      // Scotland expanding pulse ring
+      if (city.home && fade > 0.3) {
+        const pulse = (Math.sin(now / 700) + 1) / 2;
+        ctx.save();
+        ctx.globalAlpha = fade * 0.22;
+        ctx.strokeStyle = accent;
+        ctx.lineWidth   = 1.5;
+        ctx.beginPath(); ctx.arc(px, py, 6 + 6 * pulse, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Dot with glow
+      const r = city.home ? 5 : 4;
+      const dotColor = accent;
+      ctx.save();
+      ctx.globalAlpha = fade;
+      ctx.shadowBlur  = city.home ? 12 : 6;
+      ctx.shadowColor = dotColor;
+      ctx.fillStyle   = dotColor;
+      ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // Label
+      if (fade > 0.4) {
+        ctx.save();
+        ctx.globalAlpha = fade * 0.85;
+        ctx.font        = '500 11px Inter, system-ui, sans-serif';
+        ctx.fillStyle   = `rgba(${ink},1)`;
+        ctx.fillText(city.name, px + r + 8, py + 1);
+        ctx.restore();
+      }
+    });
+  }
+
+  function tick() { rotLon += 0.14; draw(); requestAnimationFrame(tick); }
+  new MutationObserver(() => draw()).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  tick();
+})();
+</script>
+
+</body>
+</html>

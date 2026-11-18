@@ -25,7 +25,7 @@
 <nav>
   <div class="container">
     <div class="nav-inner">
-      <a href="index.html" class="nav-logo">
+      <a href="#top" class="nav-logo">
         <svg class="logo-svg" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="This is RAD">
           <path d="M35.1289 36.9176H13.3203V15.1198L35.1289 36.9176ZM15.1201 35.1178H30.7822L15.1201 19.4635V35.1178ZM16.1045 12.3854C20.3126 8.17724 27.1815 8.19872 31.3896 12.4069C35.5977 16.6149 35.5976 23.4614 31.3896 27.6696L29.7539 29.3053C14.1424 13.6938 30.0813 29.6317 14.4697 14.0201L16.1045 12.3854Z" fill="#343A40"/>
           <mask id="mask0_2161_111" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="14" y="17" width="19" height="19">
@@ -42,10 +42,11 @@
         </svg>
       </a>
       <ul class="nav-links">
-        <li class="nav-link-mobile"><a href="index.html" class="active">Home</a></li>
-        <li><a href="work.html">Work</a></li>
-        <li><a href="process.html">Process</a></li>
-        <li><a href="about.html">About</a></li>
+        <li class="nav-link-mobile"><a href="#top">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#engagements">Engagements</a></li>
         <li class="nav-link-mobile"><a href="https://calendly.com/hello-thisisrad/30min" class="nav-cta btn-arrow" target="_blank" rel="noopener noreferrer">Book a call</a></li>
       </ul>
       <div style="display:flex;align-items:center;gap:var(--space-3)">
@@ -60,7 +61,7 @@
 <!-- =============================================
      HERO
 ============================================= -->
-<section class="hero">
+<section class="hero" id="top">
 
   <div class="hero-bg-svg" aria-hidden="true">
     <svg viewBox="0 0 765 808" xmlns="http://www.w3.org/2000/svg">
@@ -130,7 +131,7 @@
         </div>
         <div class="hero-cta">
           <div class="hero-cta-row">
-            <a href="services.html" class="btn btn-arrow">Our services</a>
+            <a href="#services" class="btn btn-arrow">Our services</a>
             <a href="https://calendly.com/hello-thisisrad/30min" class="nav-cta btn-arrow" target="_blank" rel="noopener noreferrer">Book a call</a>
           </div>
           <p class="body-sm text-muted" style="text-align:center">Based in the UK · Available for new projects</p>
@@ -142,193 +143,263 @@
 </section>
 
 <!-- =============================================
-     BENTO GALLERY — scrubbed (GSAP Flip + ScrollTrigger)
-     Drop real images into each .bento-gallery-placeholder in place of
-     the numbered placeholder, e.g.:
-     <img src="your-image.jpg" alt="" style="width:100%;height:100%;object-fit:cover">
+     SELECTED PROJECTS — sticky index + scrolling images
+     (layout modelled on aydaoz.co's case list)
+     Swap each .project-ph for a real image, e.g.
+     <img src="work/project-1-a.jpg" alt="" loading="lazy">
 ============================================= -->
-<div class="bento-section">
-  <div class="bento-gallery-wrap">
-    <div class="bento-gallery bento-gallery--bento" id="bento-gallery">
-      <div class="bento-gallery-item">
-        <div class="bento-gallery-placeholder">
-          <span class="bento-gallery-placeholder-num">01</span>
-          <span class="bento-gallery-placeholder-label">Add image</span>
-        </div>
+<section class="hp-projects" id="projects">
+  <div class="container">
+    <div class="hp-projects-grid">
+
+      <nav class="projects-index" aria-label="Selected projects">
+        <p class="label projects-index-label">Selected projects</p>
+        <a href="#project-1" class="projects-index-link is-active" data-project="project-1"><span class="pi-num">01</span><span class="pi-name">Project name</span></a>
+        <a href="#project-2" class="projects-index-link" data-project="project-2"><span class="pi-num">02</span><span class="pi-name">Project name</span></a>
+        <a href="#project-3" class="projects-index-link" data-project="project-3"><span class="pi-num">03</span><span class="pi-name">Project name</span></a>
+        <a href="#project-4" class="projects-index-link" data-project="project-4"><span class="pi-num">04</span><span class="pi-name">Project name</span></a>
+      </nav>
+
+      <div class="projects-col">
+
+        <article class="project" id="project-1">
+          <p class="project-meta"><span class="pi-num">01</span> Project name <span class="text-muted">· Sector · Services</span></p>
+          <div class="project-media">
+            <div class="project-ph project-ph--wide"><span>01 — Image 1</span></div>
+            <div class="project-ph"><span>01 — Image 2</span></div>
+            <div class="project-ph"><span>01 — Image 3</span></div>
+            <div class="project-ph project-ph--wide"><span>01 — Image 4</span></div>
+          </div>
+        </article>
+
+        <article class="project" id="project-2">
+          <p class="project-meta"><span class="pi-num">02</span> Project name <span class="text-muted">· Sector · Services</span></p>
+          <div class="project-media">
+            <div class="project-ph project-ph--wide"><span>02 — Image 1</span></div>
+            <div class="project-ph"><span>02 — Image 2</span></div>
+            <div class="project-ph"><span>02 — Image 3</span></div>
+          </div>
+        </article>
+
+        <article class="project" id="project-3">
+          <p class="project-meta"><span class="pi-num">03</span> Project name <span class="text-muted">· Sector · Services</span></p>
+          <div class="project-media">
+            <div class="project-ph project-ph--wide"><span>03 — Image 1</span></div>
+            <div class="project-ph"><span>03 — Image 2</span></div>
+            <div class="project-ph"><span>03 — Image 3</span></div>
+            <div class="project-ph project-ph--wide"><span>03 — Image 4</span></div>
+          </div>
+        </article>
+
+        <article class="project" id="project-4">
+          <p class="project-meta"><span class="pi-num">04</span> Project name <span class="text-muted">· Sector · Services</span></p>
+          <div class="project-media">
+            <div class="project-ph project-ph--wide"><span>04 — Image 1</span></div>
+            <div class="project-ph"><span>04 — Image 2</span></div>
+            <div class="project-ph"><span>04 — Image 3</span></div>
+          </div>
+        </article>
+
       </div>
-      <div class="bento-gallery-item">
-        <div class="bento-gallery-placeholder">
-          <span class="bento-gallery-placeholder-num">02</span>
-          <span class="bento-gallery-placeholder-label">Add image</span>
-        </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     CLIENTS — spaced logo grid
+============================================= -->
+<section class="hp-clients">
+  <div class="container">
+    <h2 class="hp-clients-title reveal-fade">Trusted by teams including</h2>
+    <div class="hp-clients-grid reveal-fade" aria-label="Client logos">
+      <span class="hp-client"><img src="clients/acca.png" srcset="clients/acca.png 1x, clients/acca@2x.png 2x" width="235" height="60" alt="ACCA"></span>
+      <span class="hp-client"><img class="logo-tall" src="clients/attis.png" srcset="clients/attis.png 1x, clients/attis@2x.png 2x" width="108" height="80" alt="Attis"></span>
+      <span class="hp-client"><img src="clients/binx.png" srcset="clients/binx.png 1x, clients/binx@2x.png 2x" width="211" height="80" alt="Binx"></span>
+      <span class="hp-client"><img src="clients/cahonas.png" srcset="clients/cahonas.png 1x, clients/cahonas@2x.png 2x" width="300" height="40" alt="Cahonas"></span>
+      <span class="hp-client"><img src="clients/caret.png" srcset="clients/caret.png 1x, clients/caret@2x.png 2x" width="248" height="60" alt="Caret"></span>
+      <span class="hp-client"><img src="clients/chunk.png" srcset="clients/chunk.png 1x, clients/chunk@2x.png 2x" width="182" height="60" alt="Chunk"></span>
+      <span class="hp-client"><img class="logo-tall" src="clients/cigna.png" srcset="clients/cigna.png 1x, clients/cigna@2x.png 2x" width="230" height="80" alt="Cigna"></span>
+      <span class="hp-client"><img class="logo-tall" src="clients/glen-garioch.png" srcset="clients/glen-garioch.png 1x, clients/glen-garioch@2x.png 2x" width="212" height="80" alt="Glen Garioch"></span>
+      <span class="hp-client"><img src="clients/macrobert.png" srcset="clients/macrobert.png 1x, clients/macrobert@2x.png 2x" width="494" height="60" alt="MacRobert"></span>
+      <span class="hp-client"><img class="logo-native" src="clients/Native-logo.png" srcset="clients/Native-logo.png 1x, clients/Native-logo@2x.png 2x" width="766" height="35" alt="Native"></span>
+      <span class="hp-client"><img src="clients/natwest.png" srcset="clients/natwest.png 1x, clients/natwest@2x.png 2x" width="201" height="48" alt="NatWest"></span>
+      <span class="hp-client"><img class="logo-tall" src="clients/nile.png" srcset="clients/nile.png 1x, clients/nile@2x.png 2x" width="80" height="80" alt="Nile"></span>
+      <span class="hp-client"><img src="clients/portabl.png" srcset="clients/portabl.png 1x, clients/portabl@2x.png 2x" width="218" height="40" alt="Portabl"></span>
+      <span class="hp-client"><img class="logo-tall" src="clients/pru.png" srcset="clients/pru.png 1x, clients/pru@2x.png 2x" width="188" height="80" alt="Prudential"></span>
+      <span class="hp-client"><img src="clients/rsno.png" srcset="clients/rsno.png 1x, clients/rsno@2x.png 2x" width="160" height="50" alt="RSNO"></span>
+      <span class="hp-client"><img class="logo-tall" src="clients/save-the-children.png" srcset="clients/save-the-children.png 1x, clients/save-the-children@2x.png 2x" width="394" height="80" alt="Save the Children"></span>
+      <span class="hp-client"><img src="clients/symbiosis.png" srcset="clients/symbiosis.png 1x, clients/symbiosis@2x.png 2x" width="316" height="80" alt="Symbiosis"></span>
+      <span class="hp-client"><img src="clients/xdesign.png" srcset="clients/xdesign.png 1x, clients/xdesign@2x.png 2x" width="294" height="40" alt="xDesign"></span>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     SERVICES — horizontal card scroller.
+     Desktop: the section pins and the cards scroll sideways as you
+     scroll down; once the last card is in view the page carries on
+     to the globe. Mobile: native swipe with scroll-snap.
+============================================= -->
+<div class="hp-services" id="services" data-scroll-offset="80">
+  <div class="hp-services-pin">
+    <div class="container hp-services-head">
+      <p class="label">Services</p>
+      <h2 class="wwww-subhead hp-services-subhead">Design support for wherever you are in your journey.</h2>
+    </div>
+
+    <div class="hp-services-viewport">
+      <div class="hp-services-track">
+
+        <article class="service-card">
+          <span class="service-num">01</span>
+          <div class="service-card-body">
+            <h3 class="service-title">Starting something new</h3>
+            <p class="service-text">For teams turning an idea into a brand, product or experience.</p>
+            <span class="wwww-fit-label">Best fit</span>
+            <ul class="wwww-fit-list">
+              <li>Early-stage startups</li>
+              <li>New products</li>
+              <li>MVPs</li>
+              <li>Fundraising preparation</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="service-card">
+          <span class="service-num">02</span>
+          <div class="service-card-body">
+            <h3 class="service-title">Improving what exists</h3>
+            <p class="service-text">For companies whose product or customer experience needs to catch up with their ambition.</p>
+            <span class="wwww-fit-label">Best fit</span>
+            <ul class="wwww-fit-list">
+              <li>SaaS platforms</li>
+              <li>Web applications</li>
+              <li>Internal tools</li>
+              <li>Product redesigns</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="service-card">
+          <span class="service-num">03</span>
+          <div class="service-card-body">
+            <h3 class="service-title">Scaling with confidence</h3>
+            <p class="service-text">For teams needing systems, consistency and senior design thinking.</p>
+            <span class="wwww-fit-label">Best fit</span>
+            <ul class="wwww-fit-list">
+              <li>Design systems</li>
+              <li>Product improvements</li>
+              <li>Scaling interfaces</li>
+              <li>New features</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="service-card">
+          <span class="service-num">04</span>
+          <div class="service-card-body">
+            <h3 class="service-title">Extending your team</h3>
+            <p class="service-text">For companies looking for additional design leadership and expertise.</p>
+            <span class="wwww-fit-label">Best fit</span>
+            <ul class="wwww-fit-list">
+              <li>Marketing websites</li>
+              <li>Customer portals</li>
+              <li>Digital transformation</li>
+              <li>New digital products</li>
+            </ul>
+          </div>
+        </article>
+
       </div>
-      <div class="bento-gallery-item">
-        <div class="bento-gallery-placeholder">
-          <span class="bento-gallery-placeholder-num">03</span>
-          <span class="bento-gallery-placeholder-label">Add image</span>
-        </div>
-      </div>
-      <div class="bento-gallery-item">
-        <div class="bento-gallery-placeholder">
-          <span class="bento-gallery-placeholder-num">04</span>
-          <span class="bento-gallery-placeholder-label">Add image</span>
-        </div>
-      </div>
-      <div class="bento-gallery-item">
-        <div class="bento-gallery-placeholder">
-          <span class="bento-gallery-placeholder-num">05</span>
-          <span class="bento-gallery-placeholder-label">Add image</span>
-        </div>
-      </div>
-      <div class="bento-gallery-item">
-        <div class="bento-gallery-placeholder">
-          <span class="bento-gallery-placeholder-num">06</span>
-          <span class="bento-gallery-placeholder-label">Add image</span>
-        </div>
-      </div>
-      <div class="bento-gallery-item">
-        <div class="bento-gallery-placeholder">
-          <span class="bento-gallery-placeholder-num">07</span>
-          <span class="bento-gallery-placeholder-label">Add image</span>
-        </div>
-      </div>
-      <div class="bento-gallery-item">
-        <div class="bento-gallery-placeholder">
-          <span class="bento-gallery-placeholder-num">08</span>
-          <span class="bento-gallery-placeholder-label">Add image</span>
-        </div>
-      </div>
+    </div>
+
+    <div class="container">
+      <div class="hp-services-progress" aria-hidden="true"><span></span></div>
     </div>
   </div>
 </div>
 
 <!-- =============================================
-     WHO WE WORK WITH
+     ABOUT RAD
 ============================================= -->
-<section class="logo-marquee-section">
-
-  <h2 class="logo-marquee-label reveal-fade">Trusted by teams including</h2>
-
-  <div class="logo-marquee-outer reveal-fade">
-    <div class="logo-marquee-track" aria-label="Client logos">
-      <span class="logo-marquee-item"><img src="clients/acca.png" srcset="clients/acca.png 1x, clients/acca@2x.png 2x" width="235" height="60" alt="ACCA"></span>
-      <span class="logo-marquee-item"><img class="logo-tall" src="clients/attis.png" srcset="clients/attis.png 1x, clients/attis@2x.png 2x" width="108" height="80" alt="Attis"></span>
-      <span class="logo-marquee-item"><img src="clients/binx.png" srcset="clients/binx.png 1x, clients/binx@2x.png 2x" width="211" height="80" alt="Binx"></span>
-      <span class="logo-marquee-item"><img src="clients/cahonas.png" srcset="clients/cahonas.png 1x, clients/cahonas@2x.png 2x" width="300" height="40" alt="Cahonas"></span>
-      <span class="logo-marquee-item"><img src="clients/caret.png" srcset="clients/caret.png 1x, clients/caret@2x.png 2x" width="248" height="60" alt="Caret"></span>
-      <span class="logo-marquee-item"><img src="clients/chunk.png" srcset="clients/chunk.png 1x, clients/chunk@2x.png 2x" width="182" height="60" alt="Chunk"></span>
-      <span class="logo-marquee-item"><img class="logo-tall" src="clients/cigna.png" srcset="clients/cigna.png 1x, clients/cigna@2x.png 2x" width="230" height="80" alt="Cigna"></span>
-      <span class="logo-marquee-item"><img class="logo-tall" src="clients/glen-garioch.png" srcset="clients/glen-garioch.png 1x, clients/glen-garioch@2x.png 2x" width="212" height="80" alt="Glen Garioch"></span>
-      <span class="logo-marquee-item"><img src="clients/macrobert.png" srcset="clients/macrobert.png 1x, clients/macrobert@2x.png 2x" width="494" height="60" alt="MacRobert"></span>
-      <span class="logo-marquee-item"><img class="logo-native" src="clients/Native-logo.png" srcset="clients/Native-logo.png 1x, clients/Native-logo@2x.png 2x" width="766" height="35" alt="Native"></span>
-      <span class="logo-marquee-item"><img src="clients/natwest.png" srcset="clients/natwest.png 1x, clients/natwest@2x.png 2x" width="201" height="48" alt="NatWest"></span>
-      <span class="logo-marquee-item"><img class="logo-tall" src="clients/nile.png" srcset="clients/nile.png 1x, clients/nile@2x.png 2x" width="80" height="80" alt="Nile"></span>
-      <span class="logo-marquee-item"><img src="clients/portabl.png" srcset="clients/portabl.png 1x, clients/portabl@2x.png 2x" width="218" height="40" alt="Portabl"></span>
-      <span class="logo-marquee-item"><img class="logo-tall" src="clients/pru.png" srcset="clients/pru.png 1x, clients/pru@2x.png 2x" width="188" height="80" alt="Prudential"></span>
-      <span class="logo-marquee-item"><img src="clients/rsno.png" srcset="clients/rsno.png 1x, clients/rsno@2x.png 2x" width="160" height="50" alt="RSNO"></span>
-      <span class="logo-marquee-item"><img class="logo-tall" src="clients/save-the-children.png" srcset="clients/save-the-children.png 1x, clients/save-the-children@2x.png 2x" width="394" height="80" alt="Save the Children"></span>
-      <span class="logo-marquee-item"><img src="clients/symbiosis.png" srcset="clients/symbiosis.png 1x, clients/symbiosis@2x.png 2x" width="316" height="80" alt="Symbiosis"></span>
-      <span class="logo-marquee-item"><img src="clients/xdesign.png" srcset="clients/xdesign.png 1x, clients/xdesign@2x.png 2x" width="294" height="40" alt="xDesign"></span>
-    </div>
-  </div>
-
-  <p class="wwww-subhead reveal-fade">Design support for wherever you are in your journey.</p>
-
+<section class="hp-about" id="about">
   <div class="container">
-    <div class="wwww-accordion reveal-up">
 
-      <div class="wwww-item open">
-        <button class="wwww-trigger" aria-expanded="true">
-          <span class="wwww-trigger-title">Starting something new</span>
-          <span class="wwww-icon" aria-hidden="true"></span>
-        </button>
-        <div class="wwww-body-wrap">
-          <div class="wwww-body-inner">
-            <div class="wwww-body-content">
-              <p class="wwww-body-text">For teams turning an idea into a brand, product or experience.</p>
-              <div>
-                <span class="wwww-fit-label">Best fit</span>
-                <ul class="wwww-fit-list">
-                  <li>Early-stage startups</li>
-                  <li>New products</li>
-                  <li>MVPs</li>
-                  <li>Fundraising preparation</li>
-                </ul>
-              </div>
+    <div class="section-intro reveal-fade">
+      <span class="section-num label">About RAD</span>
+      <h2 class="heading-2">Who we are</h2>
+    </div>
+
+    <div class="hp-about-grid">
+      <div class="hp-about-portrait reveal-fade">
+        <div class="hp-portrait-ph"><span>Portrait coming soon</span></div>
+        <p class="hp-portrait-caption">Bobby Anderson · Founder, This is RAD</p>
+      </div>
+
+      <div class="hp-about-copy reveal-fade">
+        <h3 class="hp-about-headline">We make complex digital products feel simple.</h3>
+        <p>RAD is the independent design practice of Bobby Anderson — a senior product designer with over 20 years of experience across fintech, banking, SaaS, health tech and consumer products. The work sits at the intersection of UX, UI and product strategy, where the real design decisions happen.</p>
+        <p>It's not just about how things look. It's about how they work, why they exist, and whether they're solving the right problem — with founders and product teams who treat design as a strategic function, not a finishing step.</p>
+
+        <dl class="hp-about-stats">
+          <div><dt>20+</dt><dd>Years in design</dd></div>
+          <div><dt>2015</dt><dd>RAD founded</dd></div>
+          <div><dt>UK</dt><dd>Based, working worldwide</dd></div>
+        </dl>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================
+     WORKING WITH ME + ENGAGEMENT TYPES (from Process page)
+============================================= -->
+<section class="hp-working" id="engagements">
+  <div class="container">
+    <div class="section-intro reveal-fade">
+      <span class="section-num label">How we work</span>
+      <h2 class="heading-2">Working with me</h2>
+    </div>
+
+    <div class="working-grid">
+      <div>
+        <h3 class="heading-2 reveal-fade" style="margin-bottom:var(--space-6)">What you can expect.</h3>
+        <ul class="check-list">
+          <li class="reveal-fade">Clear communication throughout — no black boxes or surprise reveals.</li>
+          <li class="reveal-fade">Honest feedback, even when it's not what you hoped to hear.</li>
+          <li class="reveal-fade">Work that's grounded in user needs, not just visual taste.</li>
+          <li class="reveal-fade">Collaboration that makes your team better, not dependent.</li>
+          <li class="reveal-fade">Deliverables that engineering can actually build without constant hand-holding.</li>
+          <li class="reveal-fade">A design partner who understands product — not just a pair of hands.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="heading-2 reveal-fade" style="margin-bottom:var(--space-6)">Engagement types.</h3>
+        <div class="engagement-list">
+          <div class="engagement-card reveal-fade">
+            <div class="engagement-card-top">
+              <h4>Project-based</h4>
+              <p class="engagement-price"><span>From</span> £[price]</p>
             </div>
+            <p class="body-sm text-muted">Defined scope, clear outcome. Good for specific product challenges, redesigns or new feature areas.</p>
+          </div>
+          <div class="engagement-card reveal-fade">
+            <div class="engagement-card-top">
+              <h4>Embedded / retainer</h4>
+              <p class="engagement-price"><span>From</span> £[price]<span>/month</span></p>
+            </div>
+            <p class="body-sm text-muted">Ongoing design partner, integrated with your team. Good for startups scaling their product function.</p>
+          </div>
+          <div class="engagement-card reveal-fade">
+            <div class="engagement-card-top">
+              <h4>Advisory / review</h4>
+              <p class="engagement-price"><span>From</span> £[price]<span>/day</span></p>
+            </div>
+            <p class="body-sm text-muted">Design critique, strategy sessions, process setup. Good for teams with designers who want a senior perspective.</p>
           </div>
         </div>
       </div>
-
-      <div class="wwww-item">
-        <button class="wwww-trigger" aria-expanded="false">
-          <span class="wwww-trigger-title">Improving what exists</span>
-          <span class="wwww-icon" aria-hidden="true"></span>
-        </button>
-        <div class="wwww-body-wrap">
-          <div class="wwww-body-inner">
-            <div class="wwww-body-content">
-              <p class="wwww-body-text">For companies whose product or customer experience needs to catch up with their ambition.</p>
-              <div>
-                <span class="wwww-fit-label">Best fit</span>
-                <ul class="wwww-fit-list">
-                  <li>SaaS platforms</li>
-                  <li>Web applications</li>
-                  <li>Internal tools</li>
-                  <li>Product redesigns</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="wwww-item">
-        <button class="wwww-trigger" aria-expanded="false">
-          <span class="wwww-trigger-title">Scaling with confidence</span>
-          <span class="wwww-icon" aria-hidden="true"></span>
-        </button>
-        <div class="wwww-body-wrap">
-          <div class="wwww-body-inner">
-            <div class="wwww-body-content">
-              <p class="wwww-body-text">For teams needing systems, consistency and senior design thinking.</p>
-              <div>
-                <span class="wwww-fit-label">Best fit</span>
-                <ul class="wwww-fit-list">
-                  <li>Design systems</li>
-                  <li>Product improvements</li>
-                  <li>Scaling interfaces</li>
-                  <li>New features</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="wwww-item">
-        <button class="wwww-trigger" aria-expanded="false">
-          <span class="wwww-trigger-title">Extending your team</span>
-          <span class="wwww-icon" aria-hidden="true"></span>
-        </button>
-        <div class="wwww-body-wrap">
-          <div class="wwww-body-inner">
-            <div class="wwww-body-content">
-              <p class="wwww-body-text">For companies looking for additional design leadership and expertise.</p>
-              <div>
-                <span class="wwww-fit-label">Best fit</span>
-                <ul class="wwww-fit-list">
-                  <li>Marketing websites</li>
-                  <li>Customer portals</li>
-                  <li>Digital transformation</li>
-                  <li>New digital products</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
@@ -418,7 +489,7 @@
       </h2>
       <div class="reveal-fade">
         <p class="body-lg cta-copy" style="margin:0 auto var(--space-4);color:var(--ink)">If you think RAD might be the right fit for your team, we'd love to hear about your project and where you're hoping to take it.</p>
-        <a href="about.html#contact" class="btn btn-arrow btn-accent">Start your project</a>
+        <a href="contact.html" class="btn btn-arrow btn-accent">Start your project</a>
       </div>
     </div>
   </div>
@@ -438,11 +509,8 @@
     <div class="footer-inner">
       <span class="footer-copy">© 2026 This is RAD</span>
       <ul class="footer-links">
-        <li><a href="work.html">Work</a></li>
-        <li><a href="process.html">Process</a></li>
-        <li><a href="about.html">About</a></li>
         <li><a href="mailto:hello@thisisrad.co">Email</a></li>
-        <li><a href="https://linkedin.com" target="_blank">LinkedIn ↗</a></li>
+        <li><a href="https://www.linkedin.com/in/b0bbyanders0n/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></li>
       </ul>
     </div>
   </div>
@@ -451,7 +519,6 @@
 <!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/Flip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/EasePack.min.js"></script>
 <!-- SplitText — powers the hero headline's character flip-in (initHeroTextFlip in main.js) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/SplitText.min.js"></script>
